@@ -77,5 +77,5 @@ app.get("*", function(req, res) {
 
 
 app.listen(process.env.PORT, process.env.URL, function() {
-    console.log("Started Tuenti on - " + process.env.URL + ":" + process.env.PORT);
+    console.log("Started Tuerti on - " + process.env.URL + ":" + process.env.PORT);
 });

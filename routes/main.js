@@ -23,7 +23,6 @@ router.get("/event/:id", isLoggedIn, async function(req, res) {
     }
 });
 
-
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();

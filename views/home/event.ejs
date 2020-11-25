@@ -118,6 +118,75 @@
                         </p>
                     </div>
                     <div class="col-md-3">
+                        <div class="right-sidebar-title">
+                            Participantes
+                        </div>
+                        <div class="btn invite-friends">
+                            <i class="fas fa-user"></i>
+                            <p>Invitar amigos</p>
+                        </div>
+                        <div class="box event-notifications">
+                            <form action="/test" method="post" id="notif-form">
+                                <p><i class="fas fa-caret-right"></i>Notificaciones</p>
+                                <label class="switch">
+                                    <input onclick="toggleNotifs();" type="checkbox" name="notifs">
+                                    <div class="slider"></div>
+                                  </label>
+                                <div class="lds-ring" hidden>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="event-stats">
+                            <div class="chart">
+                                <p class="chart-value">3</p>
+                                <div class="chart-data" style="height: 64%;background:#4A769D;">&nbsp;</div>
+                                <div class="chart-label">
+                                    <p>Van</p>
+                                </div>
+                            </div>
+                            <div class="chart">
+                                <p class="chart-value">0</p>
+                                <div class="chart-data" style="height: 1%;background:#84A1BE">&nbsp;</div>
+                                <div class="chart-label">
+                                    <p>Quizás van</p>
+                                </div>
+                            </div>
+                            <div class="chart">
+                                <p class="chart-value">3</p>
+                                <div class="chart-data" style="height: 64%;background:#CED7E8;">&nbsp;</div>
+                                <div class="chart-label">
+                                    <p>Aún no contestaron</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="right-sidebar-title-2">Personas que van a asistir</p>
+                        <ul class="user-images">
+                            <li class="user-photo">
+                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
+                                <a href="">
+                                    <%= currentUser.firstname+" "+currentUser.lastname %>
+                                </a>
+                            </li>
+                            <li class="user-photo">
+                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
+                                <a href="">
+                                    <%= currentUser.firstname+" "+currentUser.lastname %>
+                                </a>
+                            </li>
+                            <li class="user-photo">
+                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
+                                <a href="">
+                                    <%= currentUser.firstname+" "+currentUser.lastname %>
+                                </a>
+                            </li>
+                        </ul>
+                        <a class="all-events" href="">
+                            <%= locals.seall %>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -173,4 +242,25 @@
             map.addObject(Marker);
             $(".H_imprint").remove();
         }
+
+        function toggleNotifs() {
+            var delayInMilliseconds = 500;
+            $('#notif-form').submit();
+            $('#notif-form input').attr("disabled", "true");
+            setTimeout(function() {
+                delayInMilliseconds = 5000;
+                $('#notif-form p').attr("hidden", "true");
+                $('#notif-form label').attr("hidden", "true");
+                $('.lds-ring').removeAttr("hidden");
+                setTimeout(function() {
+                    $('#notif-form input').removeAttr("disabled");
+                    $('#notif-form p').removeAttr("hidden");
+                    $('#notif-form label').removeAttr("hidden");
+                    $('.lds-ring').attr("hidden", "true");
+                }, delayInMilliseconds);
+            }, delayInMilliseconds);
+        }
     </script>
+    </body>
+
+    </html>
