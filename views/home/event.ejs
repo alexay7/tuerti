@@ -121,78 +121,113 @@
                         <div class="right-sidebar-title">
                             Participantes
                         </div>
-                        <div class="btn invite-friends">
-                            <i class="fas fa-user"></i>
-                            <p>Invitar amigos</p>
-                        </div>
-                        <div class="box event-notifications">
-                            <form action="/test" method="post" id="notif-form">
-                                <p><i class="fas fa-caret-right"></i>Notificaciones</p>
-                                <label class="switch">
-                                    <input onclick="toggleNotifs();" type="checkbox" name="notifs">
-                                    <div class="slider"></div>
+                        <% if(eventInfo.ownerId==currentUser.id){ %>
+                            <div class="btn invite-friends">
+                                <i class="fas fa-user"></i>
+                                <p>Invitar amigos</p>
+                            </div>
+                            <% } %>
+                                <div class="box event-notifications">
+                                    <form action="/changenotifs/<%= eventInfo.id %> " method="post" id="notif-form">
+                                        <p><i class="fas fa-caret-right"></i>Notificaciones</p>
+                                        <label class="switch">
+                                            <% if(eventInfo.relation.notifications){ %> 
+                                    <input checked id="togglenotifs" type="checkbox" name="notifs">
+                                            <%  }else{  %>
+                                    <input id="togglenotifs" type="checkbox" name="notifs">
+                                            <% } %> 
+                                        <div class="slider"></div>
                                   </label>
-                                <div class="lds-ring" hidden>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                                        <div class="lds-ring" hidden>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="event-stats">
-                            <div class="chart">
-                                <p class="chart-value">3</p>
-                                <div class="chart-data" style="height: 64%;background:#4A769D;">&nbsp;</div>
-                                <div class="chart-label">
-                                    <p>Van</p>
+                                <div class="event-stats">
+                                    <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe); 
+                                    var yes = eventInfo.guests.stats.yes*100/max*0.64;
+                                    var maybe = eventInfo.guests.stats.maybe*100/max*0.64;
+                                    var und = eventInfo.guests.stats.und*100/max*0.64;
+                                    if(yes==0){yes=1;}if(und==0){und=1;}if(maybe==0){maybe=1;}
+                                    var guests = {yes,maybe,und};
+                                    %>
+                                        <div class="chart">
+                                            <p class="chart-value">
+                                                <%= eventInfo.guests.stats.yes %>
+                                            </p>
+                                            <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
+                                            <div class="chart-label">
+                                                <p>Van</p>
+                                            </div>
+                                        </div>
+                                        <div class="chart">
+                                            <p class="chart-value">
+                                                <%= eventInfo.guests.stats.maybe %>
+                                            </p>
+                                            <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
+                                            <div class="chart-label">
+                                                <p>Quizás van</p>
+                                            </div>
+                                        </div>
+                                        <div class="chart">
+                                            <p class="chart-value">
+                                                <%= eventInfo.guests.stats.und %>
+                                            </p>
+                                            <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
+                                            <div class="chart-label">
+                                                <p>Aún no contestaron</p>
+                                            </div>
+                                        </div>
                                 </div>
-                            </div>
-                            <div class="chart">
-                                <p class="chart-value">0</p>
-                                <div class="chart-data" style="height: 1%;background:#84A1BE">&nbsp;</div>
-                                <div class="chart-label">
-                                    <p>Quizás van</p>
-                                </div>
-                            </div>
-                            <div class="chart">
-                                <p class="chart-value">3</p>
-                                <div class="chart-data" style="height: 64%;background:#CED7E8;">&nbsp;</div>
-                                <div class="chart-label">
-                                    <p>Aún no contestaron</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="right-sidebar-title-2">Personas que van a asistir</p>
-                        <ul class="user-images">
-                            <li class="user-photo">
-                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
-                                <a href="">
-                                    <%= currentUser.firstname+" "+currentUser.lastname %>
+                                <p class="right-sidebar-title-2">Personas que van a asistir</p>
+                                <ul class="user-images">
+                                    <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
+                                        <li class="user-photo">
+                                            <a class="sidebar-user" href="/user/<%= guest.id %> ">
+                                                    <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
+                                                    <p><%= guest.firstname+" "+guest.lastname %></p>
+                                                </a>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                                <a class="all-events" href="">
+                                    <%= locals.seall %>
                                 </a>
-                            </li>
-                            <li class="user-photo">
-                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
-                                <a href="">
-                                    <%= currentUser.firstname+" "+currentUser.lastname %>
-                                </a>
-                            </li>
-                            <li class="user-photo">
-                                <img class="sidebar-user" src="/images/users/avatars/default.png" alt="">
-                                <a href="">
-                                    <%= currentUser.firstname+" "+currentUser.lastname %>
-                                </a>
-                            </li>
-                        </ul>
-                        <a class="all-events" href="">
-                            <%= locals.seall %>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        $('#togglenotifs').click(function() {
+            var delayInMilliseconds = 500;
+            setTimeout(function() {
+                delayInMilliseconds = 3000;
+                $('#notif-form p').attr("hidden", "true");
+                $('#notif-form label').attr("hidden", "true");
+                $('.lds-ring').removeAttr("hidden");
+                setTimeout(function() {
+                    $('#notif-form input').removeAttr("disabled");
+                    $('#notif-form p').removeAttr("hidden");
+                    $('#notif-form label').removeAttr("hidden");
+                    $('.lds-ring').attr("hidden", "true");
+                    var url = "/changenotifs/3";
+                    $.ajax({
+                        global: false,
+                        type: 'POST',
+                        url,
+                        dataType: 'html',
+                        data: {
+                            name: $("#togglenotifs").val()
+                        }
+                    });
+                }, delayInMilliseconds);
+            }, delayInMilliseconds);
+
+        });
         // Initialize the platform object:
         var platform = new H.service.Platform({
             'apikey': 'a4l2i-ukDVrcnPppPxpaRvaWEJ1IlhGgwvEDR_UYSC8'
@@ -223,9 +258,10 @@
                     });
                 position = json.location.position;
             });
-
-
+    </script>
+    <script>
         window.onload = async function() {
+            fillChart();
             var pos = await position;
             var icon = new H.map.Icon('/images/marker.png', {
                 size: {
@@ -243,22 +279,10 @@
             $(".H_imprint").remove();
         }
 
-        function toggleNotifs() {
-            var delayInMilliseconds = 500;
-            $('#notif-form').submit();
-            $('#notif-form input').attr("disabled", "true");
-            setTimeout(function() {
-                delayInMilliseconds = 5000;
-                $('#notif-form p').attr("hidden", "true");
-                $('#notif-form label').attr("hidden", "true");
-                $('.lds-ring').removeAttr("hidden");
-                setTimeout(function() {
-                    $('#notif-form input').removeAttr("disabled");
-                    $('#notif-form p').removeAttr("hidden");
-                    $('#notif-form label').removeAttr("hidden");
-                    $('.lds-ring').attr("hidden", "true");
-                }, delayInMilliseconds);
-            }, delayInMilliseconds);
+        function fillChart() {
+            $("#chart-yes").css("height", $("#chart-yes").data("value") + "%");
+            $("#chart-und").css("height", $("#chart-und").data("value") + "%");
+            $("#chart-maybe").css("height", $("#chart-maybe").data("value") + "%");
         }
     </script>
     </body>

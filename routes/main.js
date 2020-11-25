@@ -12,7 +12,9 @@ router.get("/", async function(req, res) {
 });
 
 router.get("/event/:id", isLoggedIn, async function(req, res) {
-    var eventInfo = await getEventInfo(req.params.id);
+    var eventInfo = await getEventInfo(req.params.id, req.user.id);
+    var eventGuests = await getEventGuests(req.params.id);
+    eventInfo.guests = eventGuests;
     if (eventInfo.type == "birthday") {
         res.redirect("/");
     }
@@ -23,11 +25,24 @@ router.get("/event/:id", isLoggedIn, async function(req, res) {
     }
 });
 
+router.post("/changenotifs/:id", isLoggedIn, function(req, res) {
+    models.eventguest.findOne({
+        where: {
+            guestId: req.user.id,
+            eventId: req.params.id
+        }
+    }).then(function(eventguest) {
+        eventguest.update({
+            notifications: !eventguest.notifications
+        });
+    });
+});
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect("/");
+        res.redirect('/');
     }
 }
 
@@ -42,7 +57,7 @@ async function getEvents(id) {
             var totalEvents = []
             var bar = new Promise(function(resolve, reject) {
                 events.forEach(async event => {
-                    result = await getEventInfo(event.dataValues.eventId);
+                    result = await getEventInfo(event.dataValues.eventId, id);
                     totalEvents.push(result);
                     if (totalEvents.length >= events.length) { return resolve(); }
                 });
@@ -90,13 +105,76 @@ async function getEvents(id) {
     });
 }
 
-function getEventInfo(eventId) {
-    return models.event.findByPk(eventId).then(function(eventData) {
+function getGuestInfo(userId) {
+    return models.user.findByPk(userId, { attributes: ['id', 'firstname', 'lastname', 'avatar'] }).then(function(user) {
+        if (user) {
+            return user.dataValues;
+        } else {
+            return undefined;
+        }
+    });
+}
+
+function getEventInfo(eventId, guestId) {
+    return models.event.findByPk(eventId).then(async function(eventData) {
         if (eventData == undefined) {
             return undefined;
         } else {
+            eventData.dataValues.relation = await getEventRelation(eventId, guestId);
             return eventData.dataValues;
         }
+    });
+}
+
+function getEventRelation(eventId, guestId) {
+    return models.eventguest.findOne({
+        where: {
+            eventId,
+            guestId
+        }
+    }).then(function(eventrelation) {
+        if (eventrelation) {
+            return eventrelation.dataValues;
+        } else {
+            return undefined;
+        }
+    });
+}
+
+function getEventGuests(eventId) {
+    return models.eventguest.findAll({
+        where: {
+            eventId,
+            status: "accepted"
+        }
+    }).then(function(eventGuests) {
+        var yes = 0,
+            maybe = 0,
+            und = 0;
+        var users = []
+        var bar = new Promise(function(resolve, reject) {
+            eventGuests.forEach(async function(eventguest) {
+                var guestInfo = await getGuestInfo(eventguest.guestId);
+                users.push(guestInfo);
+                switch (eventguest.dataValues.promise) {
+                    case "yes":
+                        yes = yes + 1;
+                        break;
+                    case "maybe":
+                        maybe = maybe + 1;
+                        break;
+                    default:
+                        und = und + 1;
+                        break;
+                }
+                if (users.length >= eventGuests.length) { return resolve(); }
+            });
+        });
+        return bar.then(() => {
+            var stats = { yes, maybe, und };
+            var guests = { stats, users }
+            return guests;
+        });
     });
 }
 
