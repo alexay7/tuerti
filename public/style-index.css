@@ -1,0 +1,462 @@
+body {
+    background: rgb(93, 144, 187);
+    background: url(images/index_noise.png) repeat left top, -webkit-radial-gradient(center, circle cover, #5e90bc 0, #426990 100%);
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.login {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    padding: 35px 25px 25px 25px;
+}
+
+.login-wrapper {
+    display: flex;
+    margin-bottom: 0;
+}
+
+.login-wrapper .textbox {
+    margin: 0 5px 0 0;
+    border-radius: 5px;
+    width: 158px;
+    float: left;
+    border: solid 1px #43698f;
+    border-top-color: #274b5a;
+    font-size: 13px;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 6px 5px -5px rgba(0, 0, 0, 0.5) inset;
+    padding: 7px 6px;
+    transition: 2s linear all;
+}
+
+.login-wrapper .form-item input:focus {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.52);
+    transition: 300ms;
+}
+
+.submit {
+    width: 80px;
+    height: 32px;
+    color: #FFF;
+    text-shadow: 0 -1px #8bc0d9;
+    font-size: 12px;
+    position: relative;
+    top: 1px;
+    padding: 0 2px 1px 0;
+    background: rgb(141, 205, 234);
+    background: linear-gradient(to bottom, rgba(144, 206, 234, 1) 0, rgba(115, 197, 239, 1) 100%);
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border: 0;
+}
+
+.error {
+    border-color: red!important;
+}
+
+.body {
+    margin: 0 0 5px 0;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form-warning {
+    position: absolute;
+    left: 25px;
+    color: red;
+    font-size: 20px;
+}
+
+.login-warning {
+    position: absolute;
+    margin: 9px 6px;
+    right: 5px;
+    color: red;
+}
+
+.form-item a {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.remember-me {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 11px;
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.remember-me p {
+    margin-bottom: 0;
+}
+
+.remember-me input {
+    background: 0;
+    width: auto;
+    border: 0;
+    font-size: small;
+    margin-right: 3px;
+    vertical-align: middle;
+    padding: 0;
+}
+
+.getAccount {
+    border-top-color: #426386;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: normal;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    position: relative;
+}
+
+.getAccount .logborder {
+    padding: 8px 4px 0 0;
+    text-align: right;
+    border-top-color: #5b7c9f;
+    border-top: solid 1px rgba(255, 255, 255, 0.1);
+}
+
+.getAccount a {
+    padding: 0;
+    vertical-align: middle;
+    color: #fff;
+    background: 0;
+    font-size: 11px;
+    color: #fff;
+    display: inline;
+}
+
+.info {
+    display: inline-block;
+    zoom: 1;
+    vertical-align: middle;
+    width: 12px;
+    height: 12px;
+    background: url(images/indexpack2.png) no-repeat -95px -103px;
+}
+
+.cover {
+    width: 730px;
+    height: 260px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -130px 0 0 -370px;
+    z-index: 0;
+}
+
+.description {
+    border-right-color: #426386;
+    border-right: solid 1px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    height: 200px;
+    float: left;
+    text-align: right;
+    padding: 32px 50px 30px 0;
+}
+
+.description h1 {
+    width: 273px;
+    height: 69px;
+    background: url(images/indexpack2.png) no-repeat;
+    display: block;
+    text-indent: -10000px;
+    text-align: left;
+    float: right;
+    margin: 0 0 35px 0;
+}
+
+.description h2 {
+    clear: both;
+    font-size: 17px;
+    font-weight: bold;
+    text-shadow: -1px 1px #4a7399;
+    color: #FFF;
+    border: 0;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.description p {
+    font-size: 14px!important;
+    line-height: 1.4em!important;
+    color: #b6cddd!important;
+}
+
+.mainpoints {
+    border-left-color: #5b7c9f;
+    border-left: solid 1px rgba(255, 255, 255, 0.1);
+    width: 50%;
+    float: left;
+    height: 200px;
+    padding: 30px 0 30px 0;
+}
+
+.social {
+    padding-left: 60px;
+    margin: 0 0 25px 0;
+    background: url(images/indexpack.png) no-repeat -339px 0px;
+}
+
+.xlocal {
+    padding-left: 60px;
+    margin: 0 0 25px 0;
+    background: url(images/indexpack.png) no-repeat -339px -99px;
+}
+
+.mobile {
+    padding-left: 60px;
+    margin: 0 0 25px 0;
+    background: url(images/indexpack.png) no-repeat -339px -199px;
+}
+
+.cover h3 {
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: 0 1px #4a7399;
+    color: #FFF;
+    border: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.cover p {
+    font-size: 12px;
+    color: #b6cddd;
+    line-height: 1.2em;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.footerContent {
+    border-bottom-color: #426386;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    margin: 25px 25px 0 25px;
+    border-top: 0;
+}
+
+.footer ul {
+    text-align: center;
+    color: #d8e8f3;
+    padding: 10px 0;
+    border: 0;
+}
+
+.footer ul li {
+    width: auto;
+    display: inline;
+    float: right;
+    margin: 0 0 0 10px;
+    line-height: 11px;
+    font-size: 11px;
+}
+
+.footer ul li a {
+    color: #9dbacf;
+    transition: color .3s ease;
+}
+
+.copy {
+    font-weight: bold;
+    margin: 0 12px 0 12px!important;
+    float: left!important;
+    color: #FFF;
+    width: auto;
+    display: inline;
+    line-height: 11px;
+}
+
+.brand-footer {
+    width: auto;
+    overflow: hidden;
+    padding: 24px 0 0 0;
+    border-top-color: #5b7c9f;
+    border-top: solid 1px rgba(255, 255, 255, 0.1);
+    margin: 0 25px 20px 25px;
+}
+
+.language {
+    font-weight: bold;
+    float: left!important;
+    color: #FFF;
+    display: inline;
+    line-height: 11px;
+    margin-left: 1px!important;
+}
+
+.language ul {
+    padding: 0;
+}
+
+.lang-sel {
+    width: auto;
+    display: inline;
+    float: right;
+    line-height: 11px;
+    font-size: 11px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #FFF;
+}
+
+.lang-nonsel {
+    font-weight: normal;
+    color: #9dbacf;
+}
+
+
+/*Register*/
+
+.logo {
+    justify-content: center;
+    margin: 20px 0 30px 0;
+}
+
+.register-wrapper {
+    justify-content: center;
+    background-color: #fff;
+    width: 100vh;
+    margin: auto;
+    position: relative;
+    overflow-y: scroll;
+    height: 75vh;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
+    -moz-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
+    box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
+    padding-bottom: 10px;
+    padding-top: 6px;
+}
+
+.register-wrapper h3 {
+    margin-left: 15px;
+    margin-top: 10px;
+    font-size: 25px;
+}
+
+.warning-wrapper {
+    padding: 0;
+}
+
+.title-hr {
+    margin-top: 0!important;
+}
+
+.register-warning {
+    position: absolute;
+    font-size: 12px;
+    color: grey;
+}
+
+.form-title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.title-warning {
+    margin: 0;
+    font-size: 15px;
+    margin-right: 10px;
+    color: grey;
+}
+
+.register-wrapper hr {
+    margin-top: 0.5rem;
+    width: 98%;
+}
+
+.register-wrapper form {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-section {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    padding-right: 20px;
+}
+
+.register-element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.register-element label {
+    margin: 0;
+    text-align: right;
+    font-weight: bold;
+}
+
+.register-element label.option {
+    font-weight: normal;
+}
+
+.register-radio {
+    padding-left: 0;
+}
+
+fieldset.register-element {
+    display: block;
+    padding-left: 0;
+}
+
+fieldset.register-element label {
+    margin-left: 5px;
+}
+
+.register-btn {
+    width: 100px;
+    margin: auto;
+    border: 1px solid #D1D1D1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(227, 227, 227, 1) 100%);
+}
+
+.terms {
+    flex-direction: column;
+}
+
+.terms label {
+    text-align: left;
+    font-size: 13px;
+    align-items: center;
+    display: flex;
+}
+
+.terms label input {
+    margin-right: 5px;
+    margin-bottom: 2px;
+}

@@ -1,0 +1,235 @@
+<%- include ("partials/header") %>
+
+    <head>
+        <title>Tuenti -
+            <%= locals.register %>
+        </title>
+    </head>
+
+    <div class="container">
+        <div class="row logo">
+            <a href="/"><img src="images/logo2.png" alt=""></a>
+
+        </div>
+        <div class="row register-wrapper">
+            <form action="register" method="post">
+                <div class="form-title">
+                    <h3>
+                        <%= locals.register2 %>
+                    </h3>
+                    <p class="title-warning">
+                        <%= locals.reqfield %>
+                    </p>
+                </div>
+                <hr class="title-hr">
+                <div class="register-section">
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="email">Email</label>
+                        <% if (error[0]=="mail"||error=="email") { %>
+                            <input required minlength="3" class="form-control col-md-7 error" type="email" name="email" id="email" placeholder="Email">
+                            <i class="fas fa-exclamation-triangle form-warning"></i>
+                            <% } else { %>
+                                <input required minlength="3" class="form-control col-md-7" type="email" name="email" id="email" placeholder="Email">
+                                <% } %>
+
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="name"><%= locals.name %> </label>
+                        <input required minlength="3" class="form-control col-md-7" type="text" name="name" id="name" placeholder="<%= locals.name %>">
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="surnames"><%= locals.surnames %> </label>
+                        <input required minlength="3" class="form-control col-md-7" type="text" name="surnames" id="surnames" placeholder="<%= locals.surnames %>">
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5"><%= locals.gender %> </label>
+                        <fieldset class="col-md-7 register-radio">
+                            <label class="option">
+                        <input checked="checked" type="radio" name="gender" value="m"> <%= locals.male %>
+                    </label>
+                            <label class="option">
+                        <input type="radio" name="gender" value="f"> <%= locals.female %>
+                    </label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="birthday"><%= locals.birthday %> </label>
+                        <div class="col-md-7 warning-wrapper">
+                            <input min="1900-01-01" class="form-control" type="date" name="birthday" id="birthday" placeholder="<%= locals.birthday %>">
+                            <p class="register-warning">
+                                <%= locals.minage %>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="register-section">
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="country"><%= locals.country %> </label>
+                        <input required minlength="3" class="form-control col-md-7" type="text" name="country" id="country" placeholder="<%= locals.country %>" value="España">
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5" for="city"><%= locals.city %> </label>
+                        <input required minlength="3" class="form-control col-md-7" type="text" name="city" id="city" placeholder="<%= locals.city %>">
+                    </div>
+                </div>
+                <hr>
+                <div class="register-section">
+                    <div class="form-group register-element">
+                        <label class="col-md-5"><%= locals.occupation %> </label>
+                        <fieldset class="col-md-7 register-element">
+                            <label class="option">
+                        <input checked="checked" type="radio" name="occupation" value="school"> <%= locals.school %>
+                    </label>
+                            <label class="option">
+                        <input type="radio" name="occupation" value="college"> <%= locals.college %>
+                    </label>
+                            <label class="option">
+                        <input type="radio" name="occupation" value="working"> <%= locals.working %>
+                    </label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group register-element">
+                        <label class="col-md-5"><%= locals.universityquestion %> </label>
+                        <fieldset class="col-md-7 register-element">
+                            <label class="option">
+                                <input checked="checked" type="radio" name="university" value=true> <%= locals.yes %>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="university" value=false> <%= locals.no %>
+                            </label>
+                        </fieldset>
+                    </div>
+                </div>
+                <hr>
+                <div class="register-section">
+                    <% if (error[0]=="password"||error=="password") { %>
+                        <div class="form-group register-element">
+                            <label class="col-md-5" for="password"><%= locals.password %> </label>
+                            <input minlength="5" class="error form-control" type="password" name="password" id="password" placeholder="<%= locals.password %>">
+                            <i class="fas fa-exclamation-triangle form-warning"></i>
+                        </div>
+                        <div class="form-group register-element">
+                            <label class="col-md-5" for="passwordconfirm"><%= locals.passwordconfirm %> </label>
+                            <input minlength="5" class="error form-control" type="password" name="passwordconfirm" id="passwordverify" placeholder="<%= locals.passwordconfirm %>">
+                            <i class="fas fa-exclamation-triangle form-warning"></i>
+                        </div>
+                        <% } else { %>
+                            <div class="form-group register-element">
+                                <label class="col-md-5" for="password"><%= locals.password %> </label>
+                                <input minlength="5" class="form-control" type="password" name="password" id="password" placeholder="<%= locals.password %>">
+                            </div>
+                            <div class="form-group register-element">
+                                <label class="col-md-5" for="passwordconfirm"><%= locals.passwordconfirm %> </label>
+                                <input minlength="5" class="form-control" type="password" name="passwordconfirm" id="passwordverify" placeholder="<%= locals.passwordconfirm %>">
+                            </div>
+                            <% } %>
+
+                </div>
+                <hr>
+                <div class="form-group register-element terms">
+                    <label class="option">
+                    <input required="true" type="checkbox" name="terms" value="yes"> 
+                    <%= locals.terms1 %> <a href="legal">&nbsp;<%= locals.terms2 %>&nbsp;</a> <%= locals.terms3 %> <a href="privacy">&nbsp;<%= locals.terms4 %>&nbsp;</a> <%= locals.terms5 %>   
+                </label>
+                    <% if (error[0]=="terms") { %>
+                        <i class="fas fa-exclamation-triangle form-warning"></i>
+                        <% } %>
+                </div>
+                <input class="btn register-btn" type="submit" value="<%= locals.submit %>">
+            </form>
+        </div>
+        <div class="footer">
+            <div class="footerContent">
+                <ul>
+                    <li>
+                        <a href="legal">
+                            <%= locals.legal %>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="privacy">
+                            <%= locals.privacy %>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="help">
+                            <%= locals.help %>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about">
+                            <%= locals.about %>
+                        </a>
+                    </li>
+
+                    <a href="/">
+                        <li class="copy">© Tuerti 2020</li>
+                    </a>
+                    <li class="language">
+
+                        <ul class="languageSelector">
+                            <li class="language">
+                                <form id="lang-english" action="/changelang" method="post">
+                                    <input hidden type="text" value="en" id="lang-en" name="lang">
+                                    <% if (locals.help=="Ayuda") { %>
+                                        <input class="lang-sel lang-nonsel" type="submit" value="English">
+                                        <% } else{%>
+                                            <input class="lang-sel" type="submit" value="English">
+                                            <% } %>
+                                </form>
+                            </li>
+                            <li class="language">
+                                <form id="lang-spanish" action="/changelang" method="post">
+                                    <input hidden type="text" value="es" id="lang-es" name="lang">
+                                    <% if (locals.help=="Help") { %>
+                                        <input class="lang-sel lang-nonsel" type="submit" value="Spanish">
+                                        <% } else{%>
+                                            <input class="lang-sel" type="submit" value="Spanish">
+                                            <% } %>
+                                </form>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="brand-footer">
+
+            </div>
+        </div>
+
+    </div>
+    </body>
+    <script src="plugins/jquery.passtrength.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $('#password').passtrength({
+                minChars: 5,
+                passwordToggle: true,
+                tooltip: true
+            });
+            $('#passwordverify').passtrength({
+                minChars: 5,
+                passwordToggle: true,
+                tooltip: true
+            });
+            var date = new Date(),
+                maxdate = new Date(),
+                mindate = new Date();
+            maxdate.setMonth(date.getMonth() - 12 * 14);
+            mindate.setMonth(date.getMonth() - 12 * 150);
+            $("#birthday").attr({
+                "max": maxdate.toISOString().split('T')[0],
+                "min": mindate.toISOString().split('T')[0]
+            });
+            document.getElementById('birthday').valueAsDate = date;
+            $(".error").click(function(e) {
+                e.preventDefault();
+                $(this).removeClass("error");
+            });
+        });
+    </script>
+
+    </html>

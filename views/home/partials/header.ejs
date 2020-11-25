@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="/style-home.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <title>Tuenti</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md main-nav">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/images/logo2.png" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav main-nav-options">
+                    <a class="nav-item nav-link active" href="/">
+                        <%= locals.home %>
+                    </a>
+                    <a class="nav-item nav-link" href="#">
+                        <%= locals.profile %>
+                    </a>
+                    <a class="nav-item nav-link" href="#">
+                        <%= locals.messages %>
+                    </a>
+                    <a class="nav-item nav-link" href="#">
+                        <%= locals.people %>
+                    </a>
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2 nav-search" type="search" placeholder="<%=locals.search %>" aria-label="Search">
+                        <label>
+                        <i class="fas fa-search"></i>
+                        <input hidden type="submit" value="">
+                    </label>
+
+                        </i>
+                    </form>
+                    <form class="form-inline">
+                        <button class="btn btn-sm btn-outline-secondary btn-photos" type="button"><%= locals.uploadphotos %><i class="fas fa-angle-double-up"></i></button>
+                    </form>
+                </div>
+
+            </div>
+            <li class="nav-item nav-link dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= locals.myaccount %>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <i class="fas fa-sort-up"></i>
+                    <a class="dropdown-item" href="#">
+                        <%= locals.settings %>
+                    </a>
+                    <a class="dropdown-item" href="/help">
+                        <%= locals.help %>
+                    </a>
+                    <a class="dropdown-item" href="/logout">
+                        <%= locals.logout %>
+                    </a>
+                </div>
+            </li>
+        </div>
+    </nav>

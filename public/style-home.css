@@ -1,0 +1,397 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+img {
+    height: auto;
+}
+
+.form-control {
+    border-radius: .15rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+a {
+    color: #46719A;
+}
+
+i {
+    margin-right: 4px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.no-bottom-line {
+    border-bottom: none!important;
+}
+
+.row-no-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.navbar-collapse {
+    height: 60px;
+}
+
+.no-padding-left {
+    padding-left: 0!important;
+}
+
+.box {
+    border: 1px solid #DCDCDC;
+    border-radius: .2rem;
+}
+
+.main-nav {
+    background: rgb(92, 142, 186);
+    background: linear-gradient(180deg, rgba(92, 142, 186, 1) 0%, rgba(77, 120, 162, 1) 100%);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.main-nav-options {
+    display: flex;
+    height: 100%;
+}
+
+.main-nav-options a {
+    color: white;
+    height: 100%;
+    padding: 18px 1rem 0 1rem!important;
+}
+
+.main-nav-options a:hover {
+    background: rgb(71, 116, 159);
+    background: linear-gradient(180deg, rgba(71, 116, 159, 1) 0%, rgba(55, 105, 154, 1) 100%);
+}
+
+.form-inline {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.btn-photos {
+    background: rgb(76, 117, 174);
+    background: linear-gradient(180deg, rgba(76, 117, 174, 1) 0%, rgba(39, 93, 137, 1) 100%);
+    border-color: #3D6F9C;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-photos i {
+    margin-left: 8px;
+}
+
+.fa-search {
+    position: absolute;
+    right: 17px;
+    color: #426386;
+}
+
+.nav-search {
+    height: 31px;
+    padding-right: 25px;
+}
+
+.dropdown-toggle {
+    color: white;
+}
+
+.dropdown-toggle:hover {
+    color: black;
+}
+
+.dropdown-item {
+    color: #506884;
+}
+
+.dropdown-menu {
+    margin-top: 13px;
+}
+
+.dropdown-menu i {
+    position: absolute;
+    font-size: 40px;
+    top: -15px;
+    color: white;
+    right: 25px;
+    text-shadow: 0px -1px 3px rgba(150, 150, 150, 1);
+}
+
+.navbar-toggle-icon {
+    color: black;
+}
+
+.main-sidebar {
+    background: #F5F5F5;
+    border-left: 1px solid #DCDCDC;
+    border-right: 1px solid #DCDCDC;
+    position: relative;
+}
+
+.sidebar-area {
+    margin-top: 20px;
+    margin-left: 5px;
+    padding: 15px;
+    background-color: white;
+    border-left: 1px solid #DCDCDC;
+    border-bottom: 1px solid #DCDCDC;
+    border-top: 1px solid #DCDCDC;
+    border-right: 1px solid white;
+    -webkit-box-shadow: 10px 6px 5px 0px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 10px 6px 5px 0px rgba(0, 0, 0, 0.16);
+    box-shadow: 10px 6px 5px 0px rgba(0, 0, 0, 0.16);
+    width: 110%;
+}
+
+.event-photo img {
+    border: 1px solid #DCDCDC;
+}
+
+.main-area {
+    min-height: 100vh;
+}
+
+.main-post-area {
+    z-index: 3;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.main-post-area .row {
+    padding-left: 10px;
+}
+
+.profile-tab {
+    padding: 0;
+    position: relative;
+}
+
+.profile-name {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.profile-visits {
+    margin: 0;
+    color: #506884;
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+}
+
+.profile-visits i {
+    font-size: 16px;
+    margin-right: 0;
+}
+
+.profile-visits span {
+    color: black;
+}
+
+.sidebar-area img {
+    border: 1px solid #DCDCDC;
+}
+
+.sidebar-calendar {
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.sidebar-event-info {
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.sidebar-title {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #DCDCDC;
+    padding-bottom: 3px;
+    margin-bottom: 10px;
+    width: 95%;
+}
+
+.sidebar-image {
+    width: 97%;
+}
+
+.event-info {
+    width: 100%;
+}
+
+.sidebar-title h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.sidebar-title a {
+    position: absolute;
+    right: 10px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.calendar-dates {
+    width: 95%;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #DCDCDC;
+    margin-bottom: 7px;
+}
+
+.calendar-subtitle {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.calendar-subtitle p {
+    margin-bottom: 0;
+}
+
+.calendar-event {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.calendar-event p {
+    margin-bottom: 4px;
+}
+
+.event-name {
+    padding: 0;
+    width: 80%;
+    color: #46719A;
+}
+
+#map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.event-date {
+    color: #999F97;
+    font-weight: normal;
+    margin-left: 15px;
+    min-width: 50px;
+}
+
+.no-events {
+    color: #999F97;
+    font-weight: normal;
+}
+
+.all-events {
+    font-size: 12px;
+}
+
+.info-title {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.info-sub {
+    color: #999F97;
+}
+
+.event-map {
+    width: 95%;
+    height: 200px;
+    margin-left: 13px;
+    border: 1px solid #DCDCDC;
+}
+
+.event-title {
+    margin: 20px 0 0 0;
+    font-size: 25px;
+}
+
+.title-wrapper {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.title-wrapper p {
+    margin-bottom: 0;
+    margin-left: 10px;
+    color: #999F97;
+    font-size: 14px;
+}
+
+.event-title i {
+    color: #999F97;
+}
+
+.category-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #DCDCDC;
+}
+
+.category-title h3 {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 4px;
+}
+
+.category-title-wrapper {
+    font-size: 14px;
+}
+
+.event-description {
+    margin-top: 10px;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.new-post {
+    margin-top: 3px;
+    width: 100%;
+    padding: 20px;
+    background: #F5F5F5;
+    display: flex;
+}
+
+.new-post textarea {
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+}
+
+.new-post img {
+    max-height: 40px;
+    width: 40px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.no-posts {
+    margin-top: 10px;
+    color: #999F97;
+    font-size: 13px;
+}

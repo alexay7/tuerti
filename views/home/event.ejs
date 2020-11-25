@@ -1,0 +1,176 @@
+<%- include ("partials/header") %>
+
+    <head>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <div class="container main-area">
+        <div class="row">
+            <div class="col-md-3 main-sidebar">
+                <div class="row sidebar-area">
+                    <img class="sidebar-image" src="/images/events/avatars/default.png" alt="">
+                </div>
+                <div class="row sidebar-event-info">
+                    <div class="sidebar-title">
+                        <h3>
+                            <%= locals.info %>
+                        </h3>
+                        <% if(eventInfo.ownerId==currentUser.id){ %>
+                            <a href=""><i class="fas fa-pen"></i><%= locals.edit %> </a>
+                            <% } %>
+                    </div>
+                    <div class="row event-info">
+                        <div class="col-md-5">
+                            <ul class="info-title">
+                                <li class="info-sub">
+                                    <%= locals.date %>
+                                </li>
+                                <li class="info-sub">
+                                    <%= locals.time %>
+                                </li>
+                                <li class="info-sub">
+                                    <%= locals.place %>
+                                </li>
+                                <li class="info-sub">
+                                    <%= locals.direction %>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-7">
+                            <ul class="info-title">
+                                <li class="info-desc-sub">
+                                    <% 
+                                    switch (locals.language) {
+                                   case "es":
+                                        locale = "es-ES";
+                                        break;
+                                      default:
+                                        locale = "en-US";
+                                          } 
+                                    var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric" };
+                                    var newdate = eventInfo.target.toLocaleDateString("en-GB", options); 
+                                    %>
+                                        <%= newdate %>
+                                </li>
+                                <%
+                                var hour=eventInfo.target.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});%>
+                                    <li class="info-desc-sub">
+                                        <%= hour  %>
+                                    </li>
+                                    <li class="info-desc-sub" id="event-location"></li>
+                                    <li class="info-desc-sub">
+                                        <a href="" id="event-place"></a>
+                                    </li>
+                            </ul>
+                        </div>
+                        <div class="event-map" id="mapContainer">
+                            <div id="eventlocation" data-location="<%= eventInfo.place %>"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 main-post-area">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="title-wrapper">
+                            <h2 class="event-title">
+                                <i class="far fa-calendar-alt"></i>
+                                <%= eventInfo.name %>
+                            </h2>
+                            <p class="event-duration">
+                                <% var until; switch(eventInfo.duration){
+                                    case 0: untilhour=locals.allday;break;
+                                    default: duration= eventInfo.duration;
+                                    var until = eventInfo.target;until.setHours(eventInfo.target.getHours()+duration); 
+                                    var untilhour=locals.until+until.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});
+                                    break;
+                                    } %>
+                                    <%= newdate %>,
+                                        <%= untilhour %>
+                            </p>
+                        </div>
+                        <div class="category-title-wrapper">
+                            <div class="category-title">
+                                <h3>
+                                    <%= locals.desc %>
+                                </h3>
+                            </div>
+                            <% if(eventInfo.ownerId==currentUser.id){ %>
+                                <a href=""><i class="fas fa-pen"></i><%= locals.edit %> </a>
+                                <% } %>
+                        </div>
+                        <p class="event-description">
+                            <%= eventInfo.description %>
+                        </p>
+                        <div class="category-title-wrapper no-bottom-line">
+                            <div class="category-title">
+                                <h3>
+                                    <%= locals.eventwall %>
+                                </h3>
+                            </div>
+                        </div>
+                        <form class="new-post box" action="" method="post">
+                            <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
+                            <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1" placeholder="<%= locals.writehere %> "></textarea>
+                        </form>
+                        <p class="no-posts">
+                            <%= locals.noposts %>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Initialize the platform object:
+        var platform = new H.service.Platform({
+            'apikey': 'a4l2i-ukDVrcnPppPxpaRvaWEJ1IlhGgwvEDR_UYSC8'
+        });
+
+        // Obtain the default map types from the platform object
+        function auto_grow(element) {
+            element.style.height = "5px";
+            element.style.height = (element.scrollHeight) + "px";
+        }
+        var maptypes = platform.createDefaultLayers();
+        var position, map;
+        var id = document.getElementById('eventlocation').dataset.location;
+        var position = fetch("https://places.ls.hereapi.com/places/v1/places/" + id + ";context=Zmxvdy1pZD00MWRlODZhZS1lNTdmLTU2ZTctODUwZi0yOTc3YWNkM2MwYjZfMTYwNjIzNDQ1NzU1NV8wXzU3MDMmc2l6ZT01JlgtRldELUFQUC1JRD1DUUxpQk1WZGR6QWhNMEFYR3lqMyZYLU5MUC1UZXN0aW5nPTE?app_id=CQLiBMVddzAhM0AXGyj3&app_code=rgMn3ijQdDxQ6vXa9CevXQ")
+            .then(response => response.json())
+            .then(function(json) {
+                $("#event-place").attr("href", json.view).text(json.name);
+                $("#event-location").text(json.location.address.city + ", " + json.location.address.county);
+
+                map = new H.Map(
+                    document.getElementById('mapContainer'),
+                    maptypes.vector.normal.map, {
+                        zoom: 16,
+                        center: {
+                            lng: json.location.position[1],
+                            lat: json.location.position[0]
+                        }
+                    });
+                position = json.location.position;
+            });
+
+
+        window.onload = async function() {
+            var pos = await position;
+            var icon = new H.map.Icon('/images/marker.png', {
+                size: {
+                    w: 45,
+                    h: 45
+                }
+            });
+            var Marker = new H.map.Marker({
+                lat: position[0],
+                lng: position[1]
+            }, {
+                icon: icon
+            });
+            map.addObject(Marker);
+            $(".H_imprint").remove();
+        }
+    </script>

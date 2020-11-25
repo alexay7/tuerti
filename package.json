@@ -1,0 +1,37 @@
+{
+    "name": "tuentisql",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "bundle": "rollup --config rollup.config.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@here/maps-api-for-javascript": "^1.21.0",
+        "bcrypt-nodejs": "0.0.3",
+        "body-parser": "^1.19.0",
+        "connect-flash": "^0.1.1",
+        "cookie-parser": "^1.4.5",
+        "dotenv": "^8.2.0",
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "express-session": "^1.17.1",
+        "express-validator": "^6.7.0",
+        "fs": "0.0.1-security",
+        "method-override": "^3.0.0",
+        "mysql": "^2.18.1",
+        "mysql2": "^2.2.5",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "sequelize": "^6.3.5",
+        "webpack": "^5.6.0",
+        "webpack-cli": "^4.2.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^10.0.0",
+        "rollup": "^2.33.3"
+    }
+}
