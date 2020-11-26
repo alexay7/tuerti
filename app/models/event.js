@@ -29,7 +29,7 @@ module.exports = function(sequelize, Sequelize) {
             notEmpty: true
         },
         description: {
-            type: Sequelize.TEXT('tiny'),
+            type: Sequelize.TEXT,
             notEmpty: true
         },
         type: {
@@ -38,9 +38,18 @@ module.exports = function(sequelize, Sequelize) {
         place: {
             type: Sequelize.STRING
         },
-        duration: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0
+        direction: {
+            type: Sequelize.STRING
+        },
+        allday: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        webpage: {
+            type: Sequelize.STRING
+        },
+        phone: {
+            type: Sequelize.STRING
         }
     });
 

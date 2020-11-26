@@ -64,7 +64,7 @@ spanish = {
     edit: "Editar",
     date: "Fecha",
     time: "Hora",
-    place: "Place",
+    place: "Lugar",
     direction: "Dirección",
     desc: "Descripción",
     eventwall: "Tablón del evento",
@@ -72,7 +72,18 @@ spanish = {
     noposts: "Este tablón está vacío, se el primero en dejar un comentario.",
     hours: " Horas",
     until: "Hasta las ",
-    allday: "Todo el día"
+    allday: "Todo el día",
+    webpage: "Página web",
+    phone: "Teléfono",
+    participants: "Participantes",
+    invitefriends: "Invitar amigos",
+    notifications: "Notificaciones",
+    assistance: "Asistencia",
+    maybe: "Quizás",
+    willgo: "Van",
+    maybego: "Quizás van",
+    noresponse: "Aún no contestaron",
+    assistants: "Personas que van a asistir"
 };
 english = {
     language: "english",
@@ -148,7 +159,18 @@ english = {
     noposts: "This wall is empty, be the first one to write a comment.",
     hours: " Hours",
     until: "Until ",
-    allday: "The whole day"
+    allday: "The whole day",
+    webpage: "Webpage",
+    phone: "Telephone",
+    participants: "Participants",
+    invitefriends: "Invite friends",
+    notifications: "Notifications",
+    assistance: "Assistence",
+    maybe: "Maybe",
+    willgo: "Will go",
+    maybego: "May go",
+    noresponse: "No answer yet",
+    assistants: "People who will assist"
 };
 
 languages = { spanish, english };

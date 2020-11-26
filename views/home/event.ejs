@@ -20,26 +20,9 @@
                             <% } %>
                     </div>
                     <div class="row event-info">
-                        <div class="col-md-5">
-                            <ul class="info-title">
-                                <li class="info-sub">
-                                    <%= locals.date %>
-                                </li>
-                                <li class="info-sub">
-                                    <%= locals.time %>
-                                </li>
-                                <li class="info-sub">
-                                    <%= locals.place %>
-                                </li>
-                                <li class="info-sub">
-                                    <%= locals.direction %>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-7">
-                            <ul class="info-title">
-                                <li class="info-desc-sub">
-                                    <% 
+                        <ul class="info-title">
+                            <li class="info-sub">
+                                <% 
                                     switch (locals.language) {
                                    case "es":
                                         locale = "es-ES";
@@ -50,22 +33,59 @@
                                     var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric" };
                                     var newdate = eventInfo.target.toLocaleDateString("en-GB", options); 
                                     %>
-                                        <%= newdate %>
+                                    <p class="col-md-4">
+                                        <%= locals.date %>
+                                    </p>
+                                    <span class="col-md-8"><%= newdate %></span>
+                            </li>
+                            <li class="info-sub">
+                                <p class="col-md-4">
+                                    <%= locals.time %>
+                                </p>
+                                <%if (!eventInfo.allday) {var hour=eventInfo.target.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});%>
+                                    <span class="col-md-8"><%= hour  %></span>
+                                    <% }else{ %>
+                                        <span class="col-md-8"><%= locals.allday %> </span>
+                                        <% } %>
+                            </li>
+                            <li class="info-sub">
+                                <p class="col-md-4">
+                                    <%= locals.place %>
+                                </p>
+
+                                <span class="col-md-8"> <%= eventInfo.place %></span>
+                            </li>
+                            <% if(eventInfo.direction){ %>
+                                <li class="info-sub">
+                                    <p class="col-md-4">
+                                        <%= locals.direction %>
+                                    </p>
+                                    <span class="col-md-8"><a href="" id="event-place"></a></span>
                                 </li>
-                                <%
-                                var hour=eventInfo.target.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});%>
-                                    <li class="info-desc-sub">
-                                        <%= hour  %>
-                                    </li>
-                                    <li class="info-desc-sub" id="event-location"></li>
-                                    <li class="info-desc-sub">
-                                        <a href="" id="event-place"></a>
-                                    </li>
-                            </ul>
-                        </div>
-                        <div class="event-map" id="mapContainer">
-                            <div id="eventlocation" data-location="<%= eventInfo.place %>"></div>
-                        </div>
+                                <% } %>
+                                    <% if(eventInfo.webpage){ %>
+                                        <li class="info-sub">
+                                            <p class="col-md-4">
+                                                <%= locals.webpage %>
+                                            </p>
+                                            <span class="col-md-8"><a href="<%=eventInfo.webpage %>"><%= eventInfo.webpage %></a></span>
+
+                                        </li>
+                                        <% } %>
+                                            <% if(eventInfo.phone){ %>
+                                                <li class="info-sub">
+                                                    <p class="col-md-4">
+                                                        <%= locals.phone %>
+                                                    </p>
+                                                    <span class="col-md-8"><%= eventInfo.phone %> </span>
+                                                </li>
+                                                <% } %>
+                        </ul>
+                        <% if(eventInfo.direction){ %>
+                            <div class="event-map" id="mapContainer">
+                                <div id="eventlocation" data-location="<%= eventInfo.direction %>"></div>
+                            </div>
+                            <% } %>
                     </div>
                 </div>
             </div>
@@ -73,20 +93,15 @@
                 <div class="row">
                     <div class="col-md-9">
                         <div class="title-wrapper">
-                            <h2 class="event-title">
-                                <i class="far fa-calendar-alt"></i>
+                            <h2 class="event-title" data-id="<%= eventInfo.id %>">
                                 <%= eventInfo.name %>
                             </h2>
                             <p class="event-duration">
-                                <% var until; switch(eventInfo.duration){
-                                    case 0: untilhour=locals.allday;break;
-                                    default: duration= eventInfo.duration;
-                                    var until = eventInfo.target;until.setHours(eventInfo.target.getHours()+duration); 
-                                    var untilhour=locals.until+until.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});
-                                    break;
-                                    } %>
-                                    <%= newdate %>,
-                                        <%= untilhour %>
+                                <%= newdate %>
+                                    <% if (eventInfo.allday) { %>
+                                        ,
+                                        <%= locals.allday %>
+                                            <% } %>
                             </p>
                         </div>
                         <div class="category-title-wrapper">
@@ -119,17 +134,21 @@
                     </div>
                     <div class="col-md-3">
                         <div class="right-sidebar-title">
-                            Participantes
+                            <%= locals.participants %>
                         </div>
                         <% if(eventInfo.ownerId==currentUser.id){ %>
                             <div class="btn invite-friends">
                                 <i class="fas fa-user"></i>
-                                <p>Invitar amigos</p>
+                                <p>
+                                    <%= locals.invitefriends %>
+                                </p>
                             </div>
                             <% } %>
                                 <div class="box event-notifications">
                                     <form action="/changenotifs/<%= eventInfo.id %> " method="post" id="notif-form">
-                                        <p><i class="fas fa-caret-right"></i>Notificaciones</p>
+                                        <p><i class="fas fa-caret-right"></i>
+                                            <%= locals.notifications %>
+                                        </p>
                                         <label class="switch">
                                             <% if(eventInfo.relation.notifications){ %> 
                                     <input checked id="togglenotifs" type="checkbox" name="notifs">
@@ -146,6 +165,38 @@
                                         </div>
                                     </form>
                                 </div>
+                                <p class="right-sidebar-title-2">
+                                    <%= locals.assistance %>
+                                </p>
+                                <div class="">
+                                    <div class="stat-buttons">
+                                        <div id="assist-yes" class="btn">
+                                            <%= locals.yes %>
+                                                <% if (eventInfo.relation.promise=="yes") { %>
+                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                    <% }else{ %>
+                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                        <% } %>
+                                        </div>
+
+                                        <div id="assist-maybe" class="btn">
+                                            <%= locals.maybe %>
+                                                <% if (eventInfo.relation.promise=="maybe") { %>
+                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                    <% }else{ %>
+                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                        <% } %>
+                                        </div>
+                                        <div id="assist-no" class="btn">
+                                            <%= locals.no %>
+                                                <% if (eventInfo.relation.promise=="no") { %>
+                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                    <% }else{ %>
+                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                        <% } %>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="event-stats">
                                     <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe); 
                                     var yes = eventInfo.guests.stats.yes*100/max*0.64;
@@ -160,7 +211,9 @@
                                             </p>
                                             <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
                                             <div class="chart-label">
-                                                <p>Van</p>
+                                                <p>
+                                                    <%= locals.willgo %>
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="chart">
@@ -169,7 +222,9 @@
                                             </p>
                                             <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
                                             <div class="chart-label">
-                                                <p>Quizás van</p>
+                                                <p>
+                                                    <%= locals.maybego %>
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="chart">
@@ -178,11 +233,15 @@
                                             </p>
                                             <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
                                             <div class="chart-label">
-                                                <p>Aún no contestaron</p>
+                                                <p>
+                                                    <%= locals.noresponse %>
+                                                </p>
                                             </div>
                                         </div>
                                 </div>
-                                <p class="right-sidebar-title-2">Personas que van a asistir</p>
+                                <p class="right-sidebar-title-2">
+                                    <%= locals.assistants %>
+                                </p>
                                 <ul class="user-images">
                                     <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
                                         <li class="user-photo">
@@ -202,81 +261,129 @@
         </div>
     </div>
     <script>
+        fillChart();
+        generateMap();
+
+        //Enable Event Notifications
         $('#togglenotifs').click(function() {
-            var delayInMilliseconds = 500;
+            delayInMilliseconds = 500;
             setTimeout(function() {
-                delayInMilliseconds = 3000;
-                $('#notif-form p').attr("hidden", "true");
-                $('#notif-form label').attr("hidden", "true");
-                $('.lds-ring').removeAttr("hidden");
-                setTimeout(function() {
-                    $('#notif-form input').removeAttr("disabled");
-                    $('#notif-form p').removeAttr("hidden");
-                    $('#notif-form label').removeAttr("hidden");
-                    $('.lds-ring').attr("hidden", "true");
-                    var url = "/changenotifs/3";
-                    $.ajax({
-                        global: false,
-                        type: 'POST',
-                        url,
-                        dataType: 'html',
-                        data: {
-                            name: $("#togglenotifs").val()
-                        }
-                    });
-                }, delayInMilliseconds);
+                loading("#notif-form", toggleNotifs, undefined);
             }, delayInMilliseconds);
-
-        });
-        // Initialize the platform object:
-        var platform = new H.service.Platform({
-            'apikey': 'a4l2i-ukDVrcnPppPxpaRvaWEJ1IlhGgwvEDR_UYSC8'
         });
 
-        // Obtain the default map types from the platform object
+        $("#assist-yes").click(function(e) {
+            e.preventDefault();
+            if ($("#assist-yes .btn-badge").attr("hidden") == "hidden") {
+                $(".btn-badge").attr("hidden", "hidden");
+                $("#assist-yes .btn-badge").removeAttr("hidden");
+                loading(".stat-buttons", changeAssist, "yes");
+            }
+        });
+
+        $("#assist-maybe").click(function(e) {
+            e.preventDefault();
+            if ($("#assist-maybe .btn-badge").attr("hidden") == "hidden") {
+                $(".btn-badge").attr("hidden", "hidden");
+                $("#assist-maybe .btn-badge").removeAttr("hidden");
+                loading(".stat-buttons", changeAssist, "maybe");
+            }
+        });
+
+        $("#assist-no").click(function(e) {
+            e.preventDefault();
+            if ($("#assist-no .btn-badge").attr("hidden") == "hidden") {
+                $(".btn-badge").attr("hidden", "hidden");
+                $("#assist-no .btn-badge").removeAttr("hidden");
+                loading(".stat-buttons", changeAssist, "no");
+            }
+        });
+
+        function toggleNotifs() {
+            var eventId = $(".event-title").data("id");
+            var url = "/changenotifs/" + eventId;
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url,
+                dataType: 'html'
+            });
+        }
+
+        function changeAssist(value) {
+            var eventId = $(".event-title").data("id");
+            var url = "/changeassist/" + eventId;
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url,
+                dataType: 'html',
+                data: {
+                    newassist: value
+                }
+            });
+        }
+
+        function loading(object, func, params) {
+            var loadbox = document.createElement("div")
+            loadbox.innerHTML = "<div></div><div></div><div></div><div></div>";
+            loadbox.classList.add("lds-ring");
+            delayInMilliseconds = 2500;
+            $(object).attr("hidden", "true");
+            $(object).parent().append(loadbox);
+            setTimeout(function() {
+                $(object).removeAttr("hidden");
+                loadbox.remove();
+                func(params);
+            }, delayInMilliseconds);
+        }
+
         function auto_grow(element) {
             element.style.height = "5px";
             element.style.height = (element.scrollHeight) + "px";
         }
-        var maptypes = platform.createDefaultLayers();
-        var position, map;
-        var id = document.getElementById('eventlocation').dataset.location;
-        var position = fetch("https://places.ls.hereapi.com/places/v1/places/" + id + ";context=Zmxvdy1pZD00MWRlODZhZS1lNTdmLTU2ZTctODUwZi0yOTc3YWNkM2MwYjZfMTYwNjIzNDQ1NzU1NV8wXzU3MDMmc2l6ZT01JlgtRldELUFQUC1JRD1DUUxpQk1WZGR6QWhNMEFYR3lqMyZYLU5MUC1UZXN0aW5nPTE?app_id=CQLiBMVddzAhM0AXGyj3&app_code=rgMn3ijQdDxQ6vXa9CevXQ")
-            .then(response => response.json())
-            .then(function(json) {
-                $("#event-place").attr("href", json.view).text(json.name);
-                $("#event-location").text(json.location.address.city + ", " + json.location.address.county);
 
-                map = new H.Map(
-                    document.getElementById('mapContainer'),
-                    maptypes.vector.normal.map, {
-                        zoom: 16,
-                        center: {
-                            lng: json.location.position[1],
-                            lat: json.location.position[0]
-                        }
-                    });
-                position = json.location.position;
+        async function generateMap() {
+            var platform = new H.service.Platform({
+                'apikey': "<%= mapsAPI  %>"
             });
-    </script>
-    <script>
-        window.onload = async function() {
-            fillChart();
-            var pos = await position;
-            var icon = new H.map.Icon('/images/marker.png', {
-                size: {
-                    w: 45,
-                    h: 45
-                }
-            });
-            var Marker = new H.map.Marker({
-                lat: position[0],
-                lng: position[1]
-            }, {
-                icon: icon
-            });
-            map.addObject(Marker);
-            $(".H_imprint").remove();
+            var maptypes = platform.createDefaultLayers();
+            var position, map;
+            var id = document.getElementById('eventlocation').dataset.location;
+            var position = fetch("https://places.ls.hereapi.com/places/v1/places/" + id + ";context=Zmxvdy1pZD00MWRlODZhZS1lNTdmLTU2ZTctODUwZi0yOTc3YWNkM2MwYjZfMTYwNjIzNDQ1NzU1NV8wXzU3MDMmc2l6ZT01JlgtRldELUFQUC1JRD1DUUxpQk1WZGR6QWhNMEFYR3lqMyZYLU5MUC1UZXN0aW5nPTE?app_id=CQLiBMVddzAhM0AXGyj3&app_code=rgMn3ijQdDxQ6vXa9CevXQ")
+                .then(response => response.json())
+                .then(function(json) {
+                    $("#event-place").attr("href", json.view).text(json.name);
+                    $("#event-location").text(json.location.address.city + ", " + json.location.address.county);
+
+                    map = new H.Map(
+                        document.getElementById('mapContainer'),
+                        maptypes.vector.normal.map, {
+                            zoom: 16,
+                            center: {
+                                lng: json.location.position[1],
+                                lat: json.location.position[0]
+                            }
+                        });
+                    position = json.location.position;
+                });
+            window.onload = async function() {
+                var pos = await position;
+                var icon = new H.map.Icon('/images/marker.png', {
+                    size: {
+                        w: 45,
+                        h: 45
+                    }
+                });
+                var Marker = new H.map.Marker({
+                    lat: position[0],
+                    lng: position[1]
+                }, {
+                    icon: icon
+                });
+                map.addObject(Marker);
+                $(".H_imprint").remove();
+            }
         }
 
         function fillChart() {

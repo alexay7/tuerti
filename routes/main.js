@@ -14,12 +14,13 @@ router.get("/", async function(req, res) {
 router.get("/event/:id", isLoggedIn, async function(req, res) {
     var eventInfo = await getEventInfo(req.params.id, req.user.id);
     var eventGuests = await getEventGuests(req.params.id);
+    var mapsAPI = process.env.API_MAPS;
     eventInfo.guests = eventGuests;
     if (eventInfo.type == "birthday") {
         res.redirect("/");
     }
     if (eventInfo) {
-        res.render("home/event", { locals, eventInfo })
+        res.render("home/event", { locals, eventInfo, mapsAPI })
     } else {
         res.redirect("/");
     }
@@ -38,6 +39,19 @@ router.post("/changenotifs/:id", isLoggedIn, function(req, res) {
     });
 });
 
+router.post("/changeassist/:id", isLoggedIn, function(req, res) {
+    models.eventguest.findOne({
+        where: {
+            guestId: req.user.id,
+            eventId: req.params.id
+        }
+    }).then(function(eventguest) {
+        eventguest.update({
+            promise: req.body.newassist
+        });
+    });
+});
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();
@@ -47,10 +61,13 @@ function isLoggedIn(req, res, next) {
 }
 
 async function getEvents(id) {
+    const Op = require('Sequelize').Op;
     return models.eventguest.findAll({
         where: {
             guestId: id,
-            status: "accepted"
+            promise: {
+                [Op.or]: ["yes", "maybe"]
+            }
         }
     }).then(async function(events) {
         if (events.length != 0) {
@@ -144,8 +161,7 @@ function getEventRelation(eventId, guestId) {
 function getEventGuests(eventId) {
     return models.eventguest.findAll({
         where: {
-            eventId,
-            status: "accepted"
+            eventId
         }
     }).then(function(eventGuests) {
         var yes = 0,

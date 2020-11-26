@@ -22,17 +22,13 @@ module.exports = function(sequelize, Sequelize) {
             onDelete: 'CASCADE'
         },
         promise: {
-            type: Sequelize.ENUM('none', 'yes', 'maybe'),
+            type: Sequelize.ENUM('none', 'yes', 'maybe', 'no'),
             defaultValue: "none"
         },
         notifications: {
             type: Sequelize.BOOLEAN,
             defaultValue: true
-        },
-        status: {
-            type: Sequelize.ENUM('waiting', 'accepted'),
-            defaultValue: "waiting"
-        },
+        }
     });
 
     return EventGuest;
