@@ -83,7 +83,17 @@ spanish = {
     willgo: "Van",
     maybego: "Quizás van",
     noresponse: "Aún no contestaron",
-    assistants: "Personas que van a asistir"
+    assistants: "Personas que van a asistir",
+    editevent: "Editar evento",
+    changeimage: "Cambiar imagen",
+    generalinfo: "Información general",
+    eventtitle: "Título del evento",
+    dateandhour: "Fecha y hora",
+    addinfo: "Información adicional",
+    privacy: "Privacidad",
+    publicnotif: "Todos pueden enviar invitaciones a este evento",
+    privatenotif: "Solo el creador puede enviar invitaciones a este evento",
+    cancel: "Cancelar"
 };
 english = {
     language: "english",
@@ -170,7 +180,17 @@ english = {
     willgo: "Will go",
     maybego: "May go",
     noresponse: "No answer yet",
-    assistants: "People who will assist"
+    assistants: "People who will assist",
+    editevent: "Edit event",
+    changeimage: "Change image",
+    generalinfo: "General information",
+    eventtitle: "Event title",
+    dateandhour: "Date and hour",
+    addinfo: "Additional Information",
+    privacy: "Privacy",
+    publicnotif: "Anyone can send invitations for this event",
+    privatenotif: "Only the owner can send invitations for this event",
+    cancel: "Cancelar"
 };
 
 languages = { spanish, english };

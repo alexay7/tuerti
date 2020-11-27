@@ -1,10 +1,7 @@
 <%- include ("partials/header") %>
 
-    <head>
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-    </head>
     <div class="container main-area">
+
         <div class="row">
             <div class="col-md-3 main-sidebar">
                 <div class="row sidebar-area">
@@ -16,12 +13,14 @@
                             <%= locals.info %>
                         </h3>
                         <% if(eventInfo.ownerId==currentUser.id){ %>
-                            <a href=""><i class="fas fa-pen"></i><%= locals.edit %> </a>
+                            <p class="sidebar-addon" id="edit-event"><i class="fas fa-pen"></i>
+                                <%= locals.edit %>
+                            </p>
                             <% } %>
                     </div>
                     <div class="row event-info">
                         <ul class="info-title">
-                            <li class="info-sub">
+                            <li class="info-sub" id="event-date">
                                 <% 
                                     switch (locals.language) {
                                    case "es":
@@ -36,7 +35,7 @@
                                     <p class="col-md-4">
                                         <%= locals.date %>
                                     </p>
-                                    <span class="col-md-8"><%= newdate %></span>
+                                    <span class="col-md-8" data-value="<%= eventInfo.target %> "><%= newdate %></span>
                             </li>
                             <li class="info-sub">
                                 <p class="col-md-4">
@@ -60,7 +59,7 @@
                                     <p class="col-md-4">
                                         <%= locals.direction %>
                                     </p>
-                                    <span class="col-md-8"><a href="" id="event-place"></a></span>
+                                    <span class="col-md-8"><a href="" id="event-place"><%= eventInfo.direction %> </a></span>
                                 </li>
                                 <% } %>
                                     <% if(eventInfo.webpage){ %>
@@ -82,9 +81,6 @@
                                                 <% } %>
                         </ul>
                         <% if(eventInfo.direction){ %>
-                            <div class="event-map" id="mapContainer">
-                                <div id="eventlocation" data-location="<%= eventInfo.direction %>"></div>
-                            </div>
                             <% } %>
                     </div>
                 </div>
@@ -111,12 +107,21 @@
                                 </h3>
                             </div>
                             <% if(eventInfo.ownerId==currentUser.id){ %>
-                                <a href=""><i class="fas fa-pen"></i><%= locals.edit %> </a>
+                                <p class="sidebar-addon" id="edit-description"><i class="fas fa-pen"></i>
+                                    <%= locals.edit %>
+                                </p>
                                 <% } %>
                         </div>
                         <p class="event-description">
                             <%= eventInfo.description %>
                         </p>
+                        <form hidden class="event-description" action="/event/<%= eventInfo.id %>/edit" method="post">
+                            <textarea class="form-control" oninput="auto_grow(this)" name="newdesc"><%= eventInfo.description %></textarea>
+                            <div class="event-desc-btns">
+                                <button id="cancel-edit" type="button" class="btn btn-gray">Cancelar</button>
+                                <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
+                            </div>
+                        </form>
                         <div class="category-title-wrapper no-bottom-line">
                             <div class="category-title">
                                 <h3>
@@ -136,7 +141,7 @@
                         <div class="right-sidebar-title">
                             <%= locals.participants %>
                         </div>
-                        <% if(eventInfo.ownerId==currentUser.id){ %>
+                        <% if(eventInfo.ownerId==currentUser.id||eventInfo.privacy=="public"){ %>
                             <div class="btn invite-friends">
                                 <i class="fas fa-user"></i>
                                 <p>
@@ -144,12 +149,13 @@
                                 </p>
                             </div>
                             <% } %>
-                                <div class="box event-notifications">
-                                    <form action="/changenotifs/<%= eventInfo.id %> " method="post" id="notif-form">
-                                        <p><i class="fas fa-caret-right"></i>
-                                            <%= locals.notifications %>
-                                        </p>
-                                        <label class="switch">
+                                <% if(eventInfo.relation){ %>
+                                    <div class="box event-notifications">
+                                        <form action="/changenotifs/<%= eventInfo.id %> " method="post" id="notif-form">
+                                            <p><i class="fas fa-caret-right"></i>
+                                                <%= locals.notifications %>
+                                            </p>
+                                            <label class="switch">
                                             <% if(eventInfo.relation.notifications){ %> 
                                     <input checked id="togglenotifs" type="checkbox" name="notifs">
                                             <%  }else{  %>
@@ -157,112 +163,115 @@
                                             <% } %> 
                                         <div class="slider"></div>
                                   </label>
-                                        <div class="lds-ring" hidden>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <p class="right-sidebar-title-2">
-                                    <%= locals.assistance %>
-                                </p>
-                                <div class="">
-                                    <div class="stat-buttons">
-                                        <div id="assist-yes" class="btn">
-                                            <%= locals.yes %>
-                                                <% if (eventInfo.relation.promise=="yes") { %>
-                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                    <% }else{ %>
-                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                        <% } %>
-                                        </div>
-
-                                        <div id="assist-maybe" class="btn">
-                                            <%= locals.maybe %>
-                                                <% if (eventInfo.relation.promise=="maybe") { %>
-                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                    <% }else{ %>
-                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                        <% } %>
-                                        </div>
-                                        <div id="assist-no" class="btn">
-                                            <%= locals.no %>
-                                                <% if (eventInfo.relation.promise=="no") { %>
-                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                    <% }else{ %>
-                                                        <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                        <% } %>
-                                        </div>
+                                            <div class="lds-ring" hidden>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </form>
                                     </div>
-                                </div>
-                                <div class="event-stats">
-                                    <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe); 
+                                    <% } %>
+                                        <p class="right-sidebar-title-2">
+                                            <%= locals.assistance %>
+                                        </p>
+                                        <div class="">
+                                            <% if(eventInfo.relation){ %>
+                                                <div class="stat-buttons">
+                                                    <div id="assist-yes" class="btn">
+                                                        <%= locals.yes %>
+                                                            <% if (eventInfo.relation.promise=="yes") { %>
+                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                <% }else{ %>
+                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                    <% } %>
+                                                    </div>
+
+                                                    <div id="assist-maybe" class="btn">
+                                                        <%= locals.maybe %>
+                                                            <% if (eventInfo.relation.promise=="maybe") { %>
+                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                <% }else{ %>
+                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                    <% } %>
+                                                    </div>
+                                                    <div id="assist-no" class="btn">
+                                                        <%= locals.no %>
+                                                            <% if (eventInfo.relation.promise=="no") { %>
+                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                <% }else{ %>
+                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
+                                                                    <% } %>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <% } %>
+                                            <div class="event-stats">
+                                                <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe); 
                                     var yes = eventInfo.guests.stats.yes*100/max*0.64;
                                     var maybe = eventInfo.guests.stats.maybe*100/max*0.64;
                                     var und = eventInfo.guests.stats.und*100/max*0.64;
                                     if(yes==0){yes=1;}if(und==0){und=1;}if(maybe==0){maybe=1;}
                                     var guests = {yes,maybe,und};
                                     %>
-                                        <div class="chart">
-                                            <p class="chart-value">
-                                                <%= eventInfo.guests.stats.yes %>
-                                            </p>
-                                            <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
-                                            <div class="chart-label">
-                                                <p>
-                                                    <%= locals.willgo %>
-                                                </p>
+                                                    <div class="chart">
+                                                        <p class="chart-value">
+                                                            <%= eventInfo.guests.stats.yes %>
+                                                        </p>
+                                                        <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
+                                                        <div class="chart-label">
+                                                            <p>
+                                                                <%= locals.willgo %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="chart">
+                                                        <p class="chart-value">
+                                                            <%= eventInfo.guests.stats.maybe %>
+                                                        </p>
+                                                        <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
+                                                        <div class="chart-label">
+                                                            <p>
+                                                                <%= locals.maybego %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="chart">
+                                                        <p class="chart-value">
+                                                            <%= eventInfo.guests.stats.und %>
+                                                        </p>
+                                                        <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
+                                                        <div class="chart-label">
+                                                            <p>
+                                                                <%= locals.noresponse %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                             </div>
-                                        </div>
-                                        <div class="chart">
-                                            <p class="chart-value">
-                                                <%= eventInfo.guests.stats.maybe %>
+                                            <p class="right-sidebar-title-2">
+                                                <%= locals.assistants %>
                                             </p>
-                                            <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
-                                            <div class="chart-label">
-                                                <p>
-                                                    <%= locals.maybego %>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="chart">
-                                            <p class="chart-value">
-                                                <%= eventInfo.guests.stats.und %>
-                                            </p>
-                                            <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
-                                            <div class="chart-label">
-                                                <p>
-                                                    <%= locals.noresponse %>
-                                                </p>
-                                            </div>
-                                        </div>
-                                </div>
-                                <p class="right-sidebar-title-2">
-                                    <%= locals.assistants %>
-                                </p>
-                                <ul class="user-images">
-                                    <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
-                                        <li class="user-photo">
-                                            <a class="sidebar-user" href="/user/<%= guest.id %> ">
+                                            <ul class="user-images">
+                                                <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
+                                                    <li class="user-photo">
+                                                        <a class="sidebar-user" href="/user/<%= guest.id %> ">
                                                     <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
                                                     <p><%= guest.firstname+" "+guest.lastname %></p>
                                                 </a>
-                                        </li>
-                                        <% }) %>
-                                </ul>
-                                <a class="all-events" href="">
-                                    <%= locals.seall %>
-                                </a>
+                                                    </li>
+                                                    <% }) %>
+                                            </ul>
+                                            <a class="all-events" href="">
+                                                <%= locals.seall %>
+                                            </a>
                     </div>
                 </div>
             </div>
         </div>
+        <div hidden class="blurred"></div>
     </div>
     <script>
         fillChart();
-        generateMap();
 
         //Enable Event Notifications
         $('#togglenotifs').click(function() {
@@ -299,6 +308,156 @@
             }
         });
 
+        $(document).on("click ", ".close-btn ", function(e) {
+            e.preventDefault();
+            $(this).parent().css("height", "0%");
+            $(".blurred").css("opacity", "0");
+            setTimeout(function() {
+                $(".edit-window").remove();
+                $(".blurred").attr("hidden", "hidden");
+            }, 250);
+        });
+
+        $("#edit-event").click(function(e) {
+            e.preventDefault();
+            var window = document.createElement("div");
+            window.classList.add("edit-window");
+            window.innerHTML = `<div class="close-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="edit-wrapper" style="padding:0;">
+                    <ul class="edit-title">
+                        <li>
+                            <p class="no-margin selected">
+                                <%= locals.editevent %>
+                            </p>
+                        </li>
+                        <li>
+                            <p class="no-margin">
+                                <%= locals.changeimage %>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="edit-info">
+                        <form action="/event/<%= eventInfo.id %>/edit" method="post">
+                            <p class="edit-info-title">
+                                <%= locals.generalinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newname"><%= locals.eventtitle %> </label>
+                                    <input class="box" type="text" name="newname" id="newname" value="<%= eventInfo.name %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdate"><%= locals.dateandhour %> </label>
+                                    <% if(eventInfo.allday){ %>
+                                    <div class="twoinone">
+                                        <input class="box" type="date" name="newdate" id="newdate">
+                                        <label class="option">
+                                            <input checked type="checkbox" name="newallday" id="newallday"><%= locals.allday %> 
+                                        </label>
+                                    </div>
+                                    <% } else{ %>
+                                        <div class="twoinone">
+                                        <input class="box" type="datetime-local" name="newdate" id="newdate">
+                                        <label class="option">
+                                            <input type="checkbox" name="newallday" id="newallday"><%= locals.allday %> 
+                                        </label>
+                                    </div>
+                                    <% } %>
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdesc"><%= locals.desc %> </label>
+                                    <textarea oninput="auto_grow(this)" class="box" name="newdesc" id="newdesc" rows="3"><%= eventInfo.description %> </textarea>
+                                </div>
+                            </div>
+                            <p class="edit-info-title">
+                                <%= locals.addinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newplace"><%= locals.place %> </label>
+                                    <input class="box" type="text" name="newplace" id="newplace" value="<%= eventInfo.place %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdir"><%= locals.direction %> </label>
+                                    <input class="box" type="text" name="newdir" id="newdir" value="<%= eventInfo.place %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newphone"><%= locals.phone %> </label>
+                                    <input class="box" type="text" name="newphone" id="newphone" value="<%= eventInfo.phone %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newweb"><%= locals.webpage %> </label>
+                                    <input class="box" type="text" name="newweb" id="newweb" value="<%= eventInfo.webpage %> ">
+                                </div>
+                            </div>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newprivacy"><%= locals.privacy %> </label>
+                                    <fieldset class="invitation-radio">
+                                        <label>
+                                            <% if(eventInfo.privacy=="public"){%>
+                                    <input checked type="radio" name="newprivacy" value="public"> <%= locals.publicnotif %> 
+                                </label>
+                                        <label>
+                                    <input type="radio" name="newprivacy" value="private"> <%= locals.privatenotif %> 
+                                    <% } else{%>
+                                        <input type="radio" name="newprivacy" value="public"> <%= locals.publicnotif %> 
+                                </label>
+                                        <label>
+                                    <input checked type="radio" name="newprivacy" value="private"> <%= locals.privatenotif %>
+                                        <% } %>
+                                </label>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="last-section">
+                                <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
+                            </div>
+                        </form>
+                    </div>
+                </div>`;
+            $(".main-area").append(window);
+            $(".blurred").removeAttr("hidden");
+            setTimeout(function() {
+                var area = document.querySelector(".edit-window textarea");
+                auto_grow(area);
+                $("#newdate").val(convertDate($("#event-date span").data("value"), $("#newdate").attr("type")));
+                $(".edit-window").css("height", "70%");
+                $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
+                $(".blurred").css("opacity", ".5");
+            }, 20);
+        });
+
+        $(document).on("change", ".option", function(e) {
+            e.preventDefault();
+            var input = $("#newdate");
+            var value = input.val();
+            if (input.attr("type") == "date") {
+                value = value + "T00:00";
+                input.attr("type", "datetime-local");
+                input.val(value);
+            } else {
+                value = value.substring(0, 10);
+                input.attr("type", "date");
+                input.val(value);
+            }
+        });
+
+        $("#edit-description").click(function(e) {
+            e.preventDefault();
+            $("p.event-description").attr("hidden", "hidden");
+            $("form.event-description").removeAttr("hidden");
+            var area = document.querySelector(".event-description textarea");
+            auto_grow(area);
+        })
+
+        $("#cancel-edit").click(function(e) {
+            $("p.event-description").removeAttr("hidden")
+            $("form.event-description").attr("hidden", "hidden");
+        });
+
         function toggleNotifs() {
             var eventId = $(".event-title").data("id");
             var url = "/changenotifs/" + eventId;
@@ -308,6 +467,22 @@
                 url,
                 dataType: 'html'
             });
+        }
+
+        function convertDate(oldFormat, format) {
+            var options = {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            };
+            var newFormat = new Date(oldFormat).toLocaleString("es-ES", options).split(/[/ :]/);
+            if (format == "date") {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0]);
+            } else {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0] + "T" + newFormat[3] + ":" + newFormat[4]);
+            }
         }
 
         function changeAssist(value) {
@@ -341,49 +516,6 @@
         function auto_grow(element) {
             element.style.height = "5px";
             element.style.height = (element.scrollHeight) + "px";
-        }
-
-        async function generateMap() {
-            var platform = new H.service.Platform({
-                'apikey': "<%= mapsAPI  %>"
-            });
-            var maptypes = platform.createDefaultLayers();
-            var position, map;
-            var id = document.getElementById('eventlocation').dataset.location;
-            var position = fetch("https://places.ls.hereapi.com/places/v1/places/" + id + ";context=Zmxvdy1pZD00MWRlODZhZS1lNTdmLTU2ZTctODUwZi0yOTc3YWNkM2MwYjZfMTYwNjIzNDQ1NzU1NV8wXzU3MDMmc2l6ZT01JlgtRldELUFQUC1JRD1DUUxpQk1WZGR6QWhNMEFYR3lqMyZYLU5MUC1UZXN0aW5nPTE?app_id=CQLiBMVddzAhM0AXGyj3&app_code=rgMn3ijQdDxQ6vXa9CevXQ")
-                .then(response => response.json())
-                .then(function(json) {
-                    $("#event-place").attr("href", json.view).text(json.name);
-                    $("#event-location").text(json.location.address.city + ", " + json.location.address.county);
-
-                    map = new H.Map(
-                        document.getElementById('mapContainer'),
-                        maptypes.vector.normal.map, {
-                            zoom: 16,
-                            center: {
-                                lng: json.location.position[1],
-                                lat: json.location.position[0]
-                            }
-                        });
-                    position = json.location.position;
-                });
-            window.onload = async function() {
-                var pos = await position;
-                var icon = new H.map.Icon('/images/marker.png', {
-                    size: {
-                        w: 45,
-                        h: 45
-                    }
-                });
-                var Marker = new H.map.Marker({
-                    lat: position[0],
-                    lng: position[1]
-                }, {
-                    icon: icon
-                });
-                map.addObject(Marker);
-                $(".H_imprint").remove();
-            }
         }
 
         function fillChart() {

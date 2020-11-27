@@ -52,6 +52,43 @@ router.post("/changeassist/:id", isLoggedIn, function(req, res) {
     });
 });
 
+router.post("/event/:id/edit", isLoggedIn, isEventOwner, function(req, res) {
+    //data validation
+    var accepted = true;
+    if (accepted) {
+        var allday;
+        if (req.body.newallday == "on") {
+            allday = true
+        } else {
+            allday = false
+        }
+        models.event.findByPk(req.params.id).then(function(event) {
+            event.update({
+                name: req.body.newname,
+                target: req.body.newdate,
+                description: req.body.newdesc,
+                place: req.body.newplace,
+                direction: req.body.newdir,
+                phone: req.body.newphone,
+                webpage: req.body.newweb,
+                privacy: req.body.newprivacy,
+                allday
+            });
+        });
+        res.redirect("back");
+    }
+
+});
+
+async function isEventOwner(req, res, next) {
+    var event = await getEventInfo(req.params.id);
+    if (event.ownerId == req.user.id) {
+        next();
+    } else {
+        res.redirect("back");
+    }
+}
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();
@@ -87,24 +124,19 @@ async function getEvents(id) {
                     sevenDaysEvents = [];
                 today.setHours(today.getHours() + 1);
                 totalEvents.forEach(event => {
-                    var date = event.target;
-                    if (((date - today) / 86400000) < 1) {
+                    var date = event.target,
+                        options = { day: 'numeric', month: 'short' },
+                        newdate = date.toLocaleDateString("en-US", options),
+                        eventsplit = event.target.toLocaleDateString("en-US").split(/[/]/),
+                        date = new Date(Date.UTC(eventsplit[2], eventsplit[0] - 1, eventsplit[1])),
+                        todaysplit = today.toLocaleDateString("en-US").split(/[/]/);
+                    if (eventsplit[0] == todaysplit[0] && eventsplit[1] == todaysplit[1] && eventsplit[2] == todaysplit[2]) {
                         todayEvents.push(event);
-                    } else if (((date - today) / 86400000) < 2) {
+                    } else if (((date - today) / 86400000) < 1 && ((date - today) / 86400000) > 0) {
                         tomorrowEvents.push(event);
-                    } else if (((date - today) / 86400000) < 7) {
+                    } else if (((date - today) / 86400000) < 7 && ((date - today) / 86400000) > 0) {
                         sevenDaysEvents.push(event);
                     }
-                    var locale;
-                    switch (locals.language) {
-                        case "es":
-                            locale = "es-ES";
-                            break;
-                        default:
-                            locale = "en-US";
-                    }
-                    var options = { day: 'numeric', month: 'short' };
-                    var newdate = date.toLocaleDateString(locale, options);
                     event.target = newdate;
                 });
 
@@ -137,7 +169,9 @@ function getEventInfo(eventId, guestId) {
         if (eventData == undefined) {
             return undefined;
         } else {
-            eventData.dataValues.relation = await getEventRelation(eventId, guestId);
+            if (guestId) {
+                eventData.dataValues.relation = await getEventRelation(eventId, guestId);
+            }
             return eventData.dataValues;
         }
     });

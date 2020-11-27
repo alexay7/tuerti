@@ -50,6 +50,10 @@ module.exports = function(sequelize, Sequelize) {
         },
         phone: {
             type: Sequelize.STRING
+        },
+        privacy: {
+            type: Sequelize.ENUM('private', 'public'),
+            defaultValue: "public"
         }
     });
 
