@@ -22,15 +22,8 @@
                         <ul class="info-title">
                             <li class="info-sub" id="event-date">
                                 <% 
-                                    switch (locals.language) {
-                                   case "es":
-                                        locale = "es-ES";
-                                        break;
-                                      default:
-                                        locale = "en-US";
-                                          } 
                                     var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric" };
-                                    var newdate = eventInfo.target.toLocaleDateString("en-GB", options); 
+                                    var newdate = eventInfo.target.toLocaleDateString("en-US", options); 
                                     %>
                                     <p class="col-md-4">
                                         <%= locals.date %>
@@ -84,6 +77,25 @@
                             <% } %>
                     </div>
                 </div>
+                <div class="sidebar-item">
+                    <p class="sidebar-title-2">Creado por</p>
+                    <div class="item-box">
+                        <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png" alt="">
+                        <div class="user-box">
+                            <a href="" class="user-name">
+                                <%= eventInfo.owner.firstname %>
+                                    <%= eventInfo.owner.lastname %>
+                            </a>
+                            <p class="user-date">
+                                <% 
+                                    var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric",hour:"numeric",minute:"numeric" };
+                                    var newcreation = eventInfo.createdAt.toLocaleDateString("en-US", options); 
+                                    %>
+                                    <%= newcreation %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-9 main-post-area">
                 <div class="row">
@@ -91,14 +103,12 @@
                         <div class="title-wrapper">
                             <h2 class="event-title" data-id="<%= eventInfo.id %>">
                                 <%= eventInfo.name %>
+                                    <span><%= newdate %>
+                                <% if (eventInfo.allday) { %>,
+                                    <%= locals.allday %>
+                                        <% } %>
+                                    </span>
                             </h2>
-                            <p class="event-duration">
-                                <%= newdate %>
-                                    <% if (eventInfo.allday) { %>
-                                        ,
-                                        <%= locals.allday %>
-                                            <% } %>
-                            </p>
                         </div>
                         <div class="category-title-wrapper">
                             <div class="category-title">
@@ -163,107 +173,114 @@
                                             <% } %> 
                                         <div class="slider"></div>
                                   </label>
-                                            <div class="lds-ring" hidden>
-                                                <div></div>
-                                                <div></div>
-                                                <div></div>
-                                                <div></div>
-                                            </div>
                                         </form>
                                     </div>
-                                    <% } %>
-                                        <p class="right-sidebar-title-2">
-                                            <%= locals.assistance %>
-                                        </p>
-                                        <div class="">
-                                            <% if(eventInfo.relation){ %>
-                                                <div class="stat-buttons">
-                                                    <div id="assist-yes" class="btn">
-                                                        <%= locals.yes %>
-                                                            <% if (eventInfo.relation.promise=="yes") { %>
-                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                <% }else{ %>
-                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                    <% } %>
-                                                    </div>
+                                    <% }else{ %>
 
-                                                    <div id="assist-maybe" class="btn">
-                                                        <%= locals.maybe %>
-                                                            <% if (eventInfo.relation.promise=="maybe") { %>
-                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                <% }else{ %>
-                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                    <% } %>
-                                                    </div>
-                                                    <div id="assist-no" class="btn">
-                                                        <%= locals.no %>
-                                                            <% if (eventInfo.relation.promise=="no") { %>
-                                                                <div class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                <% }else{ %>
-                                                                    <div hidden class="btn-badge"><i class="fas fa-check"></i></div>
-                                                                    <% } %>
-                                                    </div>
-                                                </div>
-                                        </div>
                                         <% } %>
-                                            <div class="event-stats">
-                                                <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe); 
+                                            <p class="right-sidebar-title-2">
+                                                <%= locals.assistance %>
+                                            </p>
+                                            <div class="">
+                                                <% if(eventInfo.relation||eventInfo.privacy=="public"){ %>
+                                                    <form action="/event/<%= eventInfo.id %> /changeassist" method="POST" class="stat-buttons">
+                                                        <% if (!eventInfo.relation) { %>
+                                                            <button name="newassist" value="yes" id="assist" class="btn onlyone">
+                                                                Seguir evento
+                                                            </button>
+                                                            <% }else{ %>
+                                                                <% if (eventInfo.relation.promise=="yes") { %>
+                                                                    <button disabled id="assist-yes" name="newassist" value="yes" class="btn">
+                                                                    <%= locals.yes %>
+                                                                            <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                            </button>
+                                                                    <% }else{ %>
+                                                                        <button id="assist-yes" name="newassist" value="yes" class="btn">
+                                                                            <%= locals.yes %>
+                                                                                    </button>
+                                                                        <% } %>
+                                                                            <% if (eventInfo.relation.promise=="maybe") { %>
+                                                                                <button disabled id="assist-maybe" name="newassist" value="maybe" class="btn">
+                                                                            <%= locals.maybe %>
+                                                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                                    </button>
+                                                                                <% }else{ %>
+                                                                                    <button id="assist-maybe" name="newassist" value="maybe" class="btn">
+                                                                                    <%= locals.maybe %>
+                                                                                            </button>
+                                                                                    <% } %>
+                                                                                        <% if (eventInfo.relation.promise=="no") { %>
+                                                                                            <button disabled id="assist-no" name="newassist" value="no" class="btn">
+                                                                                    <%= locals.no %>
+                                                                                            <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                                            </button>
+                                                                                            <% }else{ %>
+                                                                                                <button id="assist-no" name="newassist" value="no" class="btn">
+                                                                                            <%= locals.no %>
+                                                                                                    </button>
+                                                                                                <% } %>
+                                                                                                    <% } %>
+                                                    </form>
+                                            </div>
+                                            <% } %>
+                                                <div class="event-stats">
+                                                    <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe,1); 
                                     var yes = eventInfo.guests.stats.yes*100/max*0.64;
                                     var maybe = eventInfo.guests.stats.maybe*100/max*0.64;
                                     var und = eventInfo.guests.stats.und*100/max*0.64;
                                     if(yes==0){yes=1;}if(und==0){und=1;}if(maybe==0){maybe=1;}
                                     var guests = {yes,maybe,und};
                                     %>
-                                                    <div class="chart">
-                                                        <p class="chart-value">
-                                                            <%= eventInfo.guests.stats.yes %>
-                                                        </p>
-                                                        <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
-                                                        <div class="chart-label">
-                                                            <p>
-                                                                <%= locals.willgo %>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.yes %>
                                                             </p>
+                                                            <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.willgo %>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="chart">
-                                                        <p class="chart-value">
-                                                            <%= eventInfo.guests.stats.maybe %>
-                                                        </p>
-                                                        <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
-                                                        <div class="chart-label">
-                                                            <p>
-                                                                <%= locals.maybego %>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.maybe %>
                                                             </p>
+                                                            <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.maybego %>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="chart">
-                                                        <p class="chart-value">
-                                                            <%= eventInfo.guests.stats.und %>
-                                                        </p>
-                                                        <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
-                                                        <div class="chart-label">
-                                                            <p>
-                                                                <%= locals.noresponse %>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.und %>
                                                             </p>
+                                                            <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.noresponse %>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                            </div>
-                                            <p class="right-sidebar-title-2">
-                                                <%= locals.assistants %>
-                                            </p>
-                                            <ul class="user-images">
-                                                <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
-                                                    <li class="user-photo">
-                                                        <a class="sidebar-user" href="/user/<%= guest.id %> ">
+                                                </div>
+                                                <p class="right-sidebar-title-2">
+                                                    <%= locals.assistants %>
+                                                </p>
+                                                <ul class="user-images">
+                                                    <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
+                                                        <li class="user-photo">
+                                                            <a class="sidebar-user" href="/user/<%= guest.id %> ">
                                                     <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
                                                     <p><%= guest.firstname+" "+guest.lastname %></p>
                                                 </a>
-                                                    </li>
-                                                    <% }) %>
-                                            </ul>
-                                            <a class="all-events" href="">
-                                                <%= locals.seall %>
-                                            </a>
+                                                        </li>
+                                                        <% }) %>
+                                                </ul>
+                                                <a class="all-events" href="">
+                                                    <%= locals.seall %>
+                                                </a>
                     </div>
                 </div>
             </div>
@@ -273,39 +290,16 @@
     <script>
         fillChart();
 
+        $(".stat-buttons").submit(function() {
+            console.log($(this).serializeArray());
+        })
+
         //Enable Event Notifications
         $('#togglenotifs').click(function() {
             delayInMilliseconds = 500;
             setTimeout(function() {
                 loading("#notif-form", toggleNotifs, undefined);
             }, delayInMilliseconds);
-        });
-
-        $("#assist-yes").click(function(e) {
-            e.preventDefault();
-            if ($("#assist-yes .btn-badge").attr("hidden") == "hidden") {
-                $(".btn-badge").attr("hidden", "hidden");
-                $("#assist-yes .btn-badge").removeAttr("hidden");
-                loading(".stat-buttons", changeAssist, "yes");
-            }
-        });
-
-        $("#assist-maybe").click(function(e) {
-            e.preventDefault();
-            if ($("#assist-maybe .btn-badge").attr("hidden") == "hidden") {
-                $(".btn-badge").attr("hidden", "hidden");
-                $("#assist-maybe .btn-badge").removeAttr("hidden");
-                loading(".stat-buttons", changeAssist, "maybe");
-            }
-        });
-
-        $("#assist-no").click(function(e) {
-            e.preventDefault();
-            if ($("#assist-no .btn-badge").attr("hidden") == "hidden") {
-                $(".btn-badge").attr("hidden", "hidden");
-                $("#assist-no .btn-badge").removeAttr("hidden");
-                loading(".stat-buttons", changeAssist, "no");
-            }
         });
 
         $(document).on("click ", ".close-btn ", function(e) {
@@ -414,6 +408,7 @@
                             </div>
                             <div class="last-section">
                                 <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
+                                <a onclick="return confirm('<%=locals.areyousure %>')" href="/event/<%= eventInfo.id %>/delete"><%=locals.eventdel %></a>
                             </div>
                         </form>
                     </div>
@@ -460,7 +455,7 @@
 
         function toggleNotifs() {
             var eventId = $(".event-title").data("id");
-            var url = "/changenotifs/" + eventId;
+            var url = "/event/" + eventId + "/changenotifs";
             $.ajax({
                 global: false,
                 type: 'POST',
@@ -487,7 +482,7 @@
 
         function changeAssist(value) {
             var eventId = $(".event-title").data("id");
-            var url = "/changeassist/" + eventId;
+            var url = "/event/" + eventId + "/changeassist";
             $.ajax({
                 global: false,
                 type: 'POST',

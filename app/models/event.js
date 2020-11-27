@@ -20,10 +20,6 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.STRING,
             notEmpty: true
         },
-        created: {
-            type: Sequelize.DATE,
-            defaultValue: Sequelize.NOW
-        },
         target: {
             type: Sequelize.DATE,
             notEmpty: true

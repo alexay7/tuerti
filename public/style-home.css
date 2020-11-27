@@ -73,6 +73,7 @@ img {
 .box {
     border: 1px solid var(--dark-gray);
     border-radius: .2rem;
+    padding: 1px;
 }
 
 
@@ -368,7 +369,7 @@ input:checked+.slider:before {
 }
 
 .sidebar-title h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     margin: 0;
 }
@@ -510,6 +511,12 @@ input:checked+.slider:before {
     word-break: break-word;
 }
 
+.event-title span {
+    margin-bottom: 0;
+    color: var(--darker-gray);
+    font-size: 14px;
+}
+
 .event-duration {
     min-width: fit-content;
 }
@@ -519,13 +526,6 @@ input:checked+.slider:before {
     align-items: baseline;
     margin-bottom: 10px;
     margin-top: 10px;
-}
-
-.title-wrapper p {
-    margin-bottom: 0;
-    margin-left: 10px;
-    color: var(--darker-gray);
-    font-size: 14px;
 }
 
 .event-title i {
@@ -573,6 +573,13 @@ input:checked+.slider:before {
 
 .event-desc-btns input {
     margin-left: 10px;
+    font-size: 12px;
+    height: fit-content;
+}
+
+.event-desc-btns button {
+    font-size: 12px;
+    height: fit-content;
 }
 
 .new-post {
@@ -684,6 +691,10 @@ input:checked+.slider:before {
     border: 1px solid var(--dark-gray);
 }
 
+.onlyone {
+    width: 100%!important;
+}
+
 .btn-badge {
     position: absolute;
     width: 13px;
@@ -766,7 +777,6 @@ input:checked+.slider:before {
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 50% 50%;
     grid-column-gap: 5px;
-    padding-bottom: 10px;
     border-bottom: 1px solid var(--dark-gray);
     margin-bottom: 0;
 }
@@ -953,6 +963,15 @@ input:checked+.slider:before {
     justify-content: center;
 }
 
+.last-section a {
+    position: absolute;
+    margin-bottom: 0;
+    right: 20px;
+    bottom: 0;
+    color: crimson;
+    font-size: 14px;
+}
+
 .blurred {
     position: fixed;
     top: 0;
@@ -963,4 +982,28 @@ input:checked+.slider:before {
     z-index: 4;
     opacity: 0;
     transition: .5s;
+}
+
+.item-box {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    column-gap: 10px;
+    align-items: self-end;
+    margin-top: 5px;
+}
+
+.user-name {
+    font-size: 13px;
+}
+
+.user-date {
+    font-size: 11px;
+    color: gray;
+    margin: 0;
+}
+
+.sidebar-title-2 {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
 }

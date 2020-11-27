@@ -13,20 +13,19 @@ router.get("/", async function(req, res) {
 
 router.get("/event/:id", isLoggedIn, async function(req, res) {
     var eventInfo = await getEventInfo(req.params.id, req.user.id);
-    var eventGuests = await getEventGuests(req.params.id);
-    var mapsAPI = process.env.API_MAPS;
-    eventInfo.guests = eventGuests;
-    if (eventInfo.type == "birthday") {
-        res.redirect("/");
-    }
     if (eventInfo) {
-        res.render("home/event", { locals, eventInfo, mapsAPI })
+        if (eventInfo.type == "birthday") {
+            res.redirect("/");
+        }
+        var eventGuests = await getEventGuests(req.params.id);
+        eventInfo.guests = eventGuests;
+        res.render("home/event", { locals, eventInfo })
     } else {
         res.redirect("/");
     }
 });
 
-router.post("/changenotifs/:id", isLoggedIn, function(req, res) {
+router.post("/event/:id/changenotifs", isLoggedIn, function(req, res) {
     models.eventguest.findOne({
         where: {
             guestId: req.user.id,
@@ -39,15 +38,79 @@ router.post("/changenotifs/:id", isLoggedIn, function(req, res) {
     });
 });
 
-router.post("/changeassist/:id", isLoggedIn, function(req, res) {
+router.post("/event/:id/changeassist", isLoggedIn, function(req, res) {
     models.eventguest.findOne({
         where: {
             guestId: req.user.id,
             eventId: req.params.id
         }
     }).then(function(eventguest) {
-        eventguest.update({
-            promise: req.body.newassist
+        if (eventguest) {
+            if (req.body.newassist == "no") {
+                eventguest.destroy().then(function() {
+                    res.redirect("back");
+                });
+            } else {
+                eventguest.update({
+                    promise: req.body.newassist
+                }).then(function() {
+                    res.redirect("back");
+                });
+            }
+        } else {
+            var newguest = {
+                eventId: req.params.id,
+                guestId: req.user.id,
+                promise: req.body.newassist
+            }
+            models.eventguest.create(newguest).then(function() {
+                res.redirect("back");
+            });
+        }
+
+    });
+});
+
+router.post("/event/create", isLoggedIn, function(req, res) {
+    var allday;
+    if (req.body.allday == "on") {
+        allday = true
+    } else {
+        allday = false
+    }
+    var newevent = {
+        name: req.body.name,
+        target: req.body.date,
+        description: req.body.desc,
+        place: req.body.place,
+        direction: req.body.dir,
+        phone: req.body.phone,
+        webpage: req.body.web,
+        privacy: req.body.privacy,
+        allday,
+        ownerId: req.user.id,
+        type: "event"
+    };
+    models.event.create(newevent).then(function(event) {
+        if (event) {
+            var newguest = {
+                eventId: event.id,
+                guestId: req.user.id,
+                promise: "yes"
+            }
+            models.eventguest.create(newguest).then(function() {
+                res.redirect("/event/" + event.id);
+            });
+        } else {
+            res.redirect("back");
+        }
+    })
+});
+
+router.get("/event/:id/delete", isLoggedIn, isEventOwner, function(req, res) {
+    models.event.findByPk(req.params.id).then(function(event) {
+        event.destroy().then(function() {
+            res.redirect("/");
         });
     });
 });
@@ -154,7 +217,7 @@ async function getEvents(id) {
     });
 }
 
-function getGuestInfo(userId) {
+function getUserInfoMin(userId) {
     return models.user.findByPk(userId, { attributes: ['id', 'firstname', 'lastname', 'avatar'] }).then(function(user) {
         if (user) {
             return user.dataValues;
@@ -172,6 +235,7 @@ function getEventInfo(eventId, guestId) {
             if (guestId) {
                 eventData.dataValues.relation = await getEventRelation(eventId, guestId);
             }
+            eventData.dataValues.owner = await getUserInfoMin(eventData.dataValues.ownerId);
             return eventData.dataValues;
         }
     });
@@ -202,29 +266,39 @@ function getEventGuests(eventId) {
             maybe = 0,
             und = 0;
         var users = []
-        var bar = new Promise(function(resolve, reject) {
-            eventGuests.forEach(async function(eventguest) {
-                var guestInfo = await getGuestInfo(eventguest.guestId);
-                users.push(guestInfo);
-                switch (eventguest.dataValues.promise) {
-                    case "yes":
-                        yes = yes + 1;
-                        break;
-                    case "maybe":
-                        maybe = maybe + 1;
-                        break;
-                    default:
-                        und = und + 1;
-                        break;
-                }
-                if (users.length >= eventGuests.length) { return resolve(); }
+        if (eventGuests.length != 0) {
+            var bar = new Promise(function(resolve, reject) {
+                eventGuests.forEach(async function(eventguest) {
+                    var guestInfo = await getUserInfoMin(eventguest.guestId);
+                    users.push(guestInfo);
+                    switch (eventguest.dataValues.promise) {
+                        case "yes":
+                            yes = yes + 1;
+                            break;
+                        case "maybe":
+                            maybe = maybe + 1;
+                            break;
+                        case "no":
+                            break;
+                        default:
+                            und = und + 1;
+                            break;
+
+                    }
+                    if (users.length >= eventGuests.length) { return resolve(); }
+                });
             });
-        });
-        return bar.then(() => {
+            return bar.then(() => {
+                var stats = { yes, maybe, und };
+                var guests = { stats, users }
+                return guests;
+            });
+        } else {
             var stats = { yes, maybe, und };
             var guests = { stats, users }
             return guests;
-        });
+        }
+
     });
 }
 

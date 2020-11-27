@@ -93,7 +93,9 @@ spanish = {
     privacy: "Privacidad",
     publicnotif: "Todos pueden enviar invitaciones a este evento",
     privatenotif: "Solo el creador puede enviar invitaciones a este evento",
-    cancel: "Cancelar"
+    cancel: "Cancelar",
+    eventdel: "Eliminar evento",
+    areyousure: "¿Estás seguro?",
 };
 english = {
     language: "english",
@@ -190,7 +192,9 @@ english = {
     privacy: "Privacy",
     publicnotif: "Anyone can send invitations for this event",
     privatenotif: "Only the owner can send invitations for this event",
-    cancel: "Cancelar"
+    cancel: "Cancel",
+    eventdel: "Delete event",
+    areyousure: "Are you sure?",
 };
 
 languages = { spanish, english };

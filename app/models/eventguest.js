@@ -22,7 +22,7 @@ module.exports = function(sequelize, Sequelize) {
             onDelete: 'CASCADE'
         },
         promise: {
-            type: Sequelize.ENUM('none', 'yes', 'maybe', 'no'),
+            type: Sequelize.ENUM('none', 'yes', 'maybe'),
             defaultValue: "none"
         },
         notifications: {

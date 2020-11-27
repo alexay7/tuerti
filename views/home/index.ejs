@@ -26,7 +26,7 @@
                         <h3>
                             <%= locals.calendar %>
                         </h3>
-                        <p class="sidebar-addon"><i class="fas fa-calendar-week"></i>
+                        <p class="sidebar-addon" id="create-event"><i class="fas fa-calendar-week"></i>
                             <%= locals.createevent %>
                         </p>
                     </div>
@@ -121,6 +121,138 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).on("click ", ".close-btn ", function(e) {
+            e.preventDefault();
+            $(this).parent().css("height", "0%");
+            $(".blurred").css("opacity", "0");
+            setTimeout(function() {
+                $(".edit-window").remove();
+                $(".blurred").attr("hidden", "hidden");
+            }, 250);
+        });
+
+        $("#create-event").click(function(e) {
+            e.preventDefault();
+            var window = document.createElement("div");
+            window.classList.add("edit-window");
+            window.innerHTML = `<div class="close-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="edit-wrapper" style="padding:0;">
+                    <ul class="edit-title">
+                        <li>
+                            <p class="no-margin selected">
+                                <%= locals.createevent %>
+                            </p>
+                        </li>
+                        <li>
+                            <p class="no-margin">
+                                <%= locals.changeimage %>
+                            </p>
+                        </li>
+                        <li>
+                            <p class="no-margin">
+                                <%= locals.invitefriends %>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="edit-info">
+                        <form action="/event/create" method="post">
+                            <p class="edit-info-title">
+                                <%= locals.generalinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="name"><%= locals.eventtitle %> </label>
+                                    <input class="box" type="text" name="name" id="name">
+                                </div>
+                                <div class="section-input">
+                                    <label for="date"><%= locals.dateandhour %> </label>
+                                        <div class="twoinone">
+                                        <input class="box" type="datetime-local" name="date" id="date">
+                                        <label class="option">
+                                            <input type="checkbox" name="allday" id="allday"><%= locals.allday %> 
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="section-input">
+                                    <label for="desc"><%= locals.desc %> </label>
+                                    <textarea oninput="auto_grow(this)" class="box" name="desc" id="desc" rows="3"> </textarea>
+                                </div>
+                            </div>
+                            <p class="edit-info-title">
+                                <%= locals.addinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="place"><%= locals.place %> </label>
+                                    <input class="box" type="text" name="place" id="place">
+                                </div>
+                                <div class="section-input">
+                                    <label for="dir"><%= locals.direction %> </label>
+                                    <input class="box" type="text" name="dir" id="dir">
+                                </div>
+                                <div class="section-input">
+                                    <label for="phone"><%= locals.phone %> </label>
+                                    <input class="box" type="text" name="phone" id="phone">
+                                </div>
+                                <div class="section-input">
+                                    <label for="web"><%= locals.webpage %> </label>
+                                    <input class="box" type="text" name="web" id="web">
+                                </div>
+                            </div>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="privacy"><%= locals.privacy %> </label>
+                                    <fieldset class="invitation-radio">
+                                        <label>
+                                    <input checked type="radio" name="privacy" value="public"> <%= locals.publicnotif %> 
+                                </label>
+                                        <label>
+                                    <input type="radio" name="privacy" value="private"> <%= locals.privatenotif %> 
+                                </label>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="last-section">
+                                <input type="submit" value="<%= locals.submit %>" class="btn btn-blue">
+                            </div>
+                        </form>
+                    </div>
+                </div>`;
+            $(".main-area").append(window);
+            $(".blurred").removeAttr("hidden");
+            setTimeout(function() {
+                var area = document.querySelector(".edit-window textarea");
+                $("#date").val(convertDate(new Date(), $("#date").attr("type")));
+                $(".edit-window").css("height", "70%");
+                $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
+                $(".blurred").css("opacity", ".5");
+            }, 20);
+        });
+
+        function auto_grow(element) {
+            element.style.height = "10px";
+            element.style.height = (element.scrollHeight) + "px";
+        }
+
+        function convertDate(oldFormat, format) {
+            var options = {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            };
+            var newFormat = new Date(oldFormat).toLocaleString("es-ES", options).split(/[/ :]/);
+            if (format == "date") {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0]);
+            } else {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0] + "T" + newFormat[3] + ":" + newFormat[4]);
+            }
+        }
+    </script>
     </body>
 
     </html>
