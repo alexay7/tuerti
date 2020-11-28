@@ -1,0 +1,526 @@
+<%- include ("partials/header") %>
+
+    <div class="container main-area">
+
+        <div class="row">
+            <div class="col-md-3 main-sidebar">
+                <div class="row sidebar-area">
+                    <img class="sidebar-image" src="/images/events/avatars/default.png" alt="">
+                </div>
+                <div class="row sidebar-event-info">
+                    <div class="sidebar-title">
+                        <h3>
+                            <%= locals.info %>
+                        </h3>
+                        <% if(eventInfo.ownerId==currentUser.id){ %>
+                            <p class="sidebar-addon" id="edit-event"><i class="fas fa-pen"></i>
+                                <%= locals.edit %>
+                            </p>
+                            <% } %>
+                    </div>
+                    <div class="row event-info">
+                        <ul class="info-title">
+                            <li class="info-sub" id="event-date">
+                                <% 
+                                    var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric" };
+                                    var newdate = eventInfo.target.toLocaleDateString("en-US", options); 
+                                    %>
+                                    <p class="col-md-4">
+                                        <%= locals.date %>
+                                    </p>
+                                    <span class="col-md-8" data-value="<%= eventInfo.target %> "><%= newdate %></span>
+                            </li>
+                            <li class="info-sub">
+                                <p class="col-md-4">
+                                    <%= locals.time %>
+                                </p>
+                                <%if (!eventInfo.allday) {var hour=eventInfo.target.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"});%>
+                                    <span class="col-md-8"><%= hour  %></span>
+                                    <% }else{ %>
+                                        <span class="col-md-8"><%= locals.allday %> </span>
+                                        <% } %>
+                            </li>
+                            <li class="info-sub">
+                                <p class="col-md-4">
+                                    <%= locals.place %>
+                                </p>
+
+                                <span class="col-md-8"> <%= eventInfo.place %></span>
+                            </li>
+                            <% if(eventInfo.direction){ %>
+                                <li class="info-sub">
+                                    <p class="col-md-4">
+                                        <%= locals.direction %>
+                                    </p>
+                                    <span class="col-md-8"><a href="" id="event-place"><%= eventInfo.direction %> </a></span>
+                                </li>
+                                <% } %>
+                                    <% if(eventInfo.webpage){ %>
+                                        <li class="info-sub">
+                                            <p class="col-md-4">
+                                                <%= locals.webpage %>
+                                            </p>
+                                            <span class="col-md-8"><a href="<%=eventInfo.webpage %>"><%= eventInfo.webpage %></a></span>
+
+                                        </li>
+                                        <% } %>
+                                            <% if(eventInfo.phone){ %>
+                                                <li class="info-sub">
+                                                    <p class="col-md-4">
+                                                        <%= locals.phone %>
+                                                    </p>
+                                                    <span class="col-md-8"><%= eventInfo.phone %> </span>
+                                                </li>
+                                                <% } %>
+                        </ul>
+                        <% if(eventInfo.direction){ %>
+                            <% } %>
+                    </div>
+                </div>
+                <div class="sidebar-item">
+                    <p class="sidebar-title-2">Creado por</p>
+                    <div class="item-box">
+                        <a href="/user/<%= eventInfo.ownerId %> ">
+                        <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png" alt="">
+                    </a>
+                        <div class="user-box">
+                            <a href="/user/<%= eventInfo.ownerId %> " class="user-name">
+                                <%= eventInfo.owner.firstname %>
+                                    <%= eventInfo.owner.lastname %>
+                            </a>
+                            <p class="user-date">
+                                <% 
+                                    var options = {weekday:"short", day: 'numeric', month: 'short',year:"numeric",hour:"numeric",minute:"numeric" };
+                                    var newcreation = eventInfo.createdAt.toLocaleDateString("en-US", options); 
+                                    %>
+                                    <%= newcreation %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 main-post-area">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="title-wrapper">
+                            <h2 class="event-title" data-id="<%= eventInfo.id %>">
+                                <%= eventInfo.name %>
+                                    <span><%= newdate %>
+                                <% if (eventInfo.allday) { %>,
+                                    <%= locals.allday %>
+                                        <% } %>
+                                    </span>
+                            </h2>
+                        </div>
+                        <div class="category-title-wrapper">
+                            <div class="category-title">
+                                <h3>
+                                    <%= locals.desc %>
+                                </h3>
+                            </div>
+                            <% if(eventInfo.ownerId==currentUser.id){ %>
+                                <p class="sidebar-addon" id="edit-description"><i class="fas fa-pen"></i>
+                                    <%= locals.edit %>
+                                </p>
+                                <% } %>
+                        </div>
+                        <p class="event-description">
+                            <%= eventInfo.description %>
+                        </p>
+                        <form hidden class="event-description" action="/event/<%= eventInfo.id %>/edit" method="post">
+                            <textarea class="form-control" oninput="auto_grow(this)" name="newdesc"><%= eventInfo.description %></textarea>
+                            <div class="event-desc-btns">
+                                <button id="cancel-edit" type="button" class="btn btn-gray">Cancelar</button>
+                                <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
+                            </div>
+                        </form>
+                        <div class="category-title-wrapper no-bottom-line">
+                            <div class="category-title">
+                                <h3>
+                                    <%= locals.eventwall %>
+                                </h3>
+                            </div>
+                        </div>
+                        <form class="new-post box" action="" method="post">
+                            <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
+                            <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1" placeholder="<%= locals.writehere %> "></textarea>
+                        </form>
+                        <p class="no-posts">
+                            <%= locals.noposts %>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="right-sidebar-title">
+                            <%= locals.participants %>
+                        </div>
+                        <% if(eventInfo.ownerId==currentUser.id||eventInfo.privacy=="public"){ %>
+                            <div class="btn invite-friends">
+                                <i class="fas fa-user"></i>
+                                <p>
+                                    <%= locals.invitefriends %>
+                                </p>
+                            </div>
+                            <% } %>
+                                <% if(eventInfo.relation){ %>
+                                    <div class="box event-notifications">
+                                        <form action="/changenotifs/<%= eventInfo.id %> " method="post" id="notif-form">
+                                            <p><i class="fas fa-caret-right"></i>
+                                                <%= locals.notifications %>
+                                            </p>
+                                            <label class="switch">
+                                            <% if(eventInfo.relation.notifications){ %> 
+                                    <input checked id="togglenotifs" type="checkbox" name="notifs">
+                                            <%  }else{  %>
+                                    <input id="togglenotifs" type="checkbox" name="notifs">
+                                            <% } %> 
+                                        <div class="slider"></div>
+                                  </label>
+                                        </form>
+                                    </div>
+                                    <% }else{ %>
+
+                                        <% } %>
+                                            <p class="right-sidebar-title-2">
+                                                <%= locals.assistance %>
+                                            </p>
+                                            <div class="">
+                                                <% if(eventInfo.relation||eventInfo.privacy=="public"){ %>
+                                                    <form action="/event/<%= eventInfo.id %> /changeassist" method="POST" class="stat-buttons">
+                                                        <% if (!eventInfo.relation) { %>
+                                                            <button name="newassist" value="yes" id="assist" class="btn onlyone">
+                                                                Seguir evento
+                                                            </button>
+                                                            <% }else{ %>
+                                                                <% if (eventInfo.relation.promise=="yes") { %>
+                                                                    <button disabled id="assist-yes" name="newassist" value="yes" class="btn">
+                                                                    <%= locals.yes %>
+                                                                            <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                            </button>
+                                                                    <% }else{ %>
+                                                                        <button id="assist-yes" name="newassist" value="yes" class="btn">
+                                                                            <%= locals.yes %>
+                                                                                    </button>
+                                                                        <% } %>
+                                                                            <% if (eventInfo.relation.promise=="maybe") { %>
+                                                                                <button disabled id="assist-maybe" name="newassist" value="maybe" class="btn">
+                                                                            <%= locals.maybe %>
+                                                                                    <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                                    </button>
+                                                                                <% }else{ %>
+                                                                                    <button id="assist-maybe" name="newassist" value="maybe" class="btn">
+                                                                                    <%= locals.maybe %>
+                                                                                            </button>
+                                                                                    <% } %>
+                                                                                        <% if (eventInfo.relation.promise=="no") { %>
+                                                                                            <button disabled id="assist-no" name="newassist" value="no" class="btn">
+                                                                                    <%= locals.no %>
+                                                                                            <div class="btn-badge"><i class="fas fa-check"></i></div>         
+                                                                                            </button>
+                                                                                            <% }else{ %>
+                                                                                                <button id="assist-no" name="newassist" value="no" class="btn">
+                                                                                            <%= locals.no %>
+                                                                                                    </button>
+                                                                                                <% } %>
+                                                                                                    <% } %>
+                                                    </form>
+                                            </div>
+                                            <% } %>
+                                                <div class="event-stats">
+                                                    <% var max =Math.max(eventInfo.guests.stats.yes,eventInfo.guests.stats.und,eventInfo.guests.stats.maybe,1); 
+                                    var yes = eventInfo.guests.stats.yes*100/max*0.64;
+                                    var maybe = eventInfo.guests.stats.maybe*100/max*0.64;
+                                    var und = eventInfo.guests.stats.und*100/max*0.64;
+                                    if(yes==0){yes=1;}if(und==0){und=1;}if(maybe==0){maybe=1;}
+                                    var guests = {yes,maybe,und};
+                                    %>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.yes %>
+                                                            </p>
+                                                            <div class="chart-data" style="background:#84A1BE" id="chart-yes" data-value="<%= guests.yes %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.willgo %>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.maybe %>
+                                                            </p>
+                                                            <div class="chart-data" style="background:#84A1BE" id="chart-maybe" data-value="<%= guests.maybe %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.maybego %>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart">
+                                                            <p class="chart-value">
+                                                                <%= eventInfo.guests.stats.und %>
+                                                            </p>
+                                                            <div class="chart-data" style="background:#CED7E8;" id="chart-und" data-value="<%= guests.und %>">&nbsp;</div>
+                                                            <div class="chart-label">
+                                                                <p>
+                                                                    <%= locals.noresponse %>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                <p class="right-sidebar-title-2">
+                                                    <%= locals.assistants %>
+                                                </p>
+                                                <ul class="user-images">
+                                                    <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
+                                                        <li class="user-photo">
+                                                            <a class="sidebar-user" href="/user/<%= guest.id %> ">
+                                                    <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
+                                                    <p><%= guest.firstname+" "+guest.lastname %></p>
+                                                </a>
+                                                        </li>
+                                                        <% }) %>
+                                                </ul>
+                                                <a class="all-events" href="">
+                                                    <%= locals.seall %>
+                                                </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div hidden class="blurred"></div>
+    </div>
+    <script>
+        fillChart();
+
+        $(".stat-buttons").submit(function() {
+            console.log($(this).serializeArray());
+        })
+
+        //Enable Event Notifications
+        $('#togglenotifs').click(function() {
+            delayInMilliseconds = 500;
+            setTimeout(function() {
+                loading("#notif-form", toggleNotifs, undefined);
+            }, delayInMilliseconds);
+        });
+
+        $(document).on("click ", ".close-btn ", function(e) {
+            e.preventDefault();
+            $(this).parent().css("height", "0%");
+            $(".blurred").css("opacity", "0");
+            setTimeout(function() {
+                $(".edit-window").remove();
+                $(".blurred").attr("hidden", "hidden");
+            }, 250);
+        });
+
+        $("#edit-event").click(function(e) {
+            e.preventDefault();
+            var window = document.createElement("div");
+            window.classList.add("edit-window");
+            window.innerHTML = `<div class="close-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="edit-wrapper" style="padding:0;">
+                    <ul class="edit-title">
+                        <li>
+                            <p class="no-margin selected">
+                                <%= locals.editevent %>
+                            </p>
+                        </li>
+                        <li>
+                            <p class="no-margin">
+                                <%= locals.changeimage %>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="edit-info">
+                        <form action="/event/<%= eventInfo.id %>/edit" method="post">
+                            <p class="edit-info-title">
+                                <%= locals.generalinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newname"><%= locals.eventtitle %> </label>
+                                    <input class="box" type="text" name="newname" id="newname" value="<%= eventInfo.name %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdate"><%= locals.dateandhour %> </label>
+                                    <% if(eventInfo.allday){ %>
+                                    <div class="twoinone">
+                                        <input class="box" type="date" name="newdate" id="newdate">
+                                        <label class="option">
+                                            <input checked type="checkbox" name="newallday" id="newallday"><%= locals.allday %> 
+                                        </label>
+                                    </div>
+                                    <% } else{ %>
+                                        <div class="twoinone">
+                                        <input class="box" type="datetime-local" name="newdate" id="newdate">
+                                        <label class="option">
+                                            <input type="checkbox" name="newallday" id="newallday"><%= locals.allday %> 
+                                        </label>
+                                    </div>
+                                    <% } %>
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdesc"><%= locals.desc %> </label>
+                                    <textarea oninput="auto_grow(this)" class="box" name="newdesc" id="newdesc" rows="3"><%= eventInfo.description %> </textarea>
+                                </div>
+                            </div>
+                            <p class="edit-info-title">
+                                <%= locals.addinfo %>
+                            </p>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newplace"><%= locals.place %> </label>
+                                    <input class="box" type="text" name="newplace" id="newplace" value="<%= eventInfo.place %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newdir"><%= locals.direction %> </label>
+                                    <input class="box" type="text" name="newdir" id="newdir" value="<%= eventInfo.place %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newphone"><%= locals.phone %> </label>
+                                    <input class="box" type="text" name="newphone" id="newphone" value="<%= eventInfo.phone %> ">
+                                </div>
+                                <div class="section-input">
+                                    <label for="newweb"><%= locals.webpage %> </label>
+                                    <input class="box" type="text" name="newweb" id="newweb" value="<%= eventInfo.webpage %> ">
+                                </div>
+                            </div>
+                            <div class="edit-info-section">
+                                <div class="section-input">
+                                    <label for="newprivacy"><%= locals.privacy %> </label>
+                                    <fieldset class="invitation-radio">
+                                        <label>
+                                            <% if(eventInfo.privacy=="public"){%>
+                                    <input checked type="radio" name="newprivacy" value="public"> <%= locals.publicnotif %> 
+                                </label>
+                                        <label>
+                                    <input type="radio" name="newprivacy" value="private"> <%= locals.privatenotif %> 
+                                    <% } else{%>
+                                        <input type="radio" name="newprivacy" value="public"> <%= locals.publicnotif %> 
+                                </label>
+                                        <label>
+                                    <input checked type="radio" name="newprivacy" value="private"> <%= locals.privatenotif %>
+                                        <% } %>
+                                </label>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="last-section">
+                                <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
+                                <a onclick="return confirm('<%=locals.areyousure %>')" href="/event/<%= eventInfo.id %>/delete"><%=locals.eventdel %></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>`;
+            $(".main-area").append(window);
+            $(".blurred").removeAttr("hidden");
+            setTimeout(function() {
+                var area = document.querySelector(".edit-window textarea");
+                auto_grow(area);
+                $("#newdate").val(convertDate($("#event-date span").data("value"), $("#newdate").attr("type")));
+                $(".edit-window").css("height", "67%");
+                $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
+                $(".blurred").css("opacity", ".5");
+            }, 20);
+        });
+
+        $(document).on("change", ".option", function(e) {
+            e.preventDefault();
+            var input = $("#newdate");
+            var value = input.val();
+            if (input.attr("type") == "date") {
+                value = value + "T00:00";
+                input.attr("type", "datetime-local");
+                input.val(value);
+            } else {
+                value = value.substring(0, 10);
+                input.attr("type", "date");
+                input.val(value);
+            }
+        });
+
+        $("#edit-description").click(function(e) {
+            e.preventDefault();
+            $("p.event-description").attr("hidden", "hidden");
+            $("form.event-description").removeAttr("hidden");
+            var area = document.querySelector(".event-description textarea");
+            auto_grow(area);
+        })
+
+        $("#cancel-edit").click(function(e) {
+            $("p.event-description").removeAttr("hidden")
+            $("form.event-description").attr("hidden", "hidden");
+        });
+
+        function toggleNotifs() {
+            var eventId = $(".event-title").data("id");
+            var url = "/event/" + eventId + "/changenotifs";
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url,
+                dataType: 'html'
+            });
+        }
+
+        function convertDate(oldFormat, format) {
+            var options = {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            };
+            var newFormat = new Date(oldFormat).toLocaleString("es-ES", options).split(/[/ :]/);
+            if (format == "date") {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0]);
+            } else {
+                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0] + "T" + newFormat[3] + ":" + newFormat[4]);
+            }
+        }
+
+        function changeAssist(value) {
+            var eventId = $(".event-title").data("id");
+            var url = "/event/" + eventId + "/changeassist";
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url,
+                dataType: 'html',
+                data: {
+                    newassist: value
+                }
+            });
+        }
+
+        function loading(object, func, params) {
+            var loadbox = document.createElement("div")
+            loadbox.innerHTML = "<div></div><div></div><div></div><div></div>";
+            loadbox.classList.add("lds-ring");
+            delayInMilliseconds = 2500;
+            $(object).attr("hidden", "true");
+            $(object).parent().append(loadbox);
+            setTimeout(function() {
+                $(object).removeAttr("hidden");
+                loadbox.remove();
+                func(params);
+            }, delayInMilliseconds);
+        }
+
+        function auto_grow(element) {
+            element.style.height = "5px";
+            element.style.height = (element.scrollHeight) + "px";
+        }
+
+        function fillChart() {
+            $("#chart-yes").css("height", $("#chart-yes").data("value") + "%");
+            $("#chart-und").css("height", $("#chart-und").data("value") + "%");
+            $("#chart-maybe").css("height", $("#chart-maybe").data("value") + "%");
+        }
+    </script>
+    </body>
+
+    </html>

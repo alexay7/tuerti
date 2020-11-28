@@ -62,6 +62,7 @@ app.use(function(req, res, next) {
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 const mainRoutes = require("./routes/main");
+const eventRoutes = require("./routes/event");
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -70,6 +71,7 @@ app.use(methodOverride("_method"));
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", mainRoutes);
+app.use("/event", eventRoutes);
 
 app.get("*", function(req, res) {
     res.redirect("/");
