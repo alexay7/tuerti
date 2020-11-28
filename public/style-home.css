@@ -797,10 +797,10 @@ input:checked+.slider:before {
 
 .edit-window {
     position: fixed;
-    width: 36%;
+    width: 45%;
     height: 0;
     top: 13%;
-    left: 32%;
+    left: 27.5%;
     background-color: white;
     -webkit-box-shadow: 0px 0px 0px 7px #adadadab;
     -moz-box-shadow: 0px 0px 0px 7px #dcdcdcab;

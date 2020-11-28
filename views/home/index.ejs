@@ -120,9 +120,10 @@
                 </div>
             </div>
         </div>
+        <div hidden class="blurred"></div>
     </div>
     <script>
-        $(document).on("click ", ".close-btn ", function(e) {
+        $(document).on("click ", ".close-btn", function(e) {
             e.preventDefault();
             $(this).parent().css("height", "0%");
             $(".blurred").css("opacity", "0");
@@ -226,7 +227,7 @@
             setTimeout(function() {
                 var area = document.querySelector(".edit-window textarea");
                 $("#date").val(convertDate(new Date(), $("#date").attr("type")));
-                $(".edit-window").css("height", "70%");
+                $(".edit-window").css("height", "67%");
                 $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
                 $(".blurred").css("opacity", ".5");
             }, 20);

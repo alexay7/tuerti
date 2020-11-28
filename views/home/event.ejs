@@ -80,9 +80,11 @@
                 <div class="sidebar-item">
                     <p class="sidebar-title-2">Creado por</p>
                     <div class="item-box">
+                        <a href="/user/<%= eventInfo.ownerId %> ">
                         <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png" alt="">
+                    </a>
                         <div class="user-box">
-                            <a href="" class="user-name">
+                            <a href="/user/<%= eventInfo.ownerId %> " class="user-name">
                                 <%= eventInfo.owner.firstname %>
                                     <%= eventInfo.owner.lastname %>
                             </a>
@@ -419,7 +421,7 @@
                 var area = document.querySelector(".edit-window textarea");
                 auto_grow(area);
                 $("#newdate").val(convertDate($("#event-date span").data("value"), $("#newdate").attr("type")));
-                $(".edit-window").css("height", "70%");
+                $(".edit-window").css("height", "67%");
                 $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
                 $(".blurred").css("opacity", ".5");
             }, 20);

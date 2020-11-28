@@ -3,7 +3,6 @@ body {
     background: url(images/index_noise.png) repeat left top, -webkit-radial-gradient(center, circle cover, #5e90bc 0, #426990 100%);
     height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
 }
 
 ul {
@@ -249,10 +248,14 @@ a:hover {
 }
 
 .footer {
-    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+}
+
+.index-footer {
+    margin-top: 20px;
+    position: fixed;
 }
 
 .footerContent {
@@ -348,15 +351,12 @@ a:hover {
     justify-content: center;
     background-color: #fff;
     width: 70%;
-    margin: auto;
-    position: relative;
-    overflow-y: scroll;
-    height: 100%;
+    margin: 10px auto;
     border-radius: 5px;
     -webkit-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
     -moz-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
     box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     padding-top: 6px;
     z-index: 10;
 }
@@ -464,10 +464,8 @@ fieldset.register-element label {
 .register-main {
     display: grid;
     margin-top: 10px;
-    grid-template-rows: 10% calc(90% - 127px);
     row-gap: 10px;
     height: 100%;
-    margin-bottom: 107px;
 }
 
 .container {
