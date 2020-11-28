@@ -337,23 +337,28 @@ a:hover {
 
 .logo {
     justify-content: center;
-    margin: 20px 0 30px 0;
+    align-items: center;
+}
+
+.logo img {
+    height: 7vh;
 }
 
 .register-wrapper {
     justify-content: center;
     background-color: #fff;
-    width: 100vh;
+    width: 70%;
     margin: auto;
     position: relative;
     overflow-y: scroll;
-    height: 75vh;
+    height: 100%;
     border-radius: 5px;
     -webkit-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
     -moz-box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
     box-shadow: 0px 0px 0px 7px rgba(61, 100, 139, 1);
     padding-bottom: 10px;
     padding-top: 6px;
+    z-index: 10;
 }
 
 .register-wrapper h3 {
@@ -447,16 +452,24 @@ fieldset.register-element label {
 
 .terms {
     flex-direction: column;
+    margin: 0 auto 1rem auto;
+    width: 90%;
 }
 
 .terms label {
     text-align: left;
     font-size: 13px;
-    align-items: center;
-    display: flex;
 }
 
-.terms label input {
-    margin-right: 5px;
-    margin-bottom: 2px;
+.register-main {
+    display: grid;
+    margin-top: 10px;
+    grid-template-rows: 10% calc(90% - 127px);
+    row-gap: 10px;
+    height: 100%;
+    margin-bottom: 107px;
+}
+
+.container {
+    height: 100%;
 }

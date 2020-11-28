@@ -22,7 +22,7 @@ function lang(req, res) {
 function getcookie(req, res) {
     var cookie = req.cookies["lang"];
     if (cookie == undefined) {
-        res.cookie("lang", "en", { httpOnly: false });
+        res.cookie("lang", "es", { httpOnly: false });
         return "lang=es";
     } else {
         return cookie;
@@ -31,10 +31,10 @@ function getcookie(req, res) {
 
 function siteLanguage(language) {
     switch (language) {
-        case "es":
-            return Languages["spanish"];
-        default:
+        case "en":
             return Languages["english"];
+        default:
+            return Languages["spanish"];
     }
 }
 
