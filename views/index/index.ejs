@@ -8,7 +8,7 @@
             <form action="/login" method="post">
                 <div class="form-group login-wrapper">
                     <div class="form-item">
-                        <% if (error[0]=="Missing credentials"||error[0]=="mail") { %>
+                        <% if (messages.error=="Missing credentials"||messages.error=="mail") { %>
                             <input tabindex="1" class="form-control textbox error" type="email" id="email" name="email" placeholder="Email">
                             <i class="fas fa-exclamation-triangle login-warning"></i>
                             <% } else { %>
@@ -20,7 +20,7 @@
                         </label>
                     </div>
                     <div class="form-item">
-                        <% if (error[0]!=undefined) { %>
+                        <% if (messages.error=="pass") { %>
                             <input tabindex="2" class="form-control textbox error" type="password" id="password" name="password" placeholder="<%= locals.password %> ">
                             <i class="fas fa-exclamation-triangle login-warning"></i>
                             <% } else { %>

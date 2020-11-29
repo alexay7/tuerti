@@ -1,8 +1,8 @@
 const express = require("express"),
     router = express.Router(),
     passport = require("passport"),
-    models = require("../app/models");
-const { body, validationResult } = require('express-validator');
+    models = require("../app/models"),
+    { body, validationResult } = require('express-validator');
 
 
 router.get("/register", isAlreadyIn, function(req, res) {
@@ -10,15 +10,16 @@ router.get("/register", isAlreadyIn, function(req, res) {
 });
 
 router.post('/register', isAlreadyIn, [
-    // username must be an email
-    body('email').isEmail(),
-    // password must be at least 5 chars long
-    body('password').isLength({ min: 5 })
+    body('email').isEmail().normalizeEmail(),
+    body('password').isLength({ min: 5 }),
+    body('name').escape().not().isEmpty().isLength({ min: 2 }),
+    body('surnames').escape().not().isEmpty().isLength({ min: 2 }),
+    body('birthday').isDate().not().isEmpty()
 ], function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        var error = errors.array()[0].param;
-        return res.render("index/register", { locals, error });
+        req.flash(errors);
+        return res.redirect("back");
     }
     passport.authenticate('local-signup', {
         successRedirect: '/',

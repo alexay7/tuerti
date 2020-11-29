@@ -95,7 +95,7 @@ spanish = {
     privatenotif: "Solo el creador puede enviar invitaciones a este evento",
     cancel: "Cancelar",
     eventdel: "Eliminar evento",
-    areyousure: "¿Estás seguro?",
+    areyousure: "¿Estás seguro?"
 };
 english = {
     language: "english",

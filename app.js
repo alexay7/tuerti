@@ -54,8 +54,7 @@ app.use(function(req, res, next) {
     lang(req, res);
     res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
     res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success_messages');
-    res.locals.error = req.flash('error');
+    res.locals.messages = req.flash();
     next();
 });
 
@@ -63,6 +62,7 @@ const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 const mainRoutes = require("./routes/main");
 const eventRoutes = require("./routes/event");
+const userRoutes = require("./routes/user");
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -72,6 +72,7 @@ app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", mainRoutes);
 app.use("/event", eventRoutes);
+app.use("/user", userRoutes);
 
 app.get("*", function(req, res) {
     res.redirect("/");

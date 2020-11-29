@@ -20,6 +20,10 @@ body {
     border-radius: .15rem;
 }
 
+.error {
+    border-color: red!important;
+}
+
 .mapa {
     background: black;
     width: 100%;
@@ -29,6 +33,13 @@ body {
 .form-inline {
     position: relative;
     padding-left: 1rem;
+}
+
+.form-error {
+    font-size: 13px;
+    text-align: end;
+    color: crimson;
+    margin: 0;
 }
 
 .selected {
@@ -896,7 +907,7 @@ input:checked+.slider:before {
 
 .section-input {
     display: grid;
-    grid-template-columns: 32% 62%;
+    grid-template-columns: 25% 70%;
     justify-content: space-between;
     margin: 10px 0;
 }
@@ -923,7 +934,7 @@ input:checked+.slider:before {
 
 .twoinone {
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 75% 25%;
     align-items: center;
 }
 
