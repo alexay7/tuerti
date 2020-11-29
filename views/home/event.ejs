@@ -2,6 +2,7 @@
 
     <head>
         <title>
+            Tuerti -
             <%= eventInfo.name %>
         </title>
     </head>
@@ -17,7 +18,7 @@
                                     <div class="row">
                                         <div class="col-md-3 main-sidebar">
                                             <div class="row sidebar-area">
-                                                <img class="sidebar-image" src="/images/events/avatars/default.png" alt="">
+                                                <img class="sidebar-image box" src="/images/events/avatars/default.png" alt="">
                                             </div>
                                             <div class="row sidebar-event-info">
                                                 <div class="sidebar-title">
@@ -93,8 +94,13 @@
                                                 <p class="sidebar-title-2">Creado por</p>
                                                 <div class="item-box">
                                                     <a href="/user/<%= eventInfo.ownerId %> ">
-                        <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png" alt="">
-                    </a>
+                                                        <div class="user-wrapper">
+                                                            <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png" alt="">
+                                                            <% if(eventInfo.owner.online){%>
+                                                                <div class="online"></div>
+                                                                <%}%>
+                                                        </div>
+                                                    </a>
                                                     <div class="user-box">
                                                         <a href="/user/<%= eventInfo.ownerId %> " class="user-name">
                                                             <%= eventInfo.owner.firstname %>
@@ -286,9 +292,16 @@
                                                                                 <% eventInfo.guests.users.slice(-6).forEach(guest => { %>
                                                                                     <li class="user-photo">
                                                                                         <a class="sidebar-user" href="/user/<%= guest.id %> ">
-                                                    <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
-                                                    <p><%= guest.firstname+" "+guest.lastname %></p>
-                                                </a>
+                                                                                            <div class="user-wrapper">
+                                                                                                <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
+                                                                                                <% if(guest.online){%>
+                                                                                                    <div class="online"></div>
+                                                                                                    <%}%>
+                                                                                            </div>
+                                                                                            <p>
+                                                                                                <%= guest.firstname+" "+guest.lastname %>
+                                                                                            </p>
+                                                                                        </a>
                                                                                     </li>
                                                                                     <% }) %>
                                                                             </ul>

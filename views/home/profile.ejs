@@ -2,6 +2,9 @@
 
     <head>
         <title>
+            Tuerti -
+            <%= userInfo.firstname %>
+                <%= userInfo.lastname %>
         </title>
     </head>
 
@@ -10,7 +13,7 @@
         <div class="row">
             <div class="col-md-3 main-sidebar">
                 <div class="row sidebar-area">
-                    <img class="sidebar-image" src="/images/events/avatars/default.png" alt="">
+                    <img class="box sidebar-image" src="/images/users/avatars/<%= userInfo.avatar %>.png" alt="">
                 </div>
                 <div class="row sidebar-event-info">
                     <div class="sidebar-title">
@@ -20,40 +23,7 @@
                     </div>
                     <div class="row event-info">
                         <ul class="info-title">
-                            <li class="info-sub" id="event-date">
-                                <p class="col-md-4">
-                                    <%= locals.date %>
-                                </p>
-                                <span class="col-md-8" data-value=" "></span>
-                            </li>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    <%= locals.time %>
-                                </p>
-                                <span class="col-md-8"><%= locals.allday %> </span>
-                            </li>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    <%= locals.place %>
-                                </p>
-
-                                <span class="col-md-8"> </span>
-                            </li>
                         </ul>
-                    </div>
-                </div>
-                <div class="sidebar-item">
-                    <p class="sidebar-title-2">Creado por</p>
-                    <div class="item-box">
-                        <a href="/user/">
-                            <img class="box" src="/images/users/avatars/default.png" alt="">
-                        </a>
-                        <div class="user-box">
-                            <a href="/user/ " class="user-name">
-                            </a>
-                            <p class="user-date">
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -62,9 +32,8 @@
                     <div class="col-md-9">
                         <div class="title-wrapper">
                             <h2 class="event-title" data-id="">
-                                <span>
-                                    <%= locals.allday %>
-                                    </span>
+                                <%= userInfo.firstname %>
+                                    <%= userInfo.lastname %>
                             </h2>
                         </div>
                         <div class="category-title-wrapper">
@@ -99,15 +68,7 @@
                         </p>
                     </div>
                     <div class="col-md-3">
-                        <div class="right-sidebar-title">
-                            <%= locals.participants %>
-                        </div>
-                        <p class="right-sidebar-title-2">
-                            <%= locals.assistants %>
-                        </p>
-                        <a class="all-events" href="">
-                            <%= locals.seall %>
-                        </a>
+
                     </div>
                 </div>
             </div>

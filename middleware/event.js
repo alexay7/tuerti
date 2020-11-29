@@ -69,7 +69,7 @@ middlewareObj.getEvents = async function(id) {
 }
 
 middlewareObj.getUserInfoMin = function(userId) {
-    return models.user.findByPk(userId, { attributes: ['id', 'firstname', 'lastname', 'avatar'] }).then(function(user) {
+    return models.user.findByPk(userId, { attributes: ['id', 'firstname', 'lastname', 'avatar', 'online'] }).then(function(user) {
         if (user) {
             return user.dataValues;
         } else {
