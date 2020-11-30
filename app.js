@@ -72,7 +72,8 @@ app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", mainRoutes);
 app.use("/event", eventRoutes);
-app.use("/user", userRoutes);
+app.use("/", userRoutes);
+app.use("/photos", express.static(__dirname + '/private'));
 
 app.get("*", function(req, res) {
     res.redirect("/");

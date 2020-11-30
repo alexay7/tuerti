@@ -12,4 +12,17 @@ middlewareObj.getUserInfo = function(userId) {
     });
 }
 
+middlewareObj.addVisit = function(userId) {
+    models.user.findByPk(userId).then(function(user) {
+        var newvisits = user.visits + 1;
+        user.update({
+            visits: newvisits
+        });
+    })
+}
+
+middlewareObj.canViewPhoto = function(userId) {
+    return false;
+}
+
 module.exports = middlewareObj;

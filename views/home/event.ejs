@@ -121,13 +121,13 @@
                                             <div class="row">
                                                 <div class="col-md-9">
                                                     <div class="title-wrapper">
-                                                        <h2 class="event-title" data-id="<%= eventInfo.id %>">
+                                                        <h2 class="main-title" data-id="<%= eventInfo.id %>">
                                                             <%= eventInfo.name %>
                                                                 <span><%= newdate %>
-                                <% if (eventInfo.allday) { %>,
-                                    <%= locals.allday %>
-                                        <% } %>
-                                    </span>
+                                                            <% if (eventInfo.allday) { %>,
+                                                          <%= locals.allday %>
+                                                         <% } %>
+                                                         </span>
                                                         </h2>
                                                     </div>
                                                     <div class="category-title-wrapper">
@@ -305,7 +305,7 @@
                                                                                     </li>
                                                                                     <% }) %>
                                                                             </ul>
-                                                                            <a class="all-events" href="">
+                                                                            <a class="sidebar-seall" href="">
                                                                                 <%= locals.seall %>
                                                                             </a>
                                                 </div>

@@ -7,6 +7,11 @@ module.exports = function(passport, user) {
 
     var LocalStrategy = require('passport-local').Strategy;
     passport.serializeUser(function(user, done) {
+        User.findByPk(user.id).then(function(user) {
+            user.update({
+                online: false
+            });
+        });
         done(null, user.id);
     });
     passport.deserializeUser(function(id, done) {
