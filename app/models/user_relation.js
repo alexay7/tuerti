@@ -1,7 +1,7 @@
 module.exports = function(sequelize, Sequelize) {
 
-    var EventGuest = sequelize.define('eventguest', {
-        guestId: {
+    var UserRelation = sequelize.define('userrelation', {
+        userOneId: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
@@ -11,26 +11,21 @@ module.exports = function(sequelize, Sequelize) {
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
         },
-        eventId: {
+        userTwoId: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-                model: 'events',
+                model: 'users',
                 key: 'id'
             },
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
         },
-        promise: {
-            type: Sequelize.ENUM('none', 'yes', 'maybe'),
-            defaultValue: "none"
-        },
-        notifications: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: true
+        status: {
+            type: Sequelize.ENUM('friends', 'pending', 'blocked')
         }
     });
 
-    return EventGuest;
+    return UserRelation;
 
 }

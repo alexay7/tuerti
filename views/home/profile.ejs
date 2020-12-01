@@ -1,247 +1,345 @@
 <%- include ("partials/header") %>
 
-    <head>
-        <title>
-            Tuerti -
-            <%= userInfo.firstname %>
-                <%= userInfo.lastname %>
-        </title>
-    </head>
-    <div class="container main-area" data-same="<%= isOwner %> ">
-        <div class="row">
-            <div class="col-md-3 main-sidebar">
-                <div class="row sidebar-area">
-                    <img class="box sidebar-image" src="/images/users/avatars/<%= userInfo.avatar %>.png" alt="">
+<head>
+    <title>
+        Tuerti -
+        <%= userInfo.firstname %>
+        <%= userInfo.lastname %>
+    </title>
+</head>
+<div class="container main-area" data-same="<%= isOwner %>">
+    <div class="row">
+        <div class="col-md-3 main-sidebar">
+            <div class="row sidebar-area">
+                <img class="box sidebar-image" src="/images/users/avatars/<%= userInfo.avatar %>.png" alt="">
+            </div>
+            <div class="row sidebar-event-info">
+                <div class="sidebar-title">
+                    <h3>
+                        <%= locals.info %>
+                    </h3>
                 </div>
-                <div class="row sidebar-event-info">
-                    <div class="sidebar-title">
-                        <h3>
-                            <%= locals.info %>
-                        </h3>
-                    </div>
-                    <div class="row event-info">
-                        <ul class="info-title">
-                            <div class="sidebar-title-2">Personal</div>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    Sexo
-                                </p>
-                                <% if (userInfo.gender=="m") { %>
-                                    <span class="col-md-8">Chico</span>
-                                    <% } else{%>
-                                        <span class="col-md-8">Chica</span>
-                                        <% } %>
+                <div class="row event-info">
+                    <ul class="info-title">
+                        <div class="sidebar-title-2">Personal</div>
+                        <li class="info-sub">
+                            <p class="col-md-4">
+                                Sexo
+                            </p>
+                            <% if (userInfo.gender=="m") { %>
+                            <span class="col-md-8">Chico</span>
+                            <% } else{%>
+                            <span class="col-md-8">Chica</span>
+                            <% } %>
 
-                            </li>
-                            <li class="info-sub" id="event-date">
-                                <% 
+                        </li>
+                        <li class="info-sub" id="event-date">
+                            <% 
                                    var options = {day: 'numeric', month: 'short',year:"numeric" };
                                     var birthday = userInfo.birthday.toLocaleDateString("en-US", options); 
                                 %>
-                                    <p class="col-md-4">
-                                        Cumpleaños
-                                    </p>
-                                    <span class="col-md-8"><%= birthday %></span>
-                            </li>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    Edad
-                                </p>
-                                <span class="col-md-8"><%= Math.floor((new Date()-userInfo.birthday)/86400000/365) %> años</span>
-                            </li>
-                            <div class="sidebar-title-2">Contacto</div>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    Ciudad
-                                </p>
-                                <span class="col-md-8"><%= userInfo.city %></span>
-                            </li>
-                            <li class="info-sub">
-                                <p class="col-md-4">
-                                    País
-                                </p>
-                                <span class="col-md-8"><%= userInfo.country %></span>
-                            </li>
-                            <div class="sidebar-title-2">Más detalles</div>
-                            <li class="info-sub">
-                                <% 
+                            <p class="col-md-4">
+                                Cumpleaños
+                            </p>
+                            <span class="col-md-8"><%= birthday %></span>
+                        </li>
+                        <li class="info-sub">
+                            <p class="col-md-4">
+                                Edad
+                            </p>
+                            <span class="col-md-8"><%= Math.floor((new Date()-userInfo.birthday)/86400000/365) %>
+                                años</span>
+                        </li>
+                        <div class="sidebar-title-2">Contacto</div>
+                        <li class="info-sub">
+                            <p class="col-md-4">
+                                Ciudad
+                            </p>
+                            <span class="col-md-8"><%= userInfo.city %></span>
+                        </li>
+                        <li class="info-sub">
+                            <p class="col-md-4">
+                                País
+                            </p>
+                            <span class="col-md-8"><%= userInfo.country %></span>
+                        </li>
+                        <div class="sidebar-title-2">Más detalles</div>
+                        <li class="info-sub">
+                            <% 
                                    var options = {day: 'numeric', month: 'short',year:"numeric" };
                                     var created = userInfo.createdAt.toLocaleDateString("en-US", options); 
                                 %>
-                                    <p class="col-md-4">
-                                        Registrado
-                                    </p>
-                                    <span class="col-md-8"><%= created %></span>
-                            </li>
-                            <li class="info-sub">
-                                <% 
+                            <p class="col-md-4">
+                                Registrado
+                            </p>
+                            <span class="col-md-8"><%= created %></span>
+                        </li>
+                        <li class="info-sub">
+                            <% 
                                 var options = {day: 'numeric', month: 'short',year:"numeric" };
                                  var lastvisit = userInfo.last_login.toLocaleDateString("en-US", options); 
                              %>
-                                    <p class="col-md-4">
-                                        Ultima visita
-                                    </p>
-                                    <% if(userInfo.online){ %>
-                                        <span class="col-md-8">En línea</span>
-                                        <% }else{ %>
-                                            <span class="col-md-8"><%= lastvisit %> </span>
-                                            <% } %>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9 main-post-area">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="title-wrapper">
-                            <h2 class="main-title" data-id="">
-                                <%= userInfo.firstname %>
-                                    <%= userInfo.lastname %> <span> Amigo
-                                     </span>
-                            </h2>
-                            <ul class="main-links">
-                                <li>
-                                    <a href="">Ver álbumes de fotos</a>
-                                </li>
-                                <li>
-                                    <div class="btn btn-gray"><i class="fas fa-envelope"></i>Mensaje privado</div>
-                                </li>
-                            </ul>
-                            <div class="user-status box">
-                                <i class="fas fa-caret-left"></i>
-                                <%= userInfo.status %>
-                            </div>
-                        </div>
-                        <div class="main-category">
-                            <div class="category-title-wrapper">
-                                <div class="category-title">
-                                    <h3>
-                                        Espacio personal
-                                    </h3>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="main-category">
-                            <div class="category-title-wrapper no-bottom-line">
-                                <div class="category-title">
-                                    <h3>
-                                        Tablón
-                                    </h3>
-                                </div>
-                                <ul class="wall-options">
-                                    <li>
-                                        <span>Mostrar</span>
-                                    </li>
-                                    <li><a href="">Todo</a></li>
-                                    <li><a href="">Estados</a></li>
-                                    <li><a href="">Comentarios</a></li>
-                                </ul>
-                            </div>
-
-                            <form class="new-post box" action="" method="post">
-                                <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
-                                <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1" placeholder="<%= locals.writehere %> "></textarea>
-                            </form>
-                            <p class="no-posts">
-                                <%= locals.noposts %>
+                            <p class="col-md-4">
+                                Ultima visita
                             </p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <p class="right-sidebar-title">
-                            Fotos
-                        </p>
-                        <ul class="sidebar-photos">
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/photos/1/009.jpg" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/photos/1/009.jpg" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/indexpack.png" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/users/avatars/default.png" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/users/avatars/default.png" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/logo2.png" alt="">
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                        <a class="sidebar-seall" href="">
-                            <%= locals.seall %>
-                        </a>
-                        <p class="right-sidebar-title">
-                            Amigos en Común
-                        </p>
-                        <ul class="user-images">
-                            <li class="user-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/users/avatars/default.png" alt="">
-                                    </div>
-                                    <p>
-                                        Alejandro Ayguabella Martínez
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                        <a class="sidebar-seall" href="">
-                            <%= locals.seall %>
-                        </a>
-                        <p class="right-sidebar-title">
-                            Amigos
-                        </p>
-                        <ul class="user-images">
-                            <li class="user-photo">
-                                <a class="sidebar-user" href="">
-                                    <div class="user-wrapper">
-                                        <img src="/images/users/avatars/default.png" alt="">
-                                    </div>
-                                    <p>
-                                        Alejandro Ayguabella Martínez
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                        <a class="sidebar-seall" href="">
-                            <%= locals.seall %>
-                        </a>
-                    </div>
+                            <% if(userInfo.online){ %>
+                            <span class="col-md-8">En línea</span>
+                            <% }else{ %>
+                            <span class="col-md-8"><%= lastvisit %> </span>
+                            <% } %>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div hidden class="blurred"></div>
-    </div>
-    </body>
+        <div class="col-md-9 main-post-area">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="title-wrapper">
+                        <h2 class="main-title" data-id="">
+                            <% if(!isOwner){ %>
+                            <%= userInfo.firstname %>
+                            <%= userInfo.lastname %>
+                            <% if(profileRelation&&profileRelation.status=="friends"){ %><span> Amigo </span>
+                            <% } %>
+                            <% } %>
+                        </h2>
 
-    </html>
+                        <ul class="main-links">
+
+                            <% if(isOwner){ %>
+                            <li class="profile-links">
+                                <a href="">Mis álbumes de fotos</a>
+                                <a href="">Editar perfil</a>
+                            </li>
+                            <% }else{ %>
+                            <li>
+                                <a href="">Ver álbumes de fotos</a>
+                            </li>
+                            <% } %>
+                            <li>
+                                <% if(profileRelation){if(profileRelation.status=="friends"){ %>
+                                <div class="btn btn-gray"><i class="fas fa-envelope"></i>Mensaje privado</div>
+                                <% }else if(isOwner){ %>
+
+                                <% } else if(profileRelation.status=="pending" && profileRelation.userOneId!=userInfo.id){ %>
+                                <div class="btn btn-gray"><i class="fas fa-user-plus"></i>Petición enviada.</div>
+
+                                <% } else if(profileRelation.status=="pending" && profileRelation.userOneId==userInfo.id){ %>
+                                <div class="friend-petition">
+                                    <p class="">Este usuario quiere agregarte como amigo</p>
+                                    <div class="petition-buttons">
+                                        <form action="/user/<%= userInfo.id %>/friendship" method="post">
+                                            <button name="petition" value="confirm" class="btn btn-blue"><i
+                                                    class="fas fa-user-plus"></i>Aceptar</button>
+                                            <button name="petition" value="deny" class="btn btn-gray"><i
+                                                    class="fas fa-user-plus"></i>Rechazar</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <% }}else{ %>
+                                <form action="/user/<%= userInfo.id %>/friendship" method="post">
+                                    <button name="petition" value="create" class="btn btn-gray"><i
+                                            class="fas fa-user-plus"></i></i>Agregar como amig@</button>
+                                </form>
+
+                                <% } %>
+                            </li>
+                        </ul>
+                        <% if(isOwner){ %>
+                        <form action="/user/<%= userInfo.id %>/changestatus" method="post">
+                            <div class="user-status box edition-mode">
+                                <i class="fas fa-pen"></i>
+                                <textarea maxlength="140" name="newstatus" oninput="auto_grow(this)"
+                                    placeholder="Actualiza tu estado"></textarea>
+                                <i class="fas fa-caret-left"></i>
+                            </div>
+                            <div class="user-status-bottom">
+                                <p>
+                                    <span>Última actualización:</span>
+                                    <%= userInfo.status %>,
+                                    <%= userInfo.status_change %>
+                                </p>
+                                <input class="btn btn-blue" type="submit" value="Guardar">
+                            </div>
+                        </form>
+                        <% }else{ %>
+                        <div class="user-status box">
+
+                            <i class="fas fa-caret-left"></i>
+                            <%= userInfo.status %>
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="main-category">
+                        <div class="category-title-wrapper">
+                            <div class="category-title">
+                                <h3>
+                                    Espacio personal
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="main-category">
+                        <div class="category-title-wrapper no-bottom-line">
+                            <div class="category-title">
+                                <h3>
+                                    Tablón
+                                </h3>
+                            </div>
+                            <ul class="wall-options">
+                                <li>
+                                    <span>Mostrar</span>
+                                </li>
+                                <li><a href="">Todo</a></li>
+                                <li><a href="">Estados</a></li>
+                                <li><a href="">Comentarios</a></li>
+                            </ul>
+                        </div>
+
+                        <form class="new-post box" action="" method="post">
+                            <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
+                            <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1"
+                                placeholder="<%= locals.writehere %> "></textarea>
+                        </form>
+                        <p class="no-posts">
+                            <%= locals.noposts %>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="right-sidebar-title">
+                        Fotos
+                    </p>
+                    <ul class="sidebar-photos">
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/photos/1/009.jpg" alt="">
+                                </div>
+                            </a>
+                        </li>
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/photos/1/009.jpg" alt="">
+                                </div>
+                            </a>
+                        </li>
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/images/indexpack.png" alt="">
+                                </div>
+                            </a>
+                        </li>
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/default.png" alt="">
+                                </div>
+                            </a>
+                        </li>
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/default.png" alt="">
+                                </div>
+                            </a>
+                        </li>
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                    <img src="/images/logo2.png" alt="">
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                    </a>
+                    <% if(!isOwner){ %>
+                    <p class="right-sidebar-title">
+                        Amigos en Común
+                    </p>
+                    <% if(userInfo.friends.commonFriends){ %>
+                    <ul class="user-images">
+                        <% userInfo.friends.commonFriends.forEach(friend => { %>
+                        <li class="user-photo">
+                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                    <%= friend.lastname %>
+                                </p>
+                            </a>
+                        </li>
+                        <% }); %>
+                    </ul>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                    </a>
+                    <% }else{ %>
+                    <div class="sidebar-element-empty">
+                        No tenéis ningún amigo en común.
+                    </div>
+                    <% } %>
+                    <% } %>
+                    <p class="right-sidebar-title">
+                        Amigos
+                    </p>
+                    <% if(userInfo.friends.commonFriends){ %>
+                    <ul class="user-images">
+
+                        <% userInfo.friends.profileFriends.forEach(friend => { %>
+                        <li class="user-photo">
+                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                    <%= friend.lastname %>
+                                </p>
+                            </a>
+                        </li>
+                        <% }); %>
+
+                    </ul>
+                    <% }else{ %>
+                    <div class="sidebar-element-empty">
+                        <% if(isOwner){ %>
+                        Aún no has agregado a ningún amigo.
+                        <% } else { %>
+                        Aún no ha agregado a ningún amigo.
+                        <% } %>
+                    </div>
+                    <% } %>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div hidden class="blurred"></div>
+</div>
+<script>
+    window.onload = function () {
+        if ($(".main-area").data("same") == true) {
+            auto_grow(document.querySelector(".user-status textarea"));
+        }
+    };
+
+    function auto_grow(element) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+</script>
+</body>
+
+</html>

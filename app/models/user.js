@@ -69,7 +69,7 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.DATE,
             notEmpty: true
         },
-        account_created: {
+        status_change: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },

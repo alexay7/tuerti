@@ -350,6 +350,22 @@ input:checked+.slider:before {
     margin: 0;
 }
 
+.profile-links {
+    display: flex;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.profile-links a {
+    padding-right: 5px;
+    margin-right: 5px;
+    border-right: 1px solid var(--dark-gray);
+}
+
+.profile-links a:last-of-type {
+    border-right: none;
+}
+
 .profile-visits {
     margin: 0;
     color: var(--darker-gray);
@@ -1043,10 +1059,12 @@ input:checked+.slider:before {
 
 .main-links {
     margin-top: 5px;
-    font-size: 13px;
+    margin-bottom: 7px;
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     width: 100%;
+    align-items: center;
 }
 
 .main-links .btn {
@@ -1068,6 +1086,7 @@ input:checked+.slider:before {
     position: relative;
     width: 100%;
     min-height: 44px;
+    word-break: break-word;
 }
 
 .user-status i {
@@ -1088,12 +1107,12 @@ input:checked+.slider:before {
     margin: 0;
     width: 36%;
     justify-content: space-between;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .wall-options a {
     border-right: 1px solid var(--dark-gray);
-    padding-right: 4px;
+    padding-right: 6px;
 }
 
 .wall-options li:last-of-type a {
@@ -1102,7 +1121,7 @@ input:checked+.slider:before {
 
 .wall-options span {
     color: gray;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .sidebar-photos {
@@ -1118,4 +1137,101 @@ input:checked+.slider:before {
     display: flex;
     flex-basis: 45%;
     max-width: 100%;
+}
+
+.user-status input {
+    border: none;
+    background: none;
+}
+
+.edition-mode {
+    background: white;
+    box-shadow: inset 0 2px 3px 0 var(--dark-gray);
+}
+
+.edition-mode textarea {
+    padding-left: 25px;
+    width: 100%;
+    word-break: break-all;
+    border: none;
+    resize: none;
+    overflow: hidden;
+    font-size: 19px;
+    vertical-align: middle;
+    color: gray;
+}
+
+.edition-mode textarea:focus {
+    outline: none;
+}
+
+.edition-mode i {
+    color: white;
+}
+
+.user-status-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+.user-status-bottom .btn {
+    padding: 4px 30px;
+    height: fit-content;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.user-status-bottom p {
+    margin: 0;
+    color: gray;
+    font-size: 12px;
+    word-break: break-word;
+    flex-basis: 80%;
+}
+
+.user-status-bottom span {
+    font-weight: bold;
+    color: Black;
+}
+
+.user-status .fa-pen {
+    left: 15px;
+    top: 19px;
+    color: var(--darker-gray);
+    font-size: 13px;
+}
+
+.title-wrapper form {
+    width: 100%;
+}
+
+.sidebar-element-empty {
+    border-bottom: 1px solid var(--dark-gray);
+    color: gray;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+
+.friend-petition {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.friend-petition p {
+    margin: 0;
+    color: gray;
+}
+
+.petition-buttons form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.petition-buttons .btn-blue {
+    margin-right: 10px;
+    color: white;
 }
