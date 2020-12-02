@@ -1,4 +1,4 @@
-<%- include ("partials/header") %>
+<%- include ("partials/header"); %>
 
 <head>
     <title>
@@ -12,7 +12,7 @@
     <%} else{%>
     <div class="container main-area" data-function="editevent">
         <%}%>
-                        <% } else { %>
+         <% } else { %>
         <div class="container main-area">
             <% } %>
             <div class="row">
@@ -88,8 +88,6 @@
                                 </li>
                                 <% } %>
                             </ul>
-                            <% if(eventInfo.direction){ %>
-                            <% } %>
                         </div>
                     </div>
                     <div class="sidebar-item">
@@ -306,13 +304,13 @@
                                         <% if(guest.online){%>
                                         <div class="online"></div>
                                         <%}%>
-                                                                                            </div>
-                                                                                            <p>
-                                                                                                <%= guest.firstname+" "+guest.lastname %>
+                                         </div>
+                                          <p>
+                                         <%= guest.firstname+" "+guest.lastname %>
                                         </p>
                                 </a>
                             </li>
-                            <% }) %>
+                            <% }); %>
                         </ul>
                         <a class="sidebar-seall" href="">
                             <%= locals.seall %>
@@ -330,9 +328,6 @@
                 $("#edit-event").click();
             }
         };
-        $(".stat-buttons").submit(function () {
-            console.log($(this).serializeArray());
-        })
 
         //Enable Event Notifications
         $('#togglenotifs').click(function () {

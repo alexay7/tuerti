@@ -9,6 +9,14 @@ middlewareObj.isLoggedIn = function (req, res, next) {
 }
 
 middlewareObj.simplifyDate = function (date, format) {
+    /*
+    FORMATS
+
+    "hoursminutesago", hace x horas y x minutos
+    "hoursago", "hace x horas"
+
+
+    */
     var today = new Date();
     var differenceDays = (today - date) / 86400000;
     var options = { day: 'numeric', month: 'short', year: "numeric" };
@@ -22,7 +30,32 @@ middlewareObj.simplifyDate = function (date, format) {
             }
             return "hace " + Math.floor(differenceHours * 60) + " minutos"
         } else {
-            return "hace " + Math.floor(differenceHours) + " horas y " + Math.floor(differenceHours * 60 - Math.floor(differenceHours) * 60) + " minutos";
+            if (format == "hoursago") {
+                return "hace " + Math.floor(differenceHours) + " horas";
+            } else {
+                var hours = Math.floor(differenceHours);
+                var minutes = Math.floor(differenceHours * 60 - Math.floor(differenceHours) * 60);
+                switch (minutes) {
+                    case 0:
+                        if (hours == 1) {
+                            return "hace " + hours + " hora";
+                        } else {
+                            return "hace " + hours + " horas";
+                        }
+                    case 1:
+                        if (hours == 1) {
+                            return "hace " + hours + " hora" + minutes + " minuto";
+                        } else {
+                            return "hace " + hours + " horas y " + minutes + " minuto";
+                        }
+                    default:
+                        if (hours == 1) {
+                            return "hace " + hours + " hora y " + minutes + " minutos";
+                        } else {
+                            return "hace " + hours + " horas y " + minutes + " minutos";
+                        }
+                }
+            }
         }
     } else {
         return newdate;

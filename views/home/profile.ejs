@@ -75,17 +75,13 @@
                             <span class="col-md-8"><%= created %></span>
                         </li>
                         <li class="info-sub">
-                            <% 
-                                var options = {day: 'numeric', month: 'short',year:"numeric" };
-                                 var lastvisit = userInfo.last_login.toLocaleDateString("en-US", options); 
-                             %>
                             <p class="col-md-4">
                                 Ultima visita
                             </p>
                             <% if(userInfo.online){ %>
                             <span class="col-md-8">En línea</span>
                             <% }else{ %>
-                            <span class="col-md-8"><%= lastvisit %> </span>
+                            <span class="col-md-8"><%= simplifyDate(userInfo.last_login,"hoursago"); %> </span>
                             <% } %>
                         </li>
                     </ul>
@@ -177,7 +173,7 @@
                         <div class="category-title-wrapper">
                             <div class="category-title">
                                 <h3>
-                                    Espacio personal
+                                    Espacio personal (WIP)
                                 </h3>
                             </div>
                         </div>
@@ -187,7 +183,7 @@
                         <div class="category-title-wrapper no-bottom-line">
                             <div class="category-title">
                                 <h3>
-                                    Tablón
+                                    Tablón (WIP)
                                 </h3>
                             </div>
                             <ul class="wall-options">
@@ -212,7 +208,7 @@
                 </div>
                 <div class="col-md-3">
                     <p class="right-sidebar-title">
-                        Fotos
+                        Fotos (WIP)
                     </p>
                     <ul class="sidebar-photos">
                         <li class="sidebar-photo">
