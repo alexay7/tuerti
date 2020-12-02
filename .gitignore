@@ -5,3 +5,5 @@ public/images/users/avatars/*
 public/images/events/avatars/*
 !public/images/events/avatars/default.png
 private
+privacidad.txt
+terminos.txt

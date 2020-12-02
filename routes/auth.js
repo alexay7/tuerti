@@ -5,7 +5,7 @@ const express = require("express"),
     { body, validationResult } = require('express-validator');
 
 
-router.get("/register", isAlreadyIn, function(req, res) {
+router.get("/register", isAlreadyIn, function (req, res) {
     res.render("index/register", { locals });
 });
 
@@ -15,27 +15,31 @@ router.post('/register', isAlreadyIn, [
     body('name').escape().not().isEmpty().isLength({ min: 2 }),
     body('surnames').escape().not().isEmpty().isLength({ min: 2 }),
     body('birthday').isDate().not().isEmpty()
-], function(req, res) {
+], function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash(errors);
         return res.redirect("back");
     }
     passport.authenticate('local-signup', {
-        successRedirect: '/',
+        successRedirect: '/load',
         failureRedirect: '/register',
         failureFlash: true
     })(req, res);
 });
 
 router.post('/login', passport.authenticate('local-signin', {
-    successRedirect: '/',
+    successRedirect: '/load',
     failureRedirect: '/',
     failureFlash: true
 }));
 
-router.get("/logout", isLoggedIn, function(req, res) {
-    models.user.findByPk(req.user.id).then(function(user) {
+router.get("/load", isLoggedIn, function (req, res) {
+    res.render("index/load");
+});
+
+router.get("/logout", isLoggedIn, function (req, res) {
+    models.user.findByPk(req.user.id).then(function (user) {
         if (user) {
             user.update({
                 online: false,

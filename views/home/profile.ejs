@@ -158,8 +158,8 @@
                             <div class="user-status-bottom">
                                 <p>
                                     <span>Última actualización:</span>
-                                    <%= userInfo.status %>,
-                                    <%= userInfo.status_change %>
+                                    <%= userInfo.status %>
+                                    <span class="status-date"><%= simplifyDate(userInfo.status_change); %></span>
                                 </p>
                                 <input class="btn btn-blue" type="submit" value="Guardar">
                             </div>
@@ -169,6 +169,7 @@
 
                             <i class="fas fa-caret-left"></i>
                             <%= userInfo.status %>
+                            <span><%= simplifyDate(userInfo.status_change); %></span>
                         </div>
                         <% } %>
                     </div>

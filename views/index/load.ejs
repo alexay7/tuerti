@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="/style-home.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <title>Tuerti - Cargando...</title>
+</head>
+
+<body class="loading-screen">
+    <div class="loading-wrapper">
+        <div class="load-text">Cargando <span><%= currentUser.email %></span>
+            <p class="loading-process" id="progress">0%</p>
+        </div>
+        <div class="loading-bar">
+            <div id="myBar" class="load"></div>
+        </div>
+    </div>
+    <div class="load-content">
+        <div class="load-image">
+            <div class="load-title">
+                Espacio <img src="images/logo_grey.png" alt=""> patrocinado por:
+            </div>
+            <div class="load-image-wrapper">
+                <img src="images/loading/fanta.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            $('.load').animate(
+                { width: '100%' },
+                {
+                    duration: 4750,
+                    step: function (now, fx) {
+                        if (fx.prop == 'width') {
+                            $("#progress").html(Math.floor(Math.floor(now * 100) / 100) + '%');
+                        }
+                    },
+                    complete: function () {
+                        window.location.href = "/";
+                    }
+                }
+            );
+        };
+    </script>
+</body>
+
+</html>

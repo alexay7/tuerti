@@ -1,7 +1,7 @@
 const express = require("express"),
     router = express.Router(),
     models = require('../app/models'),
-    { isLoggedIn } = require("../middleware"),
+    { isLoggedIn, simplifyDate } = require("../middleware"),
     { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends } = require("../middleware/user"),
     path = require('path'),
     { body, validationResult } = require('express-validator');
@@ -27,7 +27,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
             } else {
                 addVisit(userInfo.id);
             }
-            res.render("home/profile", { locals, userInfo, isOwner, profileRelation });
+            res.render("home/profile", { locals, userInfo, isOwner, profileRelation, simplifyDate });
         }
     } else {
         res.redirect("back");
@@ -67,7 +67,6 @@ router.post("/user/:id/friendship", isLoggedIn, function (req, res) {
         }
     }).then(function (relation) {
         if (relation) {
-            console.log(req.user.id);
             if (req.body.petition == "confirm" && relation.userTwoId == req.user.id) {
                 relation.update({
                     status: "friends"

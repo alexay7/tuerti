@@ -100,6 +100,96 @@ img {
 }
 
 
+/* LOADING SCREEN */
+
+.loading-screen {
+    background: linear-gradient(180deg, var(--gray-gradient-top) 0%, var(--gray-gradient-bottom) 100%);
+    min-height: 100vh;
+}
+
+.loading-wrapper {
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    font-size: 14px;
+    min-width: 250px;
+}
+
+.loading-wrapper p {
+    margin: 0;
+}
+
+.loading-wrapper span {
+    font-weight: bold;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-right: 5px;
+    border-right: 1px solid var(--dark-gray);
+}
+
+.loading-process {
+    font-weight: bold;
+}
+
+.load-text {
+    display: flex;
+}
+
+.loading-bar {
+    margin-top: 5px;
+    width: 120%;
+    background: var(--light-gray);
+    height: 15px;
+    align-items: center;
+    display: flex;
+    padding: 2px;
+}
+
+.load {
+    height: 100%;
+    content: " ";
+    width: 1%;
+    background: linear-gradient(180deg, var(--blue-gradient-top) 0%, var(--blue-gradient-bottom) 100%);
+}
+
+.load-content {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.load-title {
+    height: 15px;
+    display: flex;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: var(--dark-gray);
+}
+
+.load-title img {
+    height: 100%;
+    margin: 0 5px;
+}
+
+.load-image {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 60%;
+    position: relative;
+}
+
+.load-image-wrapper {
+    padding: 10px;
+    background: var(--light-gray);
+}
+
+
 /* SWITCH INPUT STYLE */
 
 .switch {
@@ -1187,7 +1277,7 @@ input:checked+.slider:before {
 .user-status-bottom p {
     margin: 0;
     color: gray;
-    font-size: 12px;
+    font-size: 13px;
     word-break: break-word;
     flex-basis: 80%;
 }
@@ -1234,4 +1324,14 @@ input:checked+.slider:before {
 .petition-buttons .btn-blue {
     margin-right: 10px;
     color: white;
+}
+
+.user-status span {
+    font-size: 10px;
+}
+
+.status-date {
+    color: var(--darker-gray)!important;
+    font-weight: normal!important;
+    font-size: 11px;
 }
