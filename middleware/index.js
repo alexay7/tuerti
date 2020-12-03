@@ -1,3 +1,5 @@
+const { localsName } = require("ejs");
+
 var middlewareObj = {};
 
 middlewareObj.isLoggedIn = function (req, res, next) {
@@ -26,33 +28,33 @@ middlewareObj.simplifyDate = function (date, format) {
         var differenceHours = differenceDays * 24;
         if (differenceHours < 1) {
             if (differenceHours * 60 < 5) {
-                return "Ahora mismo";
+                return locals.rightnow;
             }
-            return "hace " + Math.floor(differenceHours * 60) + " minutos"
+            return locals.hace + Math.floor(differenceHours * 60) + " " + locals.minutes + locals.ago
         } else {
             if (format == "hoursago") {
-                return "hace " + Math.floor(differenceHours) + " horas";
+                return locals.hace + Math.floor(differenceHours) + " " + locals.hours + locals.ago;
             } else {
                 var hours = Math.floor(differenceHours);
                 var minutes = Math.floor(differenceHours * 60 - Math.floor(differenceHours) * 60);
                 switch (minutes) {
                     case 0:
                         if (hours == 1) {
-                            return "hace " + hours + " hora";
+                            return locals.hace + hours + " " + locals.hour + locals.ago;
                         } else {
-                            return "hace " + hours + " horas";
+                            return locals.hace + hours + " " + locals.hours + locals.ago;
                         }
                     case 1:
                         if (hours == 1) {
-                            return "hace " + hours + " hora" + minutes + " minuto";
+                            return locals.hace + hours + " " + locals.hour + " " + minutes + " " + locals.minute + locals.ago;
                         } else {
-                            return "hace " + hours + " horas y " + minutes + " minuto";
+                            return locals.hace + hours + " " + locals.hours + " " + locals.and + " " + minutes + " " + locals.minute + locals.ago;
                         }
                     default:
                         if (hours == 1) {
-                            return "hace " + hours + " hora y " + minutes + " minutos";
+                            return locals.hace + hours + " " + locals.hour + " " + minutes + " " + locals.minutes + locals.ago;
                         } else {
-                            return "hace " + hours + " horas y " + minutes + " minutos";
+                            return locals.hace + hours + " " + locals.hours + " " + minutes + " " + locals.minutes + locals.ago;
                         }
                 }
             }

@@ -6,8 +6,8 @@
         <%= eventInfo.name %>
     </title>
 </head>
-<% if(errors.length>0){
-        if(errors=="onlydesc"){%>
+<% if(errors.length>0){%>
+<%if(errors=="onlydesc"){%>
 <div class="container main-area" data-function="editdesc">
     <%} else{%>
     <div class="container main-area" data-function="editevent">
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="sidebar-item">
-                        <p class="sidebar-title-2">Creado por</p>
+                        <p class="sidebar-title-2"><%= locals.createdby %></p>
                         <div class="item-box">
                             <a href="/user/<%= eventInfo.ownerId %> ">
                                 <div class="user-wrapper">
@@ -151,7 +151,8 @@
                             <textarea maxlength="3000" class="form-control" oninput="auto_grow(this)"
                                 name="newdesc"><%= eventInfo.description %></textarea>
                             <div class="event-desc-btns">
-                                <button id="cancel-edit" type="button" class="btn btn-gray">Cancelar</button>
+                                <button id="cancel-edit" type="button"
+                                    class="btn btn-gray"><%= locals.cancel %></button>
                                 <input type="submit" value="<%= locals.submit %> " class="btn btn-blue">
                             </div>
                         </form>
@@ -313,7 +314,7 @@
                             <% }); %>
                         </ul>
                         <a class="sidebar-seall" href="">
-                            <%= locals.seall %>
+                            <%= locals.seall %> (<%= eventInfo.guests.users.length %>)
                         </a>
                     </div>
                 </div>

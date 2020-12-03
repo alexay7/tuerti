@@ -21,15 +21,15 @@
                 </div>
                 <div class="row event-info">
                     <ul class="info-title">
-                        <div class="sidebar-title-2">Personal</div>
+                        <div class="sidebar-title-2"><%= locals.personal %> </div>
                         <li class="info-sub">
                             <p class="col-md-4">
-                                Sexo
+                                <%= locals.gender %>
                             </p>
                             <% if (userInfo.gender=="m") { %>
-                            <span class="col-md-8">Chico</span>
+                            <span class="col-md-8"><%= locals.male %> </span>
                             <% } else{%>
-                            <span class="col-md-8">Chica</span>
+                            <span class="col-md-8"><%= locals.female %> </span>
                             <% } %>
 
                         </li>
@@ -39,47 +39,47 @@
                                     var birthday = userInfo.birthday.toLocaleDateString("en-US", options); 
                                 %>
                             <p class="col-md-4">
-                                Cumpleaños
+                                <%= locals.birthday %>
                             </p>
                             <span class="col-md-8"><%= birthday %></span>
                         </li>
                         <li class="info-sub">
                             <p class="col-md-4">
-                                Edad
+                                <%= locals.age %>
                             </p>
                             <span class="col-md-8"><%= Math.floor((new Date()-userInfo.birthday)/86400000/365) %>
-                                años</span>
+                                <%= locals.yearsold %> </span>
                         </li>
-                        <div class="sidebar-title-2">Contacto</div>
+                        <div class="sidebar-title-2"><%= locals.contact %> </div>
                         <li class="info-sub">
                             <p class="col-md-4">
-                                Ciudad
+                                <%= locals.city %>
                             </p>
                             <span class="col-md-8"><%= userInfo.city %></span>
                         </li>
                         <li class="info-sub">
                             <p class="col-md-4">
-                                País
+                                <%= locals.country %>
                             </p>
                             <span class="col-md-8"><%= userInfo.country %></span>
                         </li>
-                        <div class="sidebar-title-2">Más detalles</div>
+                        <div class="sidebar-title-2"><%= locals.moredetails %> </div>
                         <li class="info-sub">
                             <% 
                                    var options = {day: 'numeric', month: 'short',year:"numeric" };
                                     var created = userInfo.createdAt.toLocaleDateString("en-US", options); 
                                 %>
                             <p class="col-md-4">
-                                Registrado
+                                <%= locals.registered %>
                             </p>
                             <span class="col-md-8"><%= created %></span>
                         </li>
                         <li class="info-sub">
                             <p class="col-md-4">
-                                Ultima visita
+                                <%= locals.lastvisit %>
                             </p>
                             <% if(userInfo.online){ %>
-                            <span class="col-md-8">En línea</span>
+                            <span class="col-md-8"><%= locals.online %> </span>
                             <% }else{ %>
                             <span class="col-md-8"><%= simplifyDate(userInfo.last_login,"hoursago"); %> </span>
                             <% } %>
@@ -96,7 +96,8 @@
                             <% if(!isOwner){ %>
                             <%= userInfo.firstname %>
                             <%= userInfo.lastname %>
-                            <% if(profileRelation&&profileRelation.status=="friends"){ %><span> Amigo </span>
+                            <% if(profileRelation&&profileRelation.status=="friends"){ %><span> <%= locals.friend %>
+                            </span>
                             <% } %>
                             <% } %>
                         </h2>
@@ -105,31 +106,33 @@
 
                             <% if(isOwner){ %>
                             <li class="profile-links">
-                                <a href="">Mis álbumes de fotos</a>
-                                <a href="">Editar perfil</a>
+                                <a href=""><%= locals.myalbums %> </a>
+                                <a href=""><%= locals.editprofile %> </a>
                             </li>
                             <% }else{ %>
                             <li>
-                                <a href="">Ver álbumes de fotos</a>
+                                <a href=""><%= locals.seealbums %> </a>
                             </li>
                             <% } %>
                             <li>
                                 <% if(profileRelation){if(profileRelation.status=="friends"){ %>
-                                <div class="btn btn-gray"><i class="fas fa-envelope"></i>Mensaje privado</div>
+                                <div class="btn btn-gray"><i class="fas fa-envelope"></i><%= locals.privatemessage %>
+                                </div>
                                 <% }else if(isOwner){ %>
 
                                 <% } else if(profileRelation.status=="pending" && profileRelation.userOneId!=userInfo.id){ %>
-                                <div class="btn btn-gray"><i class="fas fa-user-plus"></i>Petición enviada.</div>
+                                <div class="btn btn-gray"><i class="fas fa-user-plus"></i><%= locals.petitionsent %>
+                                </div>
 
                                 <% } else if(profileRelation.status=="pending" && profileRelation.userOneId==userInfo.id){ %>
                                 <div class="friend-petition">
-                                    <p class="">Este usuario quiere agregarte como amigo</p>
+                                    <p><%= locals.wanttoadd %> </p>
                                     <div class="petition-buttons">
                                         <form action="/user/<%= userInfo.id %>/friendship" method="post">
                                             <button name="petition" value="confirm" class="btn btn-blue"><i
-                                                    class="fas fa-user-plus"></i>Aceptar</button>
+                                                    class="fas fa-user-plus"></i><%= locals.accept %> </button>
                                             <button name="petition" value="deny" class="btn btn-gray"><i
-                                                    class="fas fa-user-plus"></i>Rechazar</button>
+                                                    class="fas fa-user-plus"></i><%= locals.deny %> </button>
                                         </form>
                                     </div>
                                 </div>
@@ -137,7 +140,7 @@
                                 <% }}else{ %>
                                 <form action="/user/<%= userInfo.id %>/friendship" method="post">
                                     <button name="petition" value="create" class="btn btn-gray"><i
-                                            class="fas fa-user-plus"></i></i>Agregar como amig@</button>
+                                            class="fas fa-user-plus"></i></i><%= locals.addfriend %> </button>
                                 </form>
 
                                 <% } %>
@@ -148,12 +151,12 @@
                             <div class="user-status box edition-mode">
                                 <i class="fas fa-pen"></i>
                                 <textarea maxlength="140" name="newstatus" oninput="auto_grow(this)"
-                                    placeholder="Actualiza tu estado"></textarea>
+                                    placeholder="<%= locals.updatestatus %> "></textarea>
                                 <i class="fas fa-caret-left"></i>
                             </div>
                             <div class="user-status-bottom">
                                 <p>
-                                    <span>Última actualización:</span>
+                                    <span><%= locals.lastupdate %> :</span>
                                     <%= userInfo.status %>
                                     <span class="status-date"><%= simplifyDate(userInfo.status_change); %></span>
                                 </p>
@@ -173,26 +176,57 @@
                         <div class="category-title-wrapper">
                             <div class="category-title">
                                 <h3>
-                                    Espacio personal (WIP)
+                                    <%= locals.personalspace %>
                                 </h3>
                             </div>
                         </div>
+                        <% if(isOwner){ %>
+                        <div class="personal-space">
+                            <div class="no-blog">
+                                <%= locals.emptyblog %> <span id="create-blog"><%= locals.createentry %> </span>
+                            </div>
+                            <div hidden class="create-blog box">
+                                <form action="/user/<%= currentUser.id %>/createblog" method="post">
+                                    <div class="blog-input">
+                                        <label for=""><%= locals.title %> </label>
+                                        <input class="box" type="text" name="title">
+                                    </div>
+                                    <div class="blog-input">
+                                        <label for=""><%= locals.entry %> </label>
+                                        <textarea oninput="auto_grow(this)" rows="2" class="box"
+                                            name="content"></textarea>
+                                    </div>
+                                    <div class="buttons">
+                                        <div class="left-side">
+                                            <input type="submit" value="Publicar" class="btn btn-blue">
+                                            <p id="close-blog"><%= locals.close %> </p>
+                                        </div>
+                                        <div class="right-side">
+                                            <span><%= locals.add %> </span>
+                                            <button class="btn btn-gray"><i class="fas fa-film"></i><%= locals.video %>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <% } %>
 
                     </div>
                     <div class="main-category">
                         <div class="category-title-wrapper no-bottom-line">
                             <div class="category-title">
                                 <h3>
-                                    Tablón (WIP)
+                                    <%= locals.wall %>
                                 </h3>
                             </div>
                             <ul class="wall-options">
                                 <li>
-                                    <span>Mostrar</span>
+                                    <span><%= locals.show %> </span>
                                 </li>
-                                <li><a href="">Todo</a></li>
-                                <li><a href="">Estados</a></li>
-                                <li><a href="">Comentarios</a></li>
+                                <li><a href=""><%= locals.all %> </a></li>
+                                <li><a href=""><%= locals.statuses %> </a></li>
+                                <li><a href=""><%= locals.comments %> </a></li>
                             </ul>
                         </div>
 
@@ -204,12 +238,37 @@
                         <p class="no-posts">
                             <%= locals.noposts %>
                         </p>
+                        <% if(!isOwner){ %>
+                        <ul class="user-options">
+                            <% if(!profileRelation){ %>
+                            <% }else{ %>
+                            <%if(profileRelation.status=="friends"){%>
+                            <li>
+                                <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
+                                        class="btn btn-gray"><i class="far fa-trash-alt"></i><%= locals.removefriend %>
+                                    </button>
+                                </form>
+                            </li>
+                            <% }} %>
+                            <li>
+                                <form action="/user/<%= userInfo.id %>/block" method="post"><button
+                                        class="btn btn-gray"><i class="fas fa-ban"></i><%= locals.blockuser %> </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="" method="post"><button class="btn btn-gray"><i
+                                            class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
+                                </form>
+                            </li>
+                        </ul>
+                        <% } %>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <p class="right-sidebar-title">
-                        Fotos (WIP)
-                    </p>
+                    <div class="right-sidebar-title">
+                        <%= locals.photos %>
+                        <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %> </div>
+                    </div>
                     <ul class="sidebar-photos">
                         <li class="sidebar-photo">
                             <a class="sidebar-user" href="">
@@ -259,7 +318,7 @@
                     </a>
                     <% if(!isOwner){ %>
                     <p class="right-sidebar-title">
-                        Amigos en Común
+                        <%= locals.commonfriends %>
                     </p>
                     <% if(userInfo.friends.commonFriends){ %>
                     <ul class="user-images">
@@ -278,16 +337,16 @@
                         <% }); %>
                     </ul>
                     <a class="sidebar-seall" href="">
-                        <%= locals.seall %>
+                        <%= locals.seall %> (<%= userInfo.friends.commonFriends.length %>)
                     </a>
                     <% }else{ %>
                     <div class="sidebar-element-empty">
-                        No tenéis ningún amigo en común.
+                        <%= locals.nocommons %>.
                     </div>
                     <% } %>
                     <% } %>
                     <p class="right-sidebar-title">
-                        Amigos
+                        <%= locals.friends %>
                     </p>
                     <% if(userInfo.friends.commonFriends){ %>
                     <ul class="user-images">
@@ -310,14 +369,14 @@
                     <% }else{ %>
                     <div class="sidebar-element-empty">
                         <% if(isOwner){ %>
-                        Aún no has agregado a ningún amigo.
+                        <%= locals.nofriendsyetown %>.
                         <% } else { %>
-                        Aún no ha agregado a ningún amigo.
+                        <%= locals.nofriendsyet %>.
                         <% } %>
                     </div>
                     <% } %>
                     <a class="sidebar-seall" href="">
-                        <%= locals.seall %>
+                        <%= locals.seall %> (<%= userInfo.friends.profileFriends.length %>)
                     </a>
                 </div>
             </div>
@@ -326,6 +385,18 @@
     <div hidden class="blurred"></div>
 </div>
 <script>
+    $("#create-blog").click(function (e) {
+        e.preventDefault();
+        $(".create-blog").removeAttr("hidden");
+        $(".no-blog").attr("hidden", "hidden");
+    });
+
+    $("#close-blog").click(function (e) {
+        e.preventDefault();
+        $(".create-blog").attr("hidden", "hidden");
+        $(".no-blog").removeAttr("hidden");
+    });
+
     window.onload = function () {
         if ($(".main-area").data("same") == true) {
             auto_grow(document.querySelector(".user-status textarea"));

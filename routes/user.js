@@ -18,7 +18,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
     var profileRelation = await findRelation(req.user.id, req.params.id);
     var friends = await getFriends(req.user.id, req.params.id);
     if (userInfo) {
-        if (profileRelation == "blocked") {
+        if (profileRelation.status == "blocked") {
             res.render("home/noaccess", { locals });
         } else {
             userInfo.friends = friends;
@@ -54,6 +54,50 @@ router.post("/user/:id/changestatus", isLoggedIn, isOwnProfile, [
             });
         }
         res.redirect("back");
+    });
+});
+
+router.post("/user/:id/deletefriend", isLoggedIn, function (req, res) {
+    const Op = require('Sequelize').Op;
+    models.userrelation.findOne({
+        where: {
+            [Op.or]: [{ userOneId: req.params.id }, { userTwoId: req.params.id }],
+            [Op.or]: [{ userOneId: req.user.id }, { userTwoId: req.user.id }],
+            status: "friends"
+        }
+    }).then(function (relation) {
+        if (relation) {
+            relation.destroy();
+        }
+        res.redirect("back");
+    });
+});
+
+router.post("/user/:id/block", isLoggedIn, function (req, res) {
+    const Op = require('Sequelize').Op;
+    models.userrelation.findOne({
+        where: {
+            [Op.or]: [{ userOneId: req.params.id }, { userTwoId: req.params.id }],
+            [Op.or]: [{ userOneId: req.user.id }, { userTwoId: req.user.id }],
+            status: "friends"
+        }
+    }).then(function (relation) {
+        if (relation) {
+            relation.update({
+                status: "blocked"
+            }).then(function () {
+                res.redirect("back");
+            });
+        } else {
+            var newRelation = {
+                userOneId: req.user.id,
+                userTwoId: req.params.id,
+                status: "blocked"
+            }
+            models.userrelation.create(newRelation).then(function () {
+                res.redirect("back");
+            });
+        }
     });
 });
 
