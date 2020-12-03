@@ -97,7 +97,7 @@
                                 <div class="user-wrapper">
                                     <img class="box" src="/images/users/avatars/<%= eventInfo.owner.avatar %>.png"
                                         alt="">
-                                    <% if(eventInfo.owner.online){%>
+                                    <% if(((new Date()-eventInfo.owner.last_activity)/86400000*24*60)<2){%>
                                     <div class="online"></div>
                                     <%}%>
                                                         </div>
@@ -302,7 +302,7 @@
                                 <a class="sidebar-user" href="/user/<%= guest.id %> ">
                                     <div class="user-wrapper">
                                         <img src="/images/users/avatars/<%= guest.avatar %>.png" alt="">
-                                        <% if(guest.online){%>
+                                        <% if(((new Date()-guest.last_activity)/86400000*24*60<2)){%>
                                         <div class="online"></div>
                                         <%}%>
                                          </div>

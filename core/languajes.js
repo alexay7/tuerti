@@ -144,7 +144,7 @@ spanish = {
     hour: "hora",
     minutes: "minutos",
     minute: "minuto",
-    rightnow: "Ahora mismo",
+    rightnow: "Recientemente",
     and: "y",
     hace: "hace ",
     ago: ""
@@ -295,7 +295,7 @@ english = {
     hour: "hour",
     minutes: "minutes",
     minute: "minute",
-    rightnow: "Right now",
+    rightnow: "Recently",
     and: "and",
     hace: "",
     ago: " ago"

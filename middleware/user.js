@@ -49,7 +49,10 @@ middlewareObj.findRelation = function (userId, profileId) {
         if (relationFound) {
             return relationFound.dataValues;
         } else {
-            return null;
+            dataValues = {
+                status: "none"
+            };
+            return dataValues;
         }
     });
 }

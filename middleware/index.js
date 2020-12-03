@@ -1,13 +1,23 @@
-const { localsName } = require("ejs");
-
-var middlewareObj = {};
+var middlewareObj = {},
+    models = require("../app/models");
 
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
+        middlewareObj.isAlive(req.user.id);
         next();
     } else {
         res.redirect('/');
     }
+}
+
+middlewareObj.isAlive = function (userId) {
+    models.user.findByPk(userId).then(function (user) {
+        if (user) {
+            user.update({
+                last_activity: new Date()
+            })
+        }
+    });
 }
 
 middlewareObj.simplifyDate = function (date, format) {

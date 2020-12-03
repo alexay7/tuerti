@@ -1,4 +1,4 @@
-module.exports = function(sequelize, Sequelize) {
+module.exports = function (sequelize, Sequelize) {
 
     var User = sequelize.define('user', {
 
@@ -61,7 +61,7 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        last_login: {
+        last_activity: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
@@ -72,10 +72,6 @@ module.exports = function(sequelize, Sequelize) {
         status_change: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
-        },
-        online: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: true
         }
     });
 

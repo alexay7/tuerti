@@ -43,7 +43,7 @@ router.get("/logout", isLoggedIn, function (req, res) {
         if (user) {
             user.update({
                 online: false,
-                last_login: new Date()
+                last_activity: new Date()
             });
             req.logout();
             res.redirect("back");

@@ -78,10 +78,10 @@
                             <p class="col-md-4">
                                 <%= locals.lastvisit %>
                             </p>
-                            <% if(userInfo.online){ %>
+                            <% if((new Date()-userInfo.last_activity)/86400000*24*60<2){ %>
                             <span class="col-md-8"><%= locals.online %> </span>
                             <% }else{ %>
-                            <span class="col-md-8"><%= simplifyDate(userInfo.last_login,"hoursago"); %> </span>
+                            <span class="col-md-8"><%= simplifyDate(userInfo.last_activity,"hoursago"); %> </span>
                             <% } %>
                         </li>
                     </ul>
@@ -115,11 +115,14 @@
                             </li>
                             <% } %>
                             <li>
-                                <% if(profileRelation){if(profileRelation.status=="friends"){ %>
+                                <% if(profileRelation.status=="friends"){ %>
                                 <div class="btn btn-gray"><i class="fas fa-envelope"></i><%= locals.privatemessage %>
                                 </div>
-                                <% }else if(isOwner){ %>
-
+                                <% }else if(profileRelation.status=="none"){ %>
+                                <form action="/user/<%= userInfo.id %>/friendship" method="post">
+                                    <button name="petition" value="create" class="btn btn-gray"><i
+                                            class="fas fa-user-plus"></i></i><%= locals.addfriend %> </button>
+                                </form>
                                 <% } else if(profileRelation.status=="pending" && profileRelation.userOneId!=userInfo.id){ %>
                                 <div class="btn btn-gray"><i class="fas fa-user-plus"></i><%= locals.petitionsent %>
                                 </div>
@@ -136,14 +139,7 @@
                                         </form>
                                     </div>
                                 </div>
-
-                                <% }}else{ %>
-                                <form action="/user/<%= userInfo.id %>/friendship" method="post">
-                                    <button name="petition" value="create" class="btn btn-gray"><i
-                                            class="fas fa-user-plus"></i></i><%= locals.addfriend %> </button>
-                                </form>
-
-                                <% } %>
+                                <% }%>
                             </li>
                         </ul>
                         <% if(isOwner){ %>
@@ -327,17 +323,21 @@
                             <a class="sidebar-user" href="/user/<%= friend.id %> ">
                                 <div class="user-wrapper">
                                     <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                    <div class="online"></div>
+                                    <%}%>
                                 </div>
                                 <p>
                                     <%= friend.firstname %>
                                     <%= friend.lastname %>
-                                </p>
+                                    </p>
                             </a>
                         </li>
                         <% }); %>
                     </ul>
                     <a class="sidebar-seall" href="">
-                        <%= locals.seall %> (<%= userInfo.friends.commonFriends.length %>)
+                        <%= locals.seall %> (<% if(userInfo.friends.commonFriends){ %>
+                        <%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
                     </a>
                     <% }else{ %>
                     <div class="sidebar-element-empty">
@@ -356,11 +356,14 @@
                             <a class="sidebar-user" href="/user/<%= friend.id %> ">
                                 <div class="user-wrapper">
                                     <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                    <div class="online"></div>
+                                    <%}%>
                                 </div>
                                 <p>
                                     <%= friend.firstname %>
                                     <%= friend.lastname %>
-                                </p>
+                                    </p>
                             </a>
                         </li>
                         <% }); %>
@@ -376,7 +379,8 @@
                     </div>
                     <% } %>
                     <a class="sidebar-seall" href="">
-                        <%= locals.seall %> (<%= userInfo.friends.profileFriends.length %>)
+                        <%= locals.seall %> (<% if(userInfo.friends.profileFriends){ %>
+                        <%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
                     </a>
                 </div>
             </div>
