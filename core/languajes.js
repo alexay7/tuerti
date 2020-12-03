@@ -147,7 +147,9 @@ spanish = {
     rightnow: "Recientemente",
     and: "y",
     hace: "hace ",
-    ago: ""
+    ago: "",
+    image: "Imagen",
+    text: "Texto"
 };
 english = {
     language: "english",
@@ -298,7 +300,8 @@ english = {
     rightnow: "Recently",
     and: "and",
     hace: "",
-    ago: " ago"
+    ago: " ago",
+    image: "Imagen"
 };
 
 languages = { spanish, english };

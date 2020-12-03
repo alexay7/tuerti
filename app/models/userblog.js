@@ -6,9 +6,6 @@ module.exports = function (sequelize, Sequelize) {
             primaryKey: true,
             type: Sequelize.INTEGER
         },
-        index: {
-            type: Sequelize.INTEGER
-        },
         ownerId: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -24,7 +21,7 @@ module.exports = function (sequelize, Sequelize) {
             notEmpty: true
         },
         type: {
-            type: Sequelize.ENUM('youtube', 'text')
+            type: Sequelize.ENUM('video', 'text', 'image')
         },
         content: {
             type: Sequelize.TEXT('tiny')

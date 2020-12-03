@@ -140,4 +140,27 @@ router.post("/user/:id/friendship", isLoggedIn, function (req, res) {
     });
 });
 
+router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
+    body('title').not().isEmpty().isLength({ min: 2, max: 25 }),
+    body('content').not().isEmpty().isLength({ min: 2, max: 500 }),
+], function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.redirect("back");
+    }
+    var newBlog = {
+        ownerId: req.user.id,
+        title: req.body.title,
+        type: req.body.type,
+        content: req.body.content
+    }
+    models.userblog.create(newBlog).then(function (entry) {
+        if (entry) {
+            res.redirect("back");
+        } else {
+            res.redirect("back");
+        }
+    });
+});
+
 module.exports = router;

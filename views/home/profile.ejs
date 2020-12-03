@@ -118,7 +118,7 @@
                                 <% if(profileRelation.status=="friends"){ %>
                                 <div class="btn btn-gray"><i class="fas fa-envelope"></i><%= locals.privatemessage %>
                                 </div>
-                                <% }else if(profileRelation.status=="none"){ %>
+                                <% }else if(profileRelation.status=="none" && !isOwner){ %>
                                 <form action="/user/<%= userInfo.id %>/friendship" method="post">
                                     <button name="petition" value="create" class="btn btn-gray"><i
                                             class="fas fa-user-plus"></i></i><%= locals.addfriend %> </button>
@@ -126,7 +126,6 @@
                                 <% } else if(profileRelation.status=="pending" && profileRelation.userOneId!=userInfo.id){ %>
                                 <div class="btn btn-gray"><i class="fas fa-user-plus"></i><%= locals.petitionsent %>
                                 </div>
-
                                 <% } else if(profileRelation.status=="pending" && profileRelation.userOneId==userInfo.id){ %>
                                 <div class="friend-petition">
                                     <p><%= locals.wanttoadd %> </p>
@@ -185,12 +184,26 @@
                                 <form action="/user/<%= currentUser.id %>/createblog" method="post">
                                     <div class="blog-input">
                                         <label for=""><%= locals.title %> </label>
-                                        <input class="box" type="text" name="title">
+                                        <input required maxlength="25" minlength="2" class="box" type="text"
+                                            name="title">
                                     </div>
-                                    <div class="blog-input">
+                                    <div class="blog-input active" id="blog-text">
                                         <label for=""><%= locals.entry %> </label>
-                                        <textarea oninput="auto_grow(this)" rows="2" class="box"
-                                            name="content"></textarea>
+                                        <textarea required max-length="500" minlength="2" oninput="auto_grow(this)"
+                                            rows="4" class="box" name="content"></textarea>
+                                        <input name="type" type="hidden" value="text">
+                                    </div>
+                                    <div hidden class="blog-input" id="blog-image">
+                                        <label for="">URL de la imagen </label>
+                                        <input disabled required maxlength="25" minlength="2" class="box" type="text"
+                                            name="content">
+                                        <input disabled name="type" type="hidden" value="image">
+                                    </div>
+                                    <div hidden class="blog-input" id="blog-video">
+                                        <label for="">URL de youtube </label>
+                                        <input disabled required max-length="500" minlength="2" class="box" type="text"
+                                            name="content">
+                                        <input disabled name="type" type="hidden" value="video">
                                     </div>
                                     <div class="buttons">
                                         <div class="left-side">
@@ -199,8 +212,12 @@
                                         </div>
                                         <div class="right-side">
                                             <span><%= locals.add %> </span>
-                                            <button class="btn btn-gray"><i class="fas fa-film"></i><%= locals.video %>
-                                            </button>
+                                            <button hidden type="button" id="add-text" class="btn btn-gray active"><i
+                                                    class="fas fa-font"></i><%= locals.text %></button>
+                                            <button type="button" id="add-image" class="btn btn-gray"><i
+                                                    class="far fa-image"></i><%= locals.image %></button>
+                                            <button type="button" id="add-video" class="btn btn-gray"><i
+                                                    class="fas fa-film"></i><%= locals.video %></button>
                                         </div>
                                     </div>
                                 </form>
@@ -399,6 +416,49 @@
         e.preventDefault();
         $(".create-blog").attr("hidden", "hidden");
         $(".no-blog").removeAttr("hidden");
+    });
+
+    $("#add-image").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-image").attr("hidden", "hidden");
+        $("#add-image").addClass("active");
+        $("#blog-image").removeAttr("hidden");
+        $("#blog-image").addClass("active");
+        $("#blog-image input").removeAttr("disabled");
+        $("#blog-image input").addClass("active");
+    });
+
+    $("#add-text").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-text").attr("hidden", "hidden");
+        $("#add-text").addClass("active");
+        $("#blog-text").removeAttr("hidden");
+        $("#blog-text").addClass("active");
+        $("#blog-text input").removeAttr("disabled");
+        $("#blog-text textarea").removeAttr("disabled");
+        $("#blog-text input").addClass("active");
+    });
+
+    $("#add-video").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-video").attr("hidden", "hidden");
+        $("#add-video").addClass("active");
+        $("#blog-video").removeAttr("hidden");
+        $("#blog-video").addClass("active");
+        $("#blog-video input").removeAttr("disabled");
+        $("#blog-video input").addClass("active");
     });
 
     window.onload = function () {

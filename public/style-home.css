@@ -1443,6 +1443,7 @@ input:checked+.slider:before {
     font-weight: normal;
     font-size: 11px;
     padding: 2px 10px;
+    margin-left: 5px;
 }
 
 .right-side button i {
@@ -1453,8 +1454,8 @@ input:checked+.slider:before {
 .right-side span {
     color: black;
     cursor: default;
-    margin-right: 10px;
     font-weight: bold;
+    margin-right: 5px;
 }
 
 .blog-input {
