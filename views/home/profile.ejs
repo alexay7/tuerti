@@ -6,6 +6,8 @@
         <%= userInfo.firstname %>
         <%= userInfo.lastname %>
     </title>
+    <link rel="stylesheet" href="/plugins/lite-yt-embed.css">
+    <script src="/plugins/lite-yt-embed.js"></script>
 </head>
 <div class="container main-area" data-same="<%= isOwner %>">
     <div class="row">
@@ -178,7 +180,10 @@
                         <div class="personal-space">
                             <% if (personalSpace.length==0) { %>
                             <div class="no-blog">
-                                <%= locals.emptyblog %> <span id="create-blog"><%= locals.createentry %> </span>
+                                <%= locals.emptyblog %>
+                                <% if (isOwner) { %>
+                                <span id="create-blog"><%= locals.createentry %></span>
+                                <% } %>
                             </div>
                             <% }else{%>
                             <div class="blog">
@@ -186,17 +191,16 @@
                                 <div hidden class="blog-entry" data-index="<%= ++entry %>">
                                     <% if(blogElement.dataValues.type=="text"){ %>
                                     <div class="entry-title"><%= blogElement.dataValues.title %>
-                                        <span><%= simplifyDate(blogElement.dataValues.createdAt) %> </span></div>
+                                        <span><%= simplifyDate(blogElement.dataValues.createdAt) %> </span>
+                                    </div>
                                     <div class="entry-text"><%= blogElement.dataValues.content %></div>
                                     <% }else if(blogElement.dataValues.type=="video"){ %>
                                     <div class="entry-title">
                                         <%= blogElement.dataValues.title %>
                                         <span><%= simplifyDate(blogElement.dataValues.createdAt) %> </span>
                                     </div>
-                                    <iframe width="300" height="150" src="<%= blogElement.dataValues.content %> "
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
+                                    <lite-youtube videoid="<%= blogElement.dataValues.content %>">
+                                    </lite-youtube>
                                     <% }else{ %>
                                     <% }  if (isOwner) { %>
                                     <div class="entry-buttons">
@@ -371,7 +375,8 @@
                         <div class="col-md-3">
                             <div class="right-sidebar-title">
                                 <%= locals.photos %>
-                                <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %> </div>
+                                <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %>
+                                </div>
                             </div>
                             <ul class="sidebar-photos">
                                 <li class="sidebar-photo">

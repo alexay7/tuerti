@@ -162,17 +162,25 @@ router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
     if (!errors.isEmpty()) {
         return res.redirect("back");
     }
+    var videoid;
     if (req.body.type == "video") {
-        if (!req.body.content.includes("https://www.youtube.com/embed/")) {
-            req.flash("error", "wrongvideourl");
-            return res.redirect("back");
+        if (req.body.content.includes("https://www.youtube.com/embed/")) {
+            videoid = req.body.content.substring(30);
+        } else {
+            var part1 = req.body.content.replace(/(.*)(?<=\?v=)/g, '');
+            var part2 = part1.replace(/([&]+).*/g, '');
+            if (part1 == part2) {
+                videoid = part1.replace(/.*v=/g, '');
+            } else {
+                videoid = part2;
+            }
         }
     }
     var newBlog = {
         ownerId: req.user.id,
         title: req.body.title,
         type: req.body.type,
-        content: req.body.content
+        content: videoid
     }
     models.userblog.create(newBlog).then(function (entry) {
         if (entry) {

@@ -1511,6 +1511,10 @@ input:checked+.slider:before {
     font-weight: bold;
 }
 
+.blog-entry lite-youtube {
+    width: 300px;
+}
+
 .entry-title {
     margin: 10px 0;
     color: black;
