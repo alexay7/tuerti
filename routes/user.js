@@ -2,7 +2,7 @@ const express = require("express"),
     router = express.Router(),
     models = require('../app/models'),
     { isLoggedIn, simplifyDate } = require("../middleware"),
-    { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends } = require("../middleware/user"),
+    { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends, getUserBlog } = require("../middleware/user"),
     path = require('path'),
     { body, validationResult } = require('express-validator');
 
@@ -17,6 +17,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
     var userInfo = await getUserInfo(req.params.id, req.user.id);
     var profileRelation = await findRelation(req.user.id, req.params.id);
     var friends = await getFriends(req.user.id, req.params.id);
+    var personalSpace = await getUserBlog(req.params.id);
     if (userInfo) {
         if (profileRelation.status == "blocked") {
             res.render("home/noaccess", { locals });
@@ -27,7 +28,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
             } else {
                 addVisit(userInfo.id);
             }
-            res.render("home/profile", { locals, userInfo, isOwner, profileRelation, simplifyDate });
+            res.render("home/profile", { locals, userInfo, isOwner, profileRelation, personalSpace, simplifyDate });
         }
     } else {
         res.redirect("back");
@@ -54,6 +55,19 @@ router.post("/user/:id/changestatus", isLoggedIn, isOwnProfile, [
             });
         }
         res.redirect("back");
+    });
+});
+
+router.post("/user/:id/deleteblog", isLoggedIn, isOwnProfile, function (req, res) {
+    models.userblog.findOne({
+        where: {
+            ownerId: req.user.id,
+            id: req.body.entryid
+        }
+    }).then(function (entry) {
+        entry.destroy().then(function () {
+            res.redirect("back");
+        });
     });
 });
 
@@ -141,7 +155,7 @@ router.post("/user/:id/friendship", isLoggedIn, function (req, res) {
 });
 
 router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
-    body('title').not().isEmpty().isLength({ min: 2, max: 25 }),
+    body('title').not().isEmpty().isLength({ min: 2, max: 50 }),
     body('content').not().isEmpty().isLength({ min: 2, max: 500 }),
 ], function (req, res) {
     const errors = validationResult(req);

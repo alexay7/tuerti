@@ -13,6 +13,16 @@ middlewareObj.getUserInfo = function (userId) {
     });
 }
 
+middlewareObj.getUserBlog = function (userId) {
+    return models.userblog.findAll({
+        where: {
+            ownerId: userId
+        }
+    }).then(function (blog) {
+        return blog;
+    });
+}
+
 middlewareObj.getUserInfoMin = function (userId) {
     return models.user.findByPk(userId, { attributes: ['id', 'firstname', 'lastname', 'avatar', 'online'] }).then(function (user) {
         if (user) {

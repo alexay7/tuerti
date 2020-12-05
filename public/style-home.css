@@ -1438,12 +1438,37 @@ input:checked+.slider:before {
     font-size: 13px;
 }
 
+.right-side p {
+    margin: 0;
+    font-size: 11px;
+    color: gray;
+    margin-right: 5px;
+}
+
+.entry-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.entry-buttons button {
+    color: gray;
+    font-weight: normal;
+    font-size: 11px;
+    padding: 2px 10px;
+}
+
 .right-side button {
     color: gray;
     font-weight: normal;
     font-size: 11px;
     padding: 2px 10px;
     margin-left: 5px;
+}
+
+.personal-space .btn i {
+    margin: 0!important;
+    color: var(--darker-gray);
 }
 
 .right-side button i {
@@ -1469,4 +1494,33 @@ input:checked+.slider:before {
     margin-right: 10px;
     font-size: 13px;
     font-weight: bold;
+}
+
+.entry-title {
+    margin: 10px 0;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+    align-items: flex-end;
+    display: flex;
+}
+
+.entry-title span {
+    color: gray;
+    font-weight: normal;
+    font-size: 11px;
+    cursor: default;
+    margin-left: 5px;
+}
+
+.entry-title span:hover {
+    cursor: default;
+}
+
+.entry-text {
+    font-size: 14px;
+}
+
+.unusable {
+    background: white;
 }

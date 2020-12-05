@@ -175,303 +175,424 @@
                                 </h3>
                             </div>
                         </div>
-                        <% if(isOwner){ %>
                         <div class="personal-space">
+                            <% if (personalSpace.length==0) { %>
                             <div class="no-blog">
                                 <%= locals.emptyblog %> <span id="create-blog"><%= locals.createentry %> </span>
                             </div>
-                            <div hidden class="create-blog box">
-                                <form action="/user/<%= currentUser.id %>/createblog" method="post">
-                                    <div class="blog-input">
-                                        <label for=""><%= locals.title %> </label>
-                                        <input required maxlength="25" minlength="2" class="box" type="text"
-                                            name="title">
+                            <% }else{%>
+                            <div class="blog">
+                                <% var entry=0;personalSpace.forEach(blogElement => { %>
+                                <div hidden class="blog-entry" data-index="<%= ++entry %>">
+                                    <% if(blogElement.dataValues.type=="text"){ %>
+                                    <div class="entry-title"><%= blogElement.dataValues.title %>
+                                        <span><%= simplifyDate(blogElement.dataValues.createdAt) %> </span></div>
+                                    <div class="entry-text"><%= blogElement.dataValues.content %></div>
+                                    <% }else if(blogElement.dataValues.type=="video"){ %>
+                                    <div class="entry-title">
+                                        <%= blogElement.dataValues.title %>
+                                        <span><%= simplifyDate(blogElement.dataValues.createdAt) %> </span>
                                     </div>
-                                    <div class="blog-input active" id="blog-text">
-                                        <label for=""><%= locals.entry %> </label>
-                                        <textarea required max-length="500" minlength="2" oninput="auto_grow(this)"
-                                            rows="4" class="box" name="content"></textarea>
-                                        <input name="type" type="hidden" value="text">
-                                    </div>
-                                    <div hidden class="blog-input" id="blog-image">
-                                        <label for="">URL de la imagen </label>
-                                        <input disabled required maxlength="25" minlength="2" class="box" type="text"
-                                            name="content">
-                                        <input disabled name="type" type="hidden" value="image">
-                                    </div>
-                                    <div hidden class="blog-input" id="blog-video">
-                                        <label for="">URL de youtube </label>
-                                        <input disabled required max-length="500" minlength="2" class="box" type="text"
-                                            name="content">
-                                        <input disabled name="type" type="hidden" value="video">
-                                    </div>
-                                    <div class="buttons">
-                                        <div class="left-side">
-                                            <input type="submit" value="Publicar" class="btn btn-blue">
-                                            <p id="close-blog"><%= locals.close %> </p>
+                                    <iframe width="300" height="150" src="<%= blogElement.dataValues.content %> "
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen></iframe>
+                                    <% }else{ %>
+                                    <% }  if (isOwner) { %>
+                                    <div class="entry-buttons">
+                                        <form action="/user/<%= userInfo.id %>/deleteblog" method="post">
+                                            <input type="hidden" name="entryid"
+                                                value="<%= blogElement.dataValues.id %>">
+                                            <div>
+                                                <button id="create-blog" type="button" class="btn btn-gray"><i
+                                                        class="fas fa-plus"></i></button>
+                                                <button class="btn btn-gray"><i class="far fa-trash-alt"></i></button>
+                                            </div>
+                                        </form>
+                                        <% }else{ %>
+                                        <div class="entry-buttons" style="justify-content: flex-end;">
+                                            <%} %>
+                                            <div class="right-side">
+                                                <p><%= entry %> de <%= personalSpace.length %> </p>
+                                                <% if(entry==1){ %>
+                                                <button disabled type="button" id="first-entry"
+                                                    class="btn btn-gray unusable"><i
+                                                        class="fas fa-step-backward"></i></button>
+                                                <button disabled type="button" id="previous-entry"
+                                                    class="btn btn-gray unusable"><i
+                                                        class="fas fa-chevron-left"></i></button>
+                                                <button type="button" id="next-entry" class="btn btn-gray"><i
+                                                        class="fas fa-chevron-right"></i></button>
+                                                <button type="button" id="last-entry" class="btn btn-gray"><i
+                                                        class="fas fa-step-forward"></i></button>
+                                                <% }else if(entry==personalSpace.length) {%>
+                                                <button type="button" id="first-entry" class="btn btn-gray"><i
+                                                        class="fas fa-step-backward"></i></button>
+                                                <button type="button" id="previous-entry" class="btn btn-gray"><i
+                                                        class="fas fa-chevron-left"></i></button>
+                                                <button disabled type="button" id="next-entry"
+                                                    class="btn btn-gray unusable"><i
+                                                        class="fas fa-chevron-right"></i></button>
+                                                <button disabled type="button" id="last-entry"
+                                                    class="btn btn-gray unusable"><i
+                                                        class="fas fa-step-forward"></i></button>
+                                                <% }else{ %>
+                                                <button type="button" id="first-entry" class="btn btn-gray"><i
+                                                        class="fas fa-step-backward"></i></button>
+                                                <button type="button" id="previous-entry" class="btn btn-gray"><i
+                                                        class="fas fa-chevron-left"></i></button>
+                                                <button type="button" id="next-entry" class="btn btn-gray"><i
+                                                        class="fas fa-chevron-right"></i></button>
+                                                <button type="button" id="last-entry" class="btn btn-gray"><i
+                                                        class="fas fa-step-forward"></i></button>
+                                                <% } %>
+                                            </div>
                                         </div>
-                                        <div class="right-side">
-                                            <span><%= locals.add %> </span>
-                                            <button hidden type="button" id="add-text" class="btn btn-gray active"><i
-                                                    class="fas fa-font"></i><%= locals.text %></button>
-                                            <button type="button" id="add-image" class="btn btn-gray"><i
-                                                    class="far fa-image"></i><%= locals.image %></button>
-                                            <button type="button" id="add-video" class="btn btn-gray"><i
-                                                    class="fas fa-film"></i><%= locals.video %></button>
-                                        </div>
                                     </div>
-                                </form>
+                                    <%}); %>
+                                </div>
+                                <% } %>
+                                <% if(isOwner){ %>
+                                <div hidden class="create-blog box">
+                                    <form action="/user/<%= currentUser.id %>/createblog" method="post">
+                                        <div class="blog-input">
+                                            <label for=""><%= locals.title %> </label>
+                                            <input required maxlength="50" minlength="2" class="box" type="text"
+                                                name="title">
+                                        </div>
+                                        <div class="blog-input active" id="blog-text">
+                                            <label for=""><%= locals.entry %> </label>
+                                            <textarea required max-length="500" minlength="2" oninput="auto_grow(this)"
+                                                rows="4" class="box" name="content"></textarea>
+                                            <input name="type" type="hidden" value="text">
+                                        </div>
+                                        <div hidden class="blog-input" id="blog-image">
+                                            <label for="">URL de la imagen </label>
+                                            <input disabled required maxlength="25" minlength="2" class="box"
+                                                type="text" name="content">
+                                            <input disabled name="type" type="hidden" value="image">
+                                        </div>
+                                        <div hidden class="blog-input" id="blog-video">
+                                            <label for="">URL de youtube </label>
+                                            <input disabled required max-length="500" minlength="2" class="box"
+                                                type="text" name="content">
+                                            <input disabled name="type" type="hidden" value="video">
+                                        </div>
+                                        <div class="buttons">
+                                            <div class="left-side">
+                                                <input type="submit" value="Publicar" class="btn btn-blue">
+                                                <p id="close-blog"><%= locals.close %> </p>
+                                            </div>
+                                            <div class="right-side">
+                                                <span><%= locals.add %> </span>
+                                                <button hidden type="button" id="add-text"
+                                                    class="btn btn-gray active"><i
+                                                        class="fas fa-font"></i><%= locals.text %></button>
+                                                <button type="button" id="add-image" class="btn btn-gray"><i
+                                                        class="far fa-image"></i><%= locals.image %></button>
+                                                <button type="button" id="add-video" class="btn btn-gray"><i
+                                                        class="fas fa-film"></i><%= locals.video %></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <% } %>
                             </div>
                         </div>
-                        <% } %>
+                        <div class="main-category">
+                            <% if (isOwner) { %>
+                            <div class="category-title-wrapper">
+                                <% } else { %>
+                                <div class="category-title-wrapper no-bottom-line">
+                                    <% } %>
 
-                    </div>
-                    <div class="main-category">
-                        <div class="category-title-wrapper no-bottom-line">
-                            <div class="category-title">
-                                <h3>
-                                    <%= locals.wall %>
-                                </h3>
+                                    <div class="category-title">
+                                        <h3>
+                                            <%= locals.wall %>
+                                        </h3>
+                                    </div>
+                                    <ul class="wall-options">
+                                        <li>
+                                            <span><%= locals.show %> </span>
+                                        </li>
+                                        <li><a href=""><%= locals.all %> </a></li>
+                                        <li><a href=""><%= locals.statuses %> </a></li>
+                                        <li><a href=""><%= locals.comments %> </a></li>
+                                    </ul>
+                                </div>
+                                <% if (!isOwner) { %>
+                                <form class="new-post box" action="" method="post">
+                                    <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
+                                    <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1"
+                                        placeholder="<%= locals.writehere %> "></textarea>
+                                </form>
+                                <% } %>
+                                <p class="no-posts">
+                                    <%= locals.noposts %>
+                                </p>
+                                <% if(!isOwner){ %>
+                                <ul class="user-options">
+                                    <% if(!profileRelation){ %>
+                                    <% }else{ %>
+                                    <%if(profileRelation.status=="friends"){%>
+                                    <li>
+                                        <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
+                                                class="btn btn-gray"><i
+                                                    class="far fa-trash-alt"></i><%= locals.removefriend %>
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <% }} %>
+                                    <li>
+                                        <form action="/user/<%= userInfo.id %>/block" method="post"><button
+                                                class="btn btn-gray"><i class="fas fa-ban"></i><%= locals.blockuser %>
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="" method="post"><button class="btn btn-gray"><i
+                                                    class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                                <% } %>
                             </div>
-                            <ul class="wall-options">
-                                <li>
-                                    <span><%= locals.show %> </span>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="right-sidebar-title">
+                                <%= locals.photos %>
+                                <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %> </div>
+                            </div>
+                            <ul class="sidebar-photos">
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/photos/1/009.jpg" alt="">
+                                        </div>
+                                    </a>
                                 </li>
-                                <li><a href=""><%= locals.all %> </a></li>
-                                <li><a href=""><%= locals.statuses %> </a></li>
-                                <li><a href=""><%= locals.comments %> </a></li>
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/photos/1/009.jpg" alt="">
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/images/indexpack.png" alt="">
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/images/users/avatars/default.png" alt="">
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/images/users/avatars/default.png" alt="">
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="sidebar-photo">
+                                    <a class="sidebar-user" href="">
+                                        <div class="user-wrapper">
+                                            <img src="/images/logo2.png" alt="">
+                                        </div>
+                                    </a>
+                                </li>
                             </ul>
-                        </div>
-
-                        <form class="new-post box" action="" method="post">
-                            <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
-                            <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1"
-                                placeholder="<%= locals.writehere %> "></textarea>
-                        </form>
-                        <p class="no-posts">
-                            <%= locals.noposts %>
-                        </p>
-                        <% if(!isOwner){ %>
-                        <ul class="user-options">
-                            <% if(!profileRelation){ %>
+                            <a class="sidebar-seall" href="">
+                                <%= locals.seall %>
+                            </a>
+                            <% if(!isOwner){ %>
+                            <p class="right-sidebar-title">
+                                <%= locals.commonfriends %>
+                            </p>
+                            <% if(userInfo.friends.commonFriends){ %>
+                            <ul class="user-images">
+                                <% userInfo.friends.commonFriends.forEach(friend => { %>
+                                <li class="user-photo">
+                                    <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                        <div class="user-wrapper">
+                                            <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                            <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                            <div class="online"></div>
+                                            <%}%>
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                            <%= friend.lastname %>
+                                            </p>
+                                    </a>
+                                </li>
+                                <% }); %>
+                            </ul>
+                            <a class="sidebar-seall" href="">
+                                <%= locals.seall %> (<% if(userInfo.friends.commonFriends){ %>
+                                <%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
+                            </a>
                             <% }else{ %>
-                            <%if(profileRelation.status=="friends"){%>
-                            <li>
-                                <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
-                                        class="btn btn-gray"><i class="far fa-trash-alt"></i><%= locals.removefriend %>
-                                    </button>
-                                </form>
-                            </li>
-                            <% }} %>
-                            <li>
-                                <form action="/user/<%= userInfo.id %>/block" method="post"><button
-                                        class="btn btn-gray"><i class="fas fa-ban"></i><%= locals.blockuser %> </button>
-                                </form>
-                            </li>
-                            <li>
-                                <form action="" method="post"><button class="btn btn-gray"><i
-                                            class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
-                                </form>
-                            </li>
-                        </ul>
-                        <% } %>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="right-sidebar-title">
-                        <%= locals.photos %>
-                        <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %> </div>
-                    </div>
-                    <ul class="sidebar-photos">
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/photos/1/009.jpg" alt="">
-                                </div>
-                            </a>
-                        </li>
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/photos/1/009.jpg" alt="">
-                                </div>
-                            </a>
-                        </li>
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/images/indexpack.png" alt="">
-                                </div>
-                            </a>
-                        </li>
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/images/users/avatars/default.png" alt="">
-                                </div>
-                            </a>
-                        </li>
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/images/users/avatars/default.png" alt="">
-                                </div>
-                            </a>
-                        </li>
-                        <li class="sidebar-photo">
-                            <a class="sidebar-user" href="">
-                                <div class="user-wrapper">
-                                    <img src="/images/logo2.png" alt="">
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <a class="sidebar-seall" href="">
-                        <%= locals.seall %>
-                    </a>
-                    <% if(!isOwner){ %>
-                    <p class="right-sidebar-title">
-                        <%= locals.commonfriends %>
-                    </p>
-                    <% if(userInfo.friends.commonFriends){ %>
-                    <ul class="user-images">
-                        <% userInfo.friends.commonFriends.forEach(friend => { %>
-                        <li class="user-photo">
-                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                                <div class="user-wrapper">
-                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                    <div class="online"></div>
-                                    <%}%>
+                            <div class="sidebar-element-empty">
+                                <%= locals.nocommons %>.
+                            </div>
+                            <% } %>
+                            <% } %>
+                            <p class="right-sidebar-title">
+                                <%= locals.friends %>
+                            </p>
+                            <% if(userInfo.friends.commonFriends){ %>
+                            <ul class="user-images">
+
+                                <% userInfo.friends.profileFriends.forEach(friend => { %>
+                                <li class="user-photo">
+                                    <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                        <div class="user-wrapper">
+                                            <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                            <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                            <div class="online"></div>
+                                            <%}%>
                                 </div>
                                 <p>
                                     <%= friend.firstname %>
-                                    <%= friend.lastname %>
-                                    </p>
-                            </a>
-                        </li>
-                        <% }); %>
-                    </ul>
-                    <a class="sidebar-seall" href="">
-                        <%= locals.seall %> (<% if(userInfo.friends.commonFriends){ %>
-                        <%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
-                    </a>
-                    <% }else{ %>
-                    <div class="sidebar-element-empty">
-                        <%= locals.nocommons %>.
-                    </div>
-                    <% } %>
-                    <% } %>
-                    <p class="right-sidebar-title">
-                        <%= locals.friends %>
-                    </p>
-                    <% if(userInfo.friends.commonFriends){ %>
-                    <ul class="user-images">
+                                            <%= friend.lastname %>
+                                            </p>
+                                    </a>
+                                </li>
+                                <% }); %>
 
-                        <% userInfo.friends.profileFriends.forEach(friend => { %>
-                        <li class="user-photo">
-                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                                <div class="user-wrapper">
-                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                    <div class="online"></div>
-                                    <%}%>
-                                </div>
-                                <p>
-                                    <%= friend.firstname %>
-                                    <%= friend.lastname %>
-                                    </p>
+                            </ul>
+                            <% }else{ %>
+                            <div class="sidebar-element-empty">
+                                <% if(isOwner){ %>
+                                <%= locals.nofriendsyetown %>.
+                                <% } else { %>
+                                <%= locals.nofriendsyet %>.
+                                <% } %>
+                            </div>
+                            <% } %>
+                            <a class="sidebar-seall" href="">
+                                <%= locals.seall %>
+                                (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
                             </a>
-                        </li>
-                        <% }); %>
-
-                    </ul>
-                    <% }else{ %>
-                    <div class="sidebar-element-empty">
-                        <% if(isOwner){ %>
-                        <%= locals.nofriendsyetown %>.
-                        <% } else { %>
-                        <%= locals.nofriendsyet %>.
-                        <% } %>
+                        </div>
                     </div>
-                    <% } %>
-                    <a class="sidebar-seall" href="">
-                        <%= locals.seall %>
-                        (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
-                    </a>
                 </div>
             </div>
+            <div hidden class="blurred"></div>
         </div>
-    </div>
-    <div hidden class="blurred"></div>
-</div>
-<script>
-    $("#create-blog").click(function (e) {
-        e.preventDefault();
-        $(".create-blog").removeAttr("hidden");
-        $(".no-blog").attr("hidden", "hidden");
-    });
+        <script>
+            window.onload = function () {
+                var bloglength = $('.blog-entry').last().data("index");
+                $("div").find("[data-index=1]").removeAttr("hidden");
+                if (bloglength == 1) {
+                    $("#next-entry").addClass("unusable");
+                    $("#last-entry").addClass("unusable");
+                    $("#next-entry").attr("disabled", "disabled");
+                    $("#last-entry").attr("disabled", "disabled");
+                }
+                if ($(".main-area").data("same") == true) {
+                    auto_grow(document.querySelector(".user-status textarea"));
+                }
+            };
 
-    $("#close-blog").click(function (e) {
-        e.preventDefault();
-        $(".create-blog").attr("hidden", "hidden");
-        $(".no-blog").removeAttr("hidden");
-    });
+            $(document).on('click', '#next-entry', function (e) {
+                e.preventDefault();
+                var bloglength = $('.blog-entry').last().data("index");
+                var newindex = $("div").find('.blog-entry:visible').data("index") + 1;
+                $(".blog-entry").attr("hidden", "hidden");
+                $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
+            });
 
-    $("#add-image").click(function (e) {
-        e.preventDefault();
-        $("div.active").attr("hidden", "hidden");
-        $("div.active input").attr("disabled", "disabled");
-        $("div.active textarea").attr("disabled", "disabled");
-        $("button.active").removeAttr("hidden");
-        $("#add-image").attr("hidden", "hidden");
-        $("#add-image").addClass("active");
-        $("#blog-image").removeAttr("hidden");
-        $("#blog-image").addClass("active");
-        $("#blog-image input").removeAttr("disabled");
-        $("#blog-image input").addClass("active");
-    });
+            $(document).on('click', '#previous-entry', function (e) {
+                e.preventDefault();
+                var bloglength = $('.blog-entry').last().data("index");
+                var newindex = $("div").find('.blog-entry:visible').data("index") - 1;
+                $(".blog-entry").attr("hidden", "hidden");
+                $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
+            });
 
-    $("#add-text").click(function (e) {
-        e.preventDefault();
-        $("div.active").attr("hidden", "hidden");
-        $("div.active input").attr("disabled", "disabled");
-        $("div.active textarea").attr("disabled", "disabled");
-        $("button.active").removeAttr("hidden");
-        $("#add-text").attr("hidden", "hidden");
-        $("#add-text").addClass("active");
-        $("#blog-text").removeAttr("hidden");
-        $("#blog-text").addClass("active");
-        $("#blog-text input").removeAttr("disabled");
-        $("#blog-text textarea").removeAttr("disabled");
-        $("#blog-text input").addClass("active");
-    });
+            $(document).on('click', '#last-entry', function (e) {
+                e.preventDefault();
+                var bloglength = $('.blog-entry').last().data("index");
+                $(".blog-entry").attr("hidden", "hidden");
+                $("div").find("[data-index=" + bloglength + "]").removeAttr("hidden");
+            });
 
-    $("#add-video").click(function (e) {
-        e.preventDefault();
-        $("div.active").attr("hidden", "hidden");
-        $("div.active input").attr("disabled", "disabled");
-        $("div.active textarea").attr("disabled", "disabled");
-        $("button.active").removeAttr("hidden");
-        $("#add-video").attr("hidden", "hidden");
-        $("#add-video").addClass("active");
-        $("#blog-video").removeAttr("hidden");
-        $("#blog-video").addClass("active");
-        $("#blog-video input").removeAttr("disabled");
-        $("#blog-video input").addClass("active");
-    });
+            $(document).on('click', '#first-entry', function (e) {
+                e.preventDefault();
+                var bloglength = $('.blog-entry').last().data("index");
+                $(".blog-entry").attr("hidden", "hidden");
+                $("div").find("[data-index=1]").removeAttr("hidden");
+            });
 
-    window.onload = function () {
-        if ($(".main-area").data("same") == true) {
-            auto_grow(document.querySelector(".user-status textarea"));
-        }
-    };
+            $(document).on('click', '#create-blog', function (e) {
+                e.preventDefault();
+                $(".create-blog").removeAttr("hidden");
+                $(".no-blog").attr("hidden", "hidden");
+                $(".blog").attr("hidden", "hidden");
+            });
 
-    function auto_grow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight) + "px";
-    }
-</script>
-</body>
+            $("#close-blog").click(function (e) {
+                e.preventDefault();
+                $(".create-blog").attr("hidden", "hidden");
+                $(".no-blog").removeAttr("hidden");
+                $(".blog").removeAttr("hidden");
+            });
 
-</html>
+            $("#add-image").click(function (e) {
+                e.preventDefault();
+                $("div.active").attr("hidden", "hidden");
+                $("div.active input").attr("disabled", "disabled");
+                $("div.active textarea").attr("disabled", "disabled");
+                $("button.active").removeAttr("hidden");
+                $("#add-image").attr("hidden", "hidden");
+                $("#add-image").addClass("active");
+                $("#blog-image").removeAttr("hidden");
+                $("#blog-image").addClass("active");
+                $("#blog-image input").removeAttr("disabled");
+                $("#blog-image input").addClass("active");
+            });
+
+            $("#add-text").click(function (e) {
+                e.preventDefault();
+                $("div.active").attr("hidden", "hidden");
+                $("div.active input").attr("disabled", "disabled");
+                $("div.active textarea").attr("disabled", "disabled");
+                $("button.active").removeAttr("hidden");
+                $("#add-text").attr("hidden", "hidden");
+                $("#add-text").addClass("active");
+                $("#blog-text").removeAttr("hidden");
+                $("#blog-text").addClass("active");
+                $("#blog-text input").removeAttr("disabled");
+                $("#blog-text textarea").removeAttr("disabled");
+                $("#blog-text input").addClass("active");
+            });
+
+            $("#add-video").click(function (e) {
+                e.preventDefault();
+                $("div.active").attr("hidden", "hidden");
+                $("div.active input").attr("disabled", "disabled");
+                $("div.active textarea").attr("disabled", "disabled");
+                $("button.active").removeAttr("hidden");
+                $("#add-video").attr("hidden", "hidden");
+                $("#add-video").addClass("active");
+                $("#blog-video").removeAttr("hidden");
+                $("#blog-video").addClass("active");
+                $("#blog-video input").removeAttr("disabled");
+                $("#blog-video input").addClass("active");
+            });
+
+            function auto_grow(element) {
+                element.style.height = "5px";
+                element.style.height = (element.scrollHeight) + "px";
+            }
+        </script>
+        </body>
+
+        </html>
