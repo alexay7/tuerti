@@ -206,7 +206,8 @@
                                             <div>
                                                 <button id="create-blog" type="button" class="btn btn-gray"><i
                                                         class="fas fa-plus"></i></button>
-                                                <button class="btn btn-gray"><i class="far fa-trash-alt"></i></button>
+                                                <button onclick="return confirm('<%=locals.areyousure %>')"
+                                                    class="btn btn-gray"><i class="far fa-trash-alt"></i></button>
                                             </div>
                                         </form>
                                         <% }else{ %>
@@ -274,8 +275,15 @@
                                         </div>
                                         <div hidden class="blog-input" id="blog-video">
                                             <label for="">URL de youtube </label>
+                                            <% if (messages.error=="wrongvideourl") { %>
+                                            <input disabled required max-length="500" minlength="2" class="box error"
+                                                type="text" name="content"
+                                                placeholder="https://www.youtube.com/embed/ID">
+                                            <% }else{ %>
                                             <input disabled required max-length="500" minlength="2" class="box"
-                                                type="text" name="content">
+                                                type="text" name="content"
+                                                placeholder="https://www.youtube.com/embed/ID">
+                                            <% } %>
                                             <input disabled name="type" type="hidden" value="video">
                                         </div>
                                         <div class="buttons">
@@ -337,6 +345,7 @@
                                     <%if(profileRelation.status=="friends"){%>
                                     <li>
                                         <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
+                                                onclick="return confirm('<%=locals.areyousure %>')"
                                                 class="btn btn-gray"><i
                                                     class="far fa-trash-alt"></i><%= locals.removefriend %>
                                             </button>
@@ -345,6 +354,7 @@
                                     <% }} %>
                                     <li>
                                         <form action="/user/<%= userInfo.id %>/block" method="post"><button
+                                                onclick="return confirm('<%=locals.areyousure %>')"
                                                 class="btn btn-gray"><i class="fas fa-ban"></i><%= locals.blockuser %>
                                             </button>
                                         </form>

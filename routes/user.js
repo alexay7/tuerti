@@ -162,6 +162,12 @@ router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
     if (!errors.isEmpty()) {
         return res.redirect("back");
     }
+    if (req.body.type == "video") {
+        if (!req.body.content.includes("https://www.youtube.com/embed/")) {
+            req.flash("error", "wrongvideourl");
+            return res.redirect("back");
+        }
+    }
     var newBlog = {
         ownerId: req.user.id,
         title: req.body.title,
@@ -170,9 +176,9 @@ router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
     }
     models.userblog.create(newBlog).then(function (entry) {
         if (entry) {
-            res.redirect("back");
+            return res.redirect("back");
         } else {
-            res.redirect("back");
+            return res.redirect("back");
         }
     });
 });
