@@ -1169,8 +1169,8 @@ input:checked+.slider:before {
 }
 
 .edition-mode {
-    background: white;
-    box-shadow: inset 0 2px 3px 0 var(--dark-gray);
+    background: white!important;
+    box-shadow: inset 0 2px 3px 0 var(--dark-gray)!important;
 }
 
 .edition-mode textarea {
@@ -1189,7 +1189,7 @@ input:checked+.slider:before {
     outline: none;
 }
 
-.edition-mode i {
+.edition-mode .fa-caret-left {
     color: white;
 }
 

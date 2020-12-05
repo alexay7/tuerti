@@ -2,6 +2,25 @@
 
 _Recreación basada en nodejs de Tuenti, red social española popular en la década de 2010 y convertida ahora en operadora telefónica_
 
+## NOTA: Este proyecto está todavía en una fase temprana de desarrollo.
+
+_Evitar comentarios sobre páginas faltantes, a día 05/12/2020 las páginas disponibles son el inicio, la página de registro, la página de carga, la página de perfil de usuario y la página de evento._
+
+### Funciones disponibles 🚨
+
+* Registrar usuario (sin código de invitación)
+* Iniciar sesión
+* Cerrar sesión
+* Crear evento (sin invitados ni foto de portada)
+* Apuntarse a evento (sin notificaciones reales)
+* Desapuntarse de evento
+* Agregar como amigo (sin notificación de petición ni mensaje)
+* Eliminar amigo
+* Editar estado propio
+* Añadir entradas al espacio personal (texto y youtube)
+* Bloquear usuario (por ahora solo impide ver su página de perfil y él la tuya)
+* Cambiar idioma (solo en la página principal)
+
 ### Pre-requisitos 📋
 
 * [NodeJs](https://nodejs.org/es/)

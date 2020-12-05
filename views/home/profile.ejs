@@ -268,13 +268,13 @@
                                             <input name="type" type="hidden" value="text">
                                         </div>
                                         <div hidden class="blog-input" id="blog-image">
-                                            <label for="">URL de la imagen </label>
+                                            <label for=""><%= locals.image %> </label>
                                             <input disabled required maxlength="25" minlength="2" class="box"
                                                 type="text" name="content">
                                             <input disabled name="type" type="hidden" value="image">
                                         </div>
                                         <div hidden class="blog-input" id="blog-video">
-                                            <label for="">URL de youtube </label>
+                                            <label for=""><%= locals.youtubeurl %> </label>
                                             <% if (messages.error=="wrongvideourl") { %>
                                             <input disabled required max-length="500" minlength="2" class="box error"
                                                 type="text" name="content"
@@ -294,12 +294,12 @@
                                             <div class="right-side">
                                                 <span><%= locals.add %> </span>
                                                 <button hidden type="button" id="add-text"
-                                                    class="btn btn-gray active"><i
-                                                        class="fas fa-font"></i><%= locals.text %></button>
+                                                    class="btn btn-gray active"><i class="fas fa-font"></i>
+                                                    <%= locals.text %></button>
                                                 <button type="button" id="add-image" class="btn btn-gray"><i
-                                                        class="far fa-image"></i><%= locals.image %></button>
+                                                        class="far fa-image"></i> <%= locals.image %></button>
                                                 <button type="button" id="add-video" class="btn btn-gray"><i
-                                                        class="fas fa-film"></i><%= locals.video %></button>
+                                                        class="fas fa-film"></i> <%= locals.video %></button>
                                             </div>
                                         </div>
                                     </form>
@@ -377,42 +377,6 @@
                                 <li class="sidebar-photo">
                                     <a class="sidebar-user" href="">
                                         <div class="user-wrapper">
-                                            <img src="/photos/1/009.jpg" alt="">
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
-                                            <img src="/photos/1/009.jpg" alt="">
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
-                                            <img src="/images/indexpack.png" alt="">
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
-                                            <img src="/images/users/avatars/default.png" alt="">
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
-                                            <img src="/images/users/avatars/default.png" alt="">
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
-                                            <img src="/images/logo2.png" alt="">
                                         </div>
                                     </a>
                                 </li>
@@ -444,8 +408,8 @@
                                 <% }); %>
                             </ul>
                             <a class="sidebar-seall" href="">
-                                <%= locals.seall %> (<% if(userInfo.friends.commonFriends){ %>
-                                <%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
+                                <%= locals.seall %>
+                                (<% if(userInfo.friends.commonFriends){ %><%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
                             </a>
                             <% }else{ %>
                             <div class="sidebar-element-empty">

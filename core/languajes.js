@@ -149,7 +149,9 @@ spanish = {
     hace: "hace ",
     ago: "",
     image: "Imagen",
-    text: "Texto"
+    text: "Texto",
+    imageurl: "URL de la imagen",
+    youtubeurl: "URL de youtube"
 };
 english = {
     language: "english",
@@ -301,7 +303,10 @@ english = {
     and: "and",
     hace: "",
     ago: " ago",
-    image: "Imagen"
+    image: "Image",
+    text: "Text",
+    imageurl: "Image URL",
+    youtubeurl: "Youtube URL"
 };
 
 languages = { spanish, english };
