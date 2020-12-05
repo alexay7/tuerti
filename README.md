@@ -74,6 +74,7 @@ _Te aparecerá en la consola la ip y el puerto donde se está alojando la web y 
 ## Construido con 🛠️
 
 * [Bootstrap](https://getbootstrap.com) - El framework web usado
+* [jQuery](https://jquery.com) - Biblioteca javascript
 * [Villanuevand](https://gist.github.com/Villanuevand/6386899f70346d4580c723232524d35a#file-readme-espanol-md) - Modelo de README.md
 
 ## Autor ✒️
