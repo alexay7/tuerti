@@ -33,13 +33,21 @@ middlewareObj.getUserInfoMin = function (userId) {
     });
 }
 
-middlewareObj.addVisit = function (userId) {
-    models.user.findByPk(userId).then(function (user) {
-        var newvisits = user.visits + 1;
-        user.update({
-            visits: newvisits
-        });
-    })
+middlewareObj.addVisit = function (userId, profileId) {
+    models.uservisit.findOne({
+        where: {
+            visitedId: profileId,
+            visitorId: userId
+        }
+    }).then(function (visit) {
+        if (!visit) {
+            var newvisit = {
+                visitedId: profileId,
+                visitorId: userId
+            };
+            models.uservisit.create(newvisit);
+        }
+    });
 }
 
 middlewareObj.findRelation = function (userId, profileId) {
