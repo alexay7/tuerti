@@ -3,9 +3,10 @@ const express = require("express"),
     models = require('../../models'),
     { isLoggedIn } = require("../middleware"),
     { getEventInfo, getEventGuests, isEventOwner } = require("../middleware/event"),
+    { cache } = require("../middleware/cache"),
     { body, validationResult } = require('express-validator');
 
-router.get("/:id", isLoggedIn, async function (req, res) {
+router.get("/:id", cache(14), isLoggedIn, async function (req, res) {
     var errors = {},
         info = {};
     if (typeof res.locals.messages.error != 'undefined') {

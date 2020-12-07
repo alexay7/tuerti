@@ -20,6 +20,7 @@
         "express-validator": "^6.7.0",
         "fs": "0.0.1-security",
         "lite-youtube-embed": "^0.1.2",
+        "memory-cache": "^0.2.0",
         "method-override": "^3.0.0",
         "mysql": "^2.18.1",
         "mysql2": "^2.2.5",

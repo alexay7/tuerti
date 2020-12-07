@@ -3,16 +3,17 @@ const express = require("express"),
     models = require('../../models'),
     { isLoggedIn, simplifyDate } = require("../middleware"),
     { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends, getUserBlog } = require("../middleware/user"),
+    { cache } = require("../middleware/cache"),
     path = require('path'),
     { body, validationResult } = require('express-validator');
 
-router.get('/photos/:uid/:photoName', isLoggedIn, function (req, res) {
+router.get('/photos/:uid/:photoName', cache(14), isLoggedIn, function (req, res) {
     if (!canViewPhoto(req.user.id)) {
         res.sendFile(path.join(__dirname, '../') + '/private/photos/' + req.params.uid + "/" + req.params.photoName);
     }
 });
 
-router.get("/user/:id", isLoggedIn, async function (req, res) {
+router.get("/user/:id", isLoggedIn, cache(14), async function (req, res) {
     var isOwner = false;
     var userInfo = await getUserInfo(req.params.id, req.user.id);
     var profileRelation = await findRelation(req.user.id, req.params.id);
