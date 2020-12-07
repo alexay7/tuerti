@@ -50,6 +50,19 @@ middlewareObj.addVisit = function (userId, profileId) {
     });
 }
 
+middlewareObj.cleanVisits = function () {
+    models.uservisit.findAll().then(function (visits) {
+        visits.forEach(async function (visit) {
+            await models.user.findByPk(visit.visitedId).then(function (user) {
+                user.update({
+                    visits: user.visits + 1
+                });
+            });
+            visit.destroy();
+        });
+    });
+}
+
 middlewareObj.findRelation = function (userId, profileId) {
     const Op = require('Sequelize').Op;
     if (userId == profileId) {
