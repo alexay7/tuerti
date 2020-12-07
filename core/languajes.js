@@ -151,7 +151,9 @@ spanish = {
     image: "Imagen",
     text: "Texto",
     imageurl: "URL de la imagen",
-    youtubeurl: "URL de youtube"
+    youtubeurl: "URL de youtube",
+    mywallempty: "Tu tablón está vacío",
+    yourwallempty: "Este tablón está vacío"
 };
 english = {
     language: "english",
@@ -306,7 +308,9 @@ english = {
     image: "Image",
     text: "Text",
     imageurl: "Image URL",
-    youtubeurl: "Youtube URL"
+    youtubeurl: "Youtube URL",
+    mywallempty: "Your wall is empty",
+    yourwallempty: "This wall is empty"
 };
 
 languages = { spanish, english };

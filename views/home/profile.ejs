@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="main-category">
-                            <% if (isOwner) { %>
+                            <% if (isOwner || !profileRelation || profileRelation.status!="friends") { %>
                             <div class="category-title-wrapper">
                                 <% } else { %>
                                 <div class="category-title-wrapper no-bottom-line">
@@ -332,7 +332,7 @@
                                         <li><a href=""><%= locals.comments %> </a></li>
                                     </ul>
                                 </div>
-                                <% if (!isOwner) { %>
+                                <% if (!isOwner && profileRelation&&profileRelation.status=="friends") { %>
                                 <form class="new-post box" action="" method="post">
                                     <img class="box" src="/images/users/avatars/<%= currentUser.avatar %>.png" alt="">
                                     <textarea class="form-control" oninput="auto_grow(this)" name="Text1" rows="1"
@@ -340,7 +340,15 @@
                                 </form>
                                 <% } %>
                                 <p class="no-posts">
+                                    <% if(isOwner){ %>
+                                    <%= locals.mywallempty %>
+                                    <% }else{ %>
+                                    <% if(profileRelation&&profileRelation.status=="friends"){ %>
                                     <%= locals.noposts %>
+                                    <% }else{ %>
+                                    <%= locals.yourwallempty %>
+                                    <% } %>
+                                    <% } %>
                                 </p>
                                 <% if(!isOwner){ %>
                                 <ul class="user-options">
