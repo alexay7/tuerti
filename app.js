@@ -3,16 +3,16 @@ const express = require("express"),
     passport = require("passport"),
     session = require("express-session"),
     methodOverride = require("method-override"),
-    Languages = require("./core/languajes"),
+    Languages = require("./config/languajes"),
     cookieParser = require("cookie-parser"),
     flash = require('connect-flash'),
     app = express(),
-    models = require("./app/models");
+    models = require("./models");
 
 app.use(cookieParser());
 app.use(flash());
 
-require('./app/config/passport/passport.js')(passport, models.user);
+require('./config/passport.js')(passport, models.user);
 
 function lang(req, res) {
     var language = getcookie(req, res);
@@ -44,13 +44,13 @@ app.use(session({ secret: process.env.PASSPORT_SECRET, resave: true, saveUniniti
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-models.sequelize.sync().then(function() {
+models.sequelize.sync().then(function () {
     console.log('Nice! Database looks fine')
-}).catch(function(err) {
+}).catch(function (err) {
     console.log(err, "Something went wrong with the Database Update!")
 });
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     lang(req, res);
     res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
     res.locals.currentUser = req.user;
@@ -58,11 +58,11 @@ app.use(function(req, res, next) {
     next();
 });
 
-const indexRoutes = require("./routes/index");
-const authRoutes = require("./routes/auth");
-const mainRoutes = require("./routes/main");
-const eventRoutes = require("./routes/event");
-const userRoutes = require("./routes/user");
+const indexRoutes = require("./api/routes/index");
+const authRoutes = require("./api/routes/auth");
+const mainRoutes = require("./api/routes/main");
+const eventRoutes = require("./api/routes/event");
+const userRoutes = require("./api/routes/user");
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -75,11 +75,11 @@ app.use("/event", eventRoutes);
 app.use("/", userRoutes);
 app.use("/photos", express.static(__dirname + '/private'));
 
-app.get("*", function(req, res) {
+app.get("*", function (req, res) {
     res.redirect("/");
 });
 
 
-app.listen(process.env.PORT, process.env.URL, function() {
+app.listen(process.env.PORT, process.env.URL, function () {
     console.log("Started Tuerti on - " + process.env.URL + ":" + process.env.PORT);
 });

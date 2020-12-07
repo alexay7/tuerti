@@ -1,5 +1,5 @@
 var middlewareObj = {},
-    models = require("../app/models");
+    models = require("../../models");
 
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {

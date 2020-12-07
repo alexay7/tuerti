@@ -1,6 +1,6 @@
 const express = require("express"),
     router = express.Router(),
-    models = require('../app/models'),
+    models = require('../../models'),
     { isLoggedIn, simplifyDate } = require("../middleware"),
     { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends, getUserBlog } = require("../middleware/user"),
     path = require('path'),

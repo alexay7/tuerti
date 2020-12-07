@@ -1,21 +1,21 @@
 //load bcrypt
-var bCrypt = require('bcrypt-nodejs'),
-    models = require("../../models");
+var bCrypt = require('bcrypt'),
+    models = require("../models");
 
-module.exports = function(passport, user) {
+module.exports = function (passport, user) {
     var User = user;
 
     var LocalStrategy = require('passport-local').Strategy;
-    passport.serializeUser(function(user, done) {
-        User.findByPk(user.id).then(function(user) {
+    passport.serializeUser(function (user, done) {
+        User.findByPk(user.id).then(function (user) {
             user.update({
                 online: false
             });
         });
         done(null, user.id);
     });
-    passport.deserializeUser(function(id, done) {
-        User.findByPk(id).then(function(user) {
+    passport.deserializeUser(function (id, done) {
+        User.findByPk(id).then(function (user) {
             if (user) {
                 user.password = null;
                 done(null, user.get());
@@ -28,13 +28,13 @@ module.exports = function(passport, user) {
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true // allows us to pass back the entire request to the callback
-    }, function(req, email, password, done) {
+    }, function (req, email, password, done) {
         if (req.body.terms != "yes") {
             return done(null, false, {
                 message: 'terms'
             });
         }
-        var generateHash = function(password) {
+        var generateHash = function (password) {
             return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
         if (req.body.password == req.body.passwordconfirm) {
@@ -42,7 +42,7 @@ module.exports = function(passport, user) {
                 where: {
                     email: email
                 }
-            }).then(function(user) {
+            }).then(function (user) {
                 if (user) {
                     return done(null, false, {
                         message: 'mail'
@@ -61,7 +61,7 @@ module.exports = function(passport, user) {
                         birthday: req.body.birthday,
                         university: req.body.university
                     };
-                    User.create(data).then(function(newUser, created) {
+                    User.create(data).then(function (newUser, created) {
                         if (!newUser) {
                             return done(null, false);
                         }
@@ -76,7 +76,7 @@ module.exports = function(passport, user) {
                                 description: "birthday",
                                 type: "birthday"
                             };
-                            models.event.create(birthdayData).then(function(newEvent, created) {
+                            models.event.create(birthdayData).then(function (newEvent, created) {
                                 if (!newEvent) {
                                     return done(null, false);
                                 }
@@ -87,7 +87,7 @@ module.exports = function(passport, user) {
                                     status: "accepted",
                                     notifications: 0
                                 }
-                                models.eventguest.create(eventguestdata).then(function(newGuest, created) {
+                                models.eventguest.create(eventguestdata).then(function (newGuest, created) {
                                     if (!newGuest) {
                                         return done(null, false);
                                     }
@@ -110,22 +110,22 @@ module.exports = function(passport, user) {
     }));
 
     passport.use('local-signin', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
 
-        function(req, email, password, done) {
+        function (req, email, password, done) {
             var User = user;
-            var isValidPassword = function(userpass, password) {
+            var isValidPassword = function (userpass, password) {
                 return bCrypt.compareSync(password, userpass);
             }
             User.findOne({
                 where: {
                     email: email
                 }
-            }).then(function(user) {
+            }).then(function (user) {
                 if (!user) {
                     return done(null, false, {
                         message: "mail"
@@ -141,7 +141,7 @@ module.exports = function(passport, user) {
                 });
                 var userinfo = user.get();
                 return done(null, userinfo);
-            }).catch(function(err) {
+            }).catch(function (err) {
                 console.log("Error:", err);
                 return done(null, false, {
                     message: 'Something went wrong with your Signin'
