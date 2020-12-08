@@ -359,10 +359,7 @@
                                             <div class="user-wrapper">
                                                 <img src="/images/users/avatars/<%= userInfo.avatar %>.png" alt=""
                                                     class="box">
-                                                <% if(((new Date()-currentUser.last_activity)/86400000*24*60)<2){%>
-                                                <div class="online"></div>
-                                                <%}%>
-                                        </div>
+                                            </div>
                                         </a>
                                         <div class="element-content">
                                             <div class="element-own">
@@ -392,141 +389,141 @@
                                                             <%= comment.owner.lastname %>
                                                     </a>
                                                     <p><%= comment.content %></p>
+                                        </div>
+                                        <p><span><%= simplifyDate(comment.createdAt); %> </span></p>
                             </div>
-                            <p><span><%= simplifyDate(comment.createdAt); %> </span></p>
+                            </li>
+                            <% }); %>
+                            <a href="" class="seeall">Ver todos (<%= element.comments.length; %>)
+                            </a>
+                            </ul>
+                            <% } %>
                         </div>
                         </li>
                         <% }); %>
-                        <a href="" class="seeall">Ver todos (<%= element.comments.length; %>)
-                        </a>
+                        </ul>
+                        <% } %>
+                        <% if(!isOwner){ %>
+                        <ul class="user-options">
+                            <% if(!profileRelation){ %>
+                            <% }else{ %>
+                            <%if(profileRelation.status=="friends"){%>
+                            <li>
+                                <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
+                                        onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
+                                            class="far fa-trash-alt"></i><%= locals.removefriend %>
+                                    </button>
+                                </form>
+                            </li>
+                            <% }} %>
+                            <li>
+                                <form action="/user/<%= userInfo.id %>/block" method="post"><button
+                                        onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
+                                            class="fas fa-ban"></i><%= locals.blockuser %>
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="" method="post"><button class="btn btn-gray"><i
+                                            class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
+                                </form>
+                            </li>
                         </ul>
                         <% } %>
                     </div>
-                    </li>
-                    <% }); %>
-                    </ul>
-                    <% } %>
-                    <% if(!isOwner){ %>
-                    <ul class="user-options">
-                        <% if(!profileRelation){ %>
-                        <% }else{ %>
-                        <%if(profileRelation.status=="friends"){%>
-                        <li>
-                            <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
-                                    onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
-                                        class="far fa-trash-alt"></i><%= locals.removefriend %>
-                                </button>
-                            </form>
-                        </li>
-                        <% }} %>
-                        <li>
-                            <form action="/user/<%= userInfo.id %>/block" method="post"><button
-                                    onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
-                                        class="fas fa-ban"></i><%= locals.blockuser %>
-                                </button>
-                            </form>
-                        </li>
-                        <li>
-                            <form action="" method="post"><button class="btn btn-gray"><i
-                                        class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
-                            </form>
-                        </li>
-                    </ul>
-                    <% } %>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="right-sidebar-title">
-                    <%= locals.photos %>
-                    <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %>
+                <div class="col-md-3">
+                    <div class="right-sidebar-title">
+                        <%= locals.photos %>
+                        <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %>
+                        </div>
                     </div>
-                </div>
-                <ul class="sidebar-photos">
-                    <li class="sidebar-photo">
-                        <a class="sidebar-user" href="">
-                            <div class="user-wrapper">
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <a class="sidebar-seall" href="">
-                    <%= locals.seall %>
-                </a>
-                <% if(!isOwner){ %>
-                <p class="right-sidebar-title">
-                    <%= locals.commonfriends %>
-                </p>
-                <% if(userInfo.friends.commonFriends){ %>
-                <ul class="user-images">
-                    <% userInfo.friends.commonFriends.forEach(friend => { %>
-                    <li class="user-photo">
-                        <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                            <div class="user-wrapper">
-                                <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                <div class="online"></div>
-                                <%}%>
+                    <ul class="sidebar-photos">
+                        <li class="sidebar-photo">
+                            <a class="sidebar-user" href="">
+                                <div class="user-wrapper">
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                    </a>
+                    <% if(!isOwner){ %>
+                    <p class="right-sidebar-title">
+                        <%= locals.commonfriends %>
+                    </p>
+                    <% if(userInfo.friends.commonFriends){ %>
+                    <ul class="user-images">
+                        <% userInfo.friends.commonFriends.forEach(friend => { %>
+                        <li class="user-photo">
+                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                    <div class="online"></div>
+                                    <%}%>
                                 </div>
                                 <p>
                                     <%= friend.firstname %>
-                                <%= friend.lastname %>
-                                </p>
-                        </a>
-                    </li>
-                    <% }); %>
-                </ul>
-                <a class="sidebar-seall" href="">
-                    <%= locals.seall %>
-                    (<% if(userInfo.friends.commonFriends){ %><%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
-                </a>
-                <% }else{ %>
-                <div class="sidebar-element-empty">
-                    <%= locals.nocommons %>.
-                </div>
-                <% } %>
-                <% } %>
-                <p class="right-sidebar-title">
-                    <%= locals.friends %>
-                </p>
-                <% if(userInfo.friends.commonFriends){ %>
-                <ul class="user-images">
-
-                    <% userInfo.friends.profileFriends.forEach(friend => { %>
-                    <li class="user-photo">
-                        <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                            <div class="user-wrapper">
-                                <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                <div class="online"></div>
-                                <%}%>
-                                </div>
-                                <p>
-                                    <%= friend.firstname %>
-                                <%= friend.lastname %>
-                                </p>
-                        </a>
-                    </li>
-                    <% }); %>
-
-                </ul>
-                <% }else{ %>
-                <div class="sidebar-element-empty">
-                    <% if(isOwner){ %>
-                    <%= locals.nofriendsyetown %>.
-                    <% } else { %>
-                    <%= locals.nofriendsyet %>.
+                                    <%= friend.lastname %>
+                                    </p>
+                            </a>
+                        </li>
+                        <% }); %>
+                    </ul>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                        (<% if(userInfo.friends.commonFriends){ %><%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
+                    </a>
+                    <% }else{ %>
+                    <div class="sidebar-element-empty">
+                        <%= locals.nocommons %>.
+                    </div>
                     <% } %>
+                    <% } %>
+                    <p class="right-sidebar-title">
+                        <%= locals.friends %>
+                    </p>
+                    <% if(userInfo.friends.commonFriends){ %>
+                    <ul class="user-images">
+
+                        <% userInfo.friends.profileFriends.forEach(friend => { %>
+                        <li class="user-photo">
+                            <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                                <div class="user-wrapper">
+                                    <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                    <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                    <div class="online"></div>
+                                    <%}%>
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                    <%= friend.lastname %>
+                                    </p>
+                            </a>
+                        </li>
+                        <% }); %>
+
+                    </ul>
+                    <% }else{ %>
+                    <div class="sidebar-element-empty">
+                        <% if(isOwner){ %>
+                        <%= locals.nofriendsyetown %>.
+                        <% } else { %>
+                        <%= locals.nofriendsyet %>.
+                        <% } %>
+                    </div>
+                    <% } %>
+                    <a class="sidebar-seall" href="">
+                        <%= locals.seall %>
+                        (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
+                    </a>
                 </div>
-                <% } %>
-                <a class="sidebar-seall" href="">
-                    <%= locals.seall %>
-                    (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
-                </a>
             </div>
         </div>
     </div>
-</div>
-<div hidden class="blurred"></div>
+    <div hidden class="blurred"></div>
 </div>
 <script>
     window.onload = function () {

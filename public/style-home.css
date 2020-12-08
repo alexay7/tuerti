@@ -1579,6 +1579,7 @@ input:checked+.slider:before {
 }
 
 .element-bottom {
+    margin-top: 5px;
     display: flex;
 }
 
