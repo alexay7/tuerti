@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="main-category">
-                            <% if (isOwner || !profileRelation || profileRelation.status!="friends") { %>
+                            <% if ((isOwner || !profileRelation || profileRelation.status!="friends")&&userWall.length==0) { %>
                             <div class="category-title-wrapper">
                                 <% } else { %>
                                 <div class="category-title-wrapper no-bottom-line">
@@ -339,6 +339,7 @@
                                         placeholder="<%= locals.writehere %> "></textarea>
                                 </form>
                                 <% } %>
+                                <% if(userWall.length==0){ %>
                                 <p class="no-posts">
                                     <% if(isOwner){ %>
                                     <%= locals.mywallempty %>
@@ -350,236 +351,290 @@
                                     <% } %>
                                     <% } %>
                                 </p>
-                                <% if(!isOwner){ %>
-                                <ul class="user-options">
-                                    <% if(!profileRelation){ %>
-                                    <% }else{ %>
-                                    <%if(profileRelation.status=="friends"){%>
-                                    <li>
-                                        <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
-                                                onclick="return confirm('<%=locals.areyousure %>')"
-                                                class="btn btn-gray"><i
-                                                    class="far fa-trash-alt"></i><%= locals.removefriend %>
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <% }} %>
-                                    <li>
-                                        <form action="/user/<%= userInfo.id %>/block" method="post"><button
-                                                onclick="return confirm('<%=locals.areyousure %>')"
-                                                class="btn btn-gray"><i class="fas fa-ban"></i><%= locals.blockuser %>
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="" method="post"><button class="btn btn-gray"><i
-                                                    class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                                <% } %>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="right-sidebar-title">
-                                <%= locals.photos %>
-                                <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %>
-                                </div>
-                            </div>
-                            <ul class="sidebar-photos">
-                                <li class="sidebar-photo">
-                                    <a class="sidebar-user" href="">
-                                        <div class="user-wrapper">
+                                <% }else{%>
+                                <ul class="wall">
+                                    <% userWall.forEach(element => { %>
+                                    <li class="wall-element">
+                                        <a href="/user/<%= userInfo.id %> ">
+                                            <div class="user-wrapper">
+                                                <img src="/images/users/avatars/<%= userInfo.avatar %>.png" alt=""
+                                                    class="box">
+                                                <% if(((new Date()-currentUser.last_activity)/86400000*24*60)<2){%>
+                                                <div class="online"></div>
+                                                <%}%>
                                         </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <a class="sidebar-seall" href="">
-                                <%= locals.seall %>
-                            </a>
-                            <% if(!isOwner){ %>
-                            <p class="right-sidebar-title">
-                                <%= locals.commonfriends %>
-                            </p>
-                            <% if(userInfo.friends.commonFriends){ %>
-                            <ul class="user-images">
-                                <% userInfo.friends.commonFriends.forEach(friend => { %>
-                                <li class="user-photo">
-                                    <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                                        <div class="user-wrapper">
-                                            <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                            <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                            <div class="online"></div>
-                                            <%}%>
-                                </div>
-                                <p>
-                                    <%= friend.firstname %>
-                                            <%= friend.lastname %>
-                                            </p>
-                                    </a>
-                                </li>
-                                <% }); %>
-                            </ul>
-                            <a class="sidebar-seall" href="">
-                                <%= locals.seall %>
-                                (<% if(userInfo.friends.commonFriends){ %><%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
-                            </a>
-                            <% }else{ %>
-                            <div class="sidebar-element-empty">
-                                <%= locals.nocommons %>.
+                                        </a>
+                                        <div class="element-content">
+                                            <div class="element-own">
+                                                <p><%= element.content %> </p>
+                                                <div class="element-bottom">
+                                                    <p><%= simplifyDate(element.createdAt); %> </p>
+                                                    <a href="">Comentar</a>
+                                                </div>
+                                            </div>
+                                            <% if (element.comments!=0) { %>
+                                            <ul class="element-comments">
+                                                <% element.comments.forEach(comment=>{ %>
+                                                <li class="comment-element">
+                                                    <a href="/user/<%= comment.writerId %> ">
+                                                        <div class="user-wrapper">
+                                                            <img class="box"
+                                                                src="/images/users/avatars/<%= comment.owner.avatar %>.png"
+                                                                alt="">
+                                                            <% if(((new Date()-comment.owner.last_activity)/86400000*24*60)<2){%>
+                                                            <div class="online"></div>
+                                                            <%}%>
+                                                        </div>
+                                                    </a>
+                                                    <div class="comment-content">
+                                                        <div class="comment-text">
+                                                            <a href="/user/<%= comment.writerId %>"><%= comment.owner.firstname %>
+                                                            <%= comment.owner.lastname %>
+                                                    </a>
+                                                    <p><%= comment.content %></p>
                             </div>
-                            <% } %>
-                            <% } %>
-                            <p class="right-sidebar-title">
-                                <%= locals.friends %>
-                            </p>
-                            <% if(userInfo.friends.commonFriends){ %>
-                            <ul class="user-images">
-
-                                <% userInfo.friends.profileFriends.forEach(friend => { %>
-                                <li class="user-photo">
-                                    <a class="sidebar-user" href="/user/<%= friend.id %> ">
-                                        <div class="user-wrapper">
-                                            <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
-                                            <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
-                                            <div class="online"></div>
-                                            <%}%>
-                                </div>
-                                <p>
-                                    <%= friend.firstname %>
-                                            <%= friend.lastname %>
-                                            </p>
-                                    </a>
-                                </li>
-                                <% }); %>
-
-                            </ul>
-                            <% }else{ %>
-                            <div class="sidebar-element-empty">
-                                <% if(isOwner){ %>
-                                <%= locals.nofriendsyetown %>.
-                                <% } else { %>
-                                <%= locals.nofriendsyet %>.
-                                <% } %>
-                            </div>
-                            <% } %>
-                            <a class="sidebar-seall" href="">
-                                <%= locals.seall %>
-                                (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
-                            </a>
+                            <p><span><%= simplifyDate(comment.createdAt); %> </span></p>
                         </div>
+                        </li>
+                        <% }); %>
+                        <a href="" class="seeall">Ver todos (<%= element.comments.length; %>)
+                        </a>
+                        </ul>
+                        <% } %>
                     </div>
+                    </li>
+                    <% }); %>
+                    </ul>
+                    <% } %>
+                    <% if(!isOwner){ %>
+                    <ul class="user-options">
+                        <% if(!profileRelation){ %>
+                        <% }else{ %>
+                        <%if(profileRelation.status=="friends"){%>
+                        <li>
+                            <form action="/user/<%= userInfo.id %>/deletefriend" method="post"><button
+                                    onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
+                                        class="far fa-trash-alt"></i><%= locals.removefriend %>
+                                </button>
+                            </form>
+                        </li>
+                        <% }} %>
+                        <li>
+                            <form action="/user/<%= userInfo.id %>/block" method="post"><button
+                                    onclick="return confirm('<%=locals.areyousure %>')" class="btn btn-gray"><i
+                                        class="fas fa-ban"></i><%= locals.blockuser %>
+                                </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" method="post"><button class="btn btn-gray"><i
+                                        class="fas fa-bullhorn"></i><%= locals.reportuser %> </button>
+                            </form>
+                        </li>
+                    </ul>
+                    <% } %>
                 </div>
             </div>
-            <div hidden class="blurred"></div>
+            <div class="col-md-3">
+                <div class="right-sidebar-title">
+                    <%= locals.photos %>
+                    <div class="sidebar-addon"><i class="fas fa-portrait"></i><%= locals.albums %>
+                    </div>
+                </div>
+                <ul class="sidebar-photos">
+                    <li class="sidebar-photo">
+                        <a class="sidebar-user" href="">
+                            <div class="user-wrapper">
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <a class="sidebar-seall" href="">
+                    <%= locals.seall %>
+                </a>
+                <% if(!isOwner){ %>
+                <p class="right-sidebar-title">
+                    <%= locals.commonfriends %>
+                </p>
+                <% if(userInfo.friends.commonFriends){ %>
+                <ul class="user-images">
+                    <% userInfo.friends.commonFriends.forEach(friend => { %>
+                    <li class="user-photo">
+                        <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                            <div class="user-wrapper">
+                                <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                <div class="online"></div>
+                                <%}%>
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                <%= friend.lastname %>
+                                </p>
+                        </a>
+                    </li>
+                    <% }); %>
+                </ul>
+                <a class="sidebar-seall" href="">
+                    <%= locals.seall %>
+                    (<% if(userInfo.friends.commonFriends){ %><%= userInfo.friends.commonFriends.length %><% } else { %>0<% } %>)
+                </a>
+                <% }else{ %>
+                <div class="sidebar-element-empty">
+                    <%= locals.nocommons %>.
+                </div>
+                <% } %>
+                <% } %>
+                <p class="right-sidebar-title">
+                    <%= locals.friends %>
+                </p>
+                <% if(userInfo.friends.commonFriends){ %>
+                <ul class="user-images">
+
+                    <% userInfo.friends.profileFriends.forEach(friend => { %>
+                    <li class="user-photo">
+                        <a class="sidebar-user" href="/user/<%= friend.id %> ">
+                            <div class="user-wrapper">
+                                <img src="/images/users/avatars/<%= friend.avatar %>.png" alt="">
+                                <% if(((new Date()-friend.last_activity)/86400000*24*60)<2){%>
+                                <div class="online"></div>
+                                <%}%>
+                                </div>
+                                <p>
+                                    <%= friend.firstname %>
+                                <%= friend.lastname %>
+                                </p>
+                        </a>
+                    </li>
+                    <% }); %>
+
+                </ul>
+                <% }else{ %>
+                <div class="sidebar-element-empty">
+                    <% if(isOwner){ %>
+                    <%= locals.nofriendsyetown %>.
+                    <% } else { %>
+                    <%= locals.nofriendsyet %>.
+                    <% } %>
+                </div>
+                <% } %>
+                <a class="sidebar-seall" href="">
+                    <%= locals.seall %>
+                    (<% if(userInfo.friends.profileFriends){ %><%= userInfo.friends.profileFriends.length %><% } else { %>0<% } %>)
+                </a>
+            </div>
         </div>
-        <script>
-            window.onload = function () {
-                var bloglength = $('.blog-entry').last().data("index");
-                $("div").find("[data-index=1]").removeAttr("hidden");
-                if (bloglength == 1) {
-                    $("#next-entry").addClass("unusable");
-                    $("#last-entry").addClass("unusable");
-                    $("#next-entry").attr("disabled", "disabled");
-                    $("#last-entry").attr("disabled", "disabled");
-                }
-                if ($(".main-area").data("same") == true) {
-                    auto_grow(document.querySelector(".user-status textarea"));
-                }
-            };
+    </div>
+</div>
+<div hidden class="blurred"></div>
+</div>
+<script>
+    window.onload = function () {
+        var bloglength = $('.blog-entry').last().data("index");
+        $("div").find("[data-index=1]").removeAttr("hidden");
+        if (bloglength == 1) {
+            $("#next-entry").addClass("unusable");
+            $("#last-entry").addClass("unusable");
+            $("#next-entry").attr("disabled", "disabled");
+            $("#last-entry").attr("disabled", "disabled");
+        }
+        if ($(".main-area").data("same") == true) {
+            auto_grow(document.querySelector(".user-status textarea"));
+        }
+    };
 
-            $(document).on('click', '#next-entry', function (e) {
-                e.preventDefault();
-                var bloglength = $('.blog-entry').last().data("index");
-                var newindex = $("div").find('.blog-entry:visible').data("index") + 1;
-                $(".blog-entry").attr("hidden", "hidden");
-                $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
-            });
+    $(document).on('click', '#next-entry', function (e) {
+        e.preventDefault();
+        var bloglength = $('.blog-entry').last().data("index");
+        var newindex = $("div").find('.blog-entry:visible').data("index") + 1;
+        $(".blog-entry").attr("hidden", "hidden");
+        $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
+    });
 
-            $(document).on('click', '#previous-entry', function (e) {
-                e.preventDefault();
-                var bloglength = $('.blog-entry').last().data("index");
-                var newindex = $("div").find('.blog-entry:visible').data("index") - 1;
-                $(".blog-entry").attr("hidden", "hidden");
-                $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
-            });
+    $(document).on('click', '#previous-entry', function (e) {
+        e.preventDefault();
+        var bloglength = $('.blog-entry').last().data("index");
+        var newindex = $("div").find('.blog-entry:visible').data("index") - 1;
+        $(".blog-entry").attr("hidden", "hidden");
+        $("div").find("[data-index=" + newindex + "]").removeAttr("hidden");
+    });
 
-            $(document).on('click', '#last-entry', function (e) {
-                e.preventDefault();
-                var bloglength = $('.blog-entry').last().data("index");
-                $(".blog-entry").attr("hidden", "hidden");
-                $("div").find("[data-index=" + bloglength + "]").removeAttr("hidden");
-            });
+    $(document).on('click', '#last-entry', function (e) {
+        e.preventDefault();
+        var bloglength = $('.blog-entry').last().data("index");
+        $(".blog-entry").attr("hidden", "hidden");
+        $("div").find("[data-index=" + bloglength + "]").removeAttr("hidden");
+    });
 
-            $(document).on('click', '#first-entry', function (e) {
-                e.preventDefault();
-                var bloglength = $('.blog-entry').last().data("index");
-                $(".blog-entry").attr("hidden", "hidden");
-                $("div").find("[data-index=1]").removeAttr("hidden");
-            });
+    $(document).on('click', '#first-entry', function (e) {
+        e.preventDefault();
+        var bloglength = $('.blog-entry').last().data("index");
+        $(".blog-entry").attr("hidden", "hidden");
+        $("div").find("[data-index=1]").removeAttr("hidden");
+    });
 
-            $(document).on('click', '#create-blog', function (e) {
-                e.preventDefault();
-                $(".create-blog").removeAttr("hidden");
-                $(".no-blog").attr("hidden", "hidden");
-                $(".blog").attr("hidden", "hidden");
-            });
+    $(document).on('click', '#create-blog', function (e) {
+        e.preventDefault();
+        $(".create-blog").removeAttr("hidden");
+        $(".no-blog").attr("hidden", "hidden");
+        $(".blog").attr("hidden", "hidden");
+    });
 
-            $("#close-blog").click(function (e) {
-                e.preventDefault();
-                $(".create-blog").attr("hidden", "hidden");
-                $(".no-blog").removeAttr("hidden");
-                $(".blog").removeAttr("hidden");
-            });
+    $("#close-blog").click(function (e) {
+        e.preventDefault();
+        $(".create-blog").attr("hidden", "hidden");
+        $(".no-blog").removeAttr("hidden");
+        $(".blog").removeAttr("hidden");
+    });
 
-            $("#add-image").click(function (e) {
-                e.preventDefault();
-                $("div.active").attr("hidden", "hidden");
-                $("div.active input").attr("disabled", "disabled");
-                $("div.active textarea").attr("disabled", "disabled");
-                $("button.active").removeAttr("hidden");
-                $("#add-image").attr("hidden", "hidden");
-                $("#add-image").addClass("active");
-                $("#blog-image").removeAttr("hidden");
-                $("#blog-image").addClass("active");
-                $("#blog-image input").removeAttr("disabled");
-                $("#blog-image input").addClass("active");
-            });
+    $("#add-image").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-image").attr("hidden", "hidden");
+        $("#add-image").addClass("active");
+        $("#blog-image").removeAttr("hidden");
+        $("#blog-image").addClass("active");
+        $("#blog-image input").removeAttr("disabled");
+        $("#blog-image input").addClass("active");
+    });
 
-            $("#add-text").click(function (e) {
-                e.preventDefault();
-                $("div.active").attr("hidden", "hidden");
-                $("div.active input").attr("disabled", "disabled");
-                $("div.active textarea").attr("disabled", "disabled");
-                $("button.active").removeAttr("hidden");
-                $("#add-text").attr("hidden", "hidden");
-                $("#add-text").addClass("active");
-                $("#blog-text").removeAttr("hidden");
-                $("#blog-text").addClass("active");
-                $("#blog-text input").removeAttr("disabled");
-                $("#blog-text textarea").removeAttr("disabled");
-                $("#blog-text input").addClass("active");
-            });
+    $("#add-text").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-text").attr("hidden", "hidden");
+        $("#add-text").addClass("active");
+        $("#blog-text").removeAttr("hidden");
+        $("#blog-text").addClass("active");
+        $("#blog-text input").removeAttr("disabled");
+        $("#blog-text textarea").removeAttr("disabled");
+        $("#blog-text input").addClass("active");
+    });
 
-            $("#add-video").click(function (e) {
-                e.preventDefault();
-                $("div.active").attr("hidden", "hidden");
-                $("div.active input").attr("disabled", "disabled");
-                $("div.active textarea").attr("disabled", "disabled");
-                $("button.active").removeAttr("hidden");
-                $("#add-video").attr("hidden", "hidden");
-                $("#add-video").addClass("active");
-                $("#blog-video").removeAttr("hidden");
-                $("#blog-video").addClass("active");
-                $("#blog-video input").removeAttr("disabled");
-                $("#blog-video input").addClass("active");
-            });
+    $("#add-video").click(function (e) {
+        e.preventDefault();
+        $("div.active").attr("hidden", "hidden");
+        $("div.active input").attr("disabled", "disabled");
+        $("div.active textarea").attr("disabled", "disabled");
+        $("button.active").removeAttr("hidden");
+        $("#add-video").attr("hidden", "hidden");
+        $("#add-video").addClass("active");
+        $("#blog-video").removeAttr("hidden");
+        $("#blog-video").addClass("active");
+        $("#blog-video input").removeAttr("disabled");
+        $("#blog-video input").addClass("active");
+    });
 
-            function auto_grow(element) {
-                element.style.height = "5px";
-                element.style.height = (element.scrollHeight) + "px";
-            }
-        </script>
-        </body>
+    function auto_grow(element) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+</script>
+</body>
 
-        </html>
+</html>

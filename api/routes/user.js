@@ -2,7 +2,7 @@ const express = require("express"),
     router = express.Router(),
     models = require('../../models'),
     { isLoggedIn, simplifyDate } = require("../middleware"),
-    { getUserInfo, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends, getUserBlog } = require("../middleware/user"),
+    { getUserInfo, getUserWall, addStatus, addVisit, canViewPhoto, findRelation, isOwnProfile, getFriends, getUserBlog } = require("../middleware/user"),
     path = require('path'),
     { body, validationResult } = require('express-validator');
 
@@ -18,6 +18,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
     var profileRelation = await findRelation(req.user.id, req.params.id);
     var friends = await getFriends(req.user.id, req.params.id);
     var personalSpace = await getUserBlog(req.params.id);
+    var userWall = await getUserWall(req.params.id);
     if (userInfo) {
         if (profileRelation.status == "blocked") {
             res.render("home/noaccess", { locals });
@@ -28,7 +29,7 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
             } else {
                 addVisit(req.user.id, req.params.id);
             }
-            res.render("home/profile", { locals, userInfo, isOwner, profileRelation, personalSpace, simplifyDate });
+            res.render("home/profile", { locals, userInfo, isOwner, profileRelation, personalSpace, userWall, simplifyDate });
         }
     } else {
         res.redirect("back");
@@ -37,25 +38,13 @@ router.get("/user/:id", isLoggedIn, async function (req, res) {
 
 router.post("/user/:id/changestatus", isLoggedIn, isOwnProfile, [
     body('newstatus').not().isEmpty().isLength({ min: 1, max: 140 }),
-], function (req, res) {
+], async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.redirect("back");
     }
-    models.user.findOne({
-        where: {
-            id: req.user.id
-        }
-    }).then(function (user) {
-        var statuschange = new Date();
-        if (user) {
-            user.update({
-                status: req.body.newstatus,
-                status_change: statuschange
-            });
-        }
-        res.redirect("back");
-    });
+    await addStatus(req.user.id, req.body.newstatus);
+    res.redirect("back");
 });
 
 router.post("/user/:id/deleteblog", isLoggedIn, isOwnProfile, function (req, res) {

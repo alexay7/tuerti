@@ -63,6 +63,29 @@ middlewareObj.cleanVisits = function () {
     });
 }
 
+middlewareObj.addStatus = async function (userId, content) {
+    var newStatus = {
+        ownerId: userId,
+        writerId: userId,
+        content,
+        type: "status"
+    };
+    await models.userwall.create(newStatus);
+    models.user.findOne({
+        where: {
+            id: userId
+        }
+    }).then(function (user) {
+        var statuschange = new Date();
+        if (user) {
+            user.update({
+                status: content,
+                status_change: statuschange
+            });
+        }
+    });
+}
+
 middlewareObj.findRelation = function (userId, profileId) {
     const Op = require('Sequelize').Op;
     if (userId == profileId) {
@@ -161,8 +184,39 @@ middlewareObj.getFriends = async function (userId, profileId) {
 }
 
 middlewareObj.canViewPhoto = function (userId) {
-    return false;
+    return false; //TODO
 }
 
+middlewareObj.getUserWall = async function (userId) {
+    var wall = [];
+    await models.userwall.findAll({
+        where: {
+            ownerId: userId
+        },
+        order: [
+            ['createdAt', 'DESC']
+        ]
+    }).then(async function (walltotal) {
+        walltotal.forEach(async function (element) {
+            if (element.dataValues.type == "status") {
+                element.dataValues.comments = [];
+                wall.push(element.dataValues);
+            } else if (element.dataValues.type == "post") {
+                element.dataValues.owner = await getUserInfoMin(element.dataValues.writerId);
+                wall.push(element.dataValues);
+            }
+        });
+        for (var element of walltotal) {
+            if (element.dataValues.type == "comment") {
+                element.dataValues.owner = await getUserInfoMin(element.dataValues.writerId);
+                console.log(element.dataValues.parentId);
+                wall.find(x => x.id == element.parentId).comments.push(element.dataValues);
+            } else if (element.dataValues.type == "response") {
+                wall.find(id => element.parentId).response = element.dataValues;
+            }
+        }
+    });
+    return wall;
+}
 
 module.exports = middlewareObj;

@@ -1543,3 +1543,103 @@ input:checked+.slider:before {
 .unusable {
     background: white;
 }
+
+
+/* WALL STYLE */
+
+.wall-element {
+    width: 100%;
+    background: var(--light-gray);
+    display: grid;
+    grid-template-columns: 10% 86%;
+    column-gap: 4%;
+    border-top: 1px solid var(--dark-gray);
+    border-bottom: 1px solid var(--dark-gray);
+    padding: 15px 0;
+}
+
+.wall-element p {
+    margin: 0;
+}
+
+.wall-element .user-wrapper {
+    width: 55px;
+    margin: 0 15px;
+}
+
+.element-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.element-content p {
+    font-size: 15px;
+    padding-right: 5px;
+}
+
+.element-bottom {
+    display: flex;
+}
+
+.element-bottom p {
+    font-size: 12px;
+    color: gray;
+    padding-right: 5px;
+    border-right: 1px solid var(--dark-gray);
+}
+
+.element-comments {
+    border-left: 4px solid var(--dark-gray);
+    margin-top: 5px;
+}
+
+.element-content a {
+    padding-left: 5px;
+    font-size: 12px;
+}
+
+.comment-element {
+    align-items: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% 87%;
+    column-gap: 3%;
+    margin-bottom: 15px;
+}
+
+.comment-element .user-wrapper {
+    width: 35px;
+}
+
+.element-comments .seeall {
+    margin-left: 10px;
+}
+
+.comment-element p {
+    margin: 0;
+}
+
+.comment-text {
+    display: flex;
+    align-items: baseline;
+}
+
+.comment-text a {
+    padding: 0;
+    font-size: 14px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.comment-element span {
+    color: gray;
+    font-size: 12px;
+}
+
+.element-own {
+    margin-top: 5px;
+    min-height: 55px;
+    display: flex;
+    flex-direction: column;
+}
