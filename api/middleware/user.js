@@ -209,7 +209,6 @@ middlewareObj.getUserWall = async function (userId) {
         for (var element of walltotal) {
             if (element.dataValues.type == "comment") {
                 element.dataValues.owner = await getUserInfoMin(element.dataValues.writerId);
-                console.log(element.dataValues.parentId);
                 wall.find(x => x.id == element.parentId).comments.push(element.dataValues);
             } else if (element.dataValues.type == "response") {
                 wall.find(id => element.parentId).response = element.dataValues;

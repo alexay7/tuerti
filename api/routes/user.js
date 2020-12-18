@@ -143,6 +143,25 @@ router.post("/user/:id/friendship", isLoggedIn, function (req, res) {
     });
 });
 
+router.post("/user/:id/postcomment", isLoggedIn, [
+    body('comment').not().isEmpty().isLength({ min: 2, max: 200 })
+], function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.redirect("back");
+    }
+    var newComment = {
+        ownerId: req.params.id,
+        writerId: req.user.id,
+        parentId: req.body.postid,
+        content: req.body.comment,
+        type: "comment"
+    }
+    models.userwall.create(newComment).then(function (found) {
+        return res.redirect("back");
+    });
+});
+
 router.post("/user/:id/createblog", isLoggedIn, isOwnProfile, [
     body('title').not().isEmpty().isLength({ min: 2, max: 50 }),
     body('content').not().isEmpty().isLength({ min: 2, max: 500 }),

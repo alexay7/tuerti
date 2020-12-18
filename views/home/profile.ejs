@@ -366,11 +366,18 @@
                                                 <p><%= element.content %> </p>
                                                 <div class="element-bottom">
                                                     <p><%= simplifyDate(element.createdAt); %> </p>
-                                                    <a href="">Comentar</a>
+                                                    <a href="" id="toggle-comment">Comentar</a>
                                                 </div>
                                             </div>
-                                            <% if (element.comments!=0) { %>
                                             <ul class="element-comments">
+                                                <form style="display: none;" id="write-comment"
+                                                    action="/user/<%= userInfo.id %>/postcomment" method="post">
+                                                    <input type="hidden" name="postid" value="<%= element.id %>">
+                                                    <textarea oninput="auto_grow(this)" name="comment" id=""
+                                                        class="form-control"
+                                                        placeholder="Escribe un comentario"></textarea>
+                                                </form>
+                                                <% if (element.comments!=0) { %>
                                                 <% element.comments.forEach(comment=>{ %>
                                                 <li class="comment-element">
                                                     <a href="/user/<%= comment.writerId %> ">
@@ -396,8 +403,8 @@
                             <% }); %>
                             <a href="" class="seeall">Ver todos (<%= element.comments.length; %>)
                             </a>
-                            </ul>
                             <% } %>
+                            </ul>
                         </div>
                         </li>
                         <% }); %>
@@ -540,6 +547,12 @@
         }
     };
 
+    $(document).on('click', '#toggle-comment', function (e) {
+        e.preventDefault();
+        $(this).closest("form");
+        $(this).parent().parent().parent().children("ul").children("form").toggle()
+    });
+
     $(document).on('click', '#next-entry', function (e) {
         e.preventDefault();
         var bloglength = $('.blog-entry').last().data("index");
@@ -631,6 +644,13 @@
         element.style.height = "5px";
         element.style.height = (element.scrollHeight) + "px";
     }
+
+    $("#write-comment textarea").keypress(function (e) {
+        if (e.which == 13 && !e.shiftKey) {
+            $(this).closest("form").submit();
+            e.preventDefault();
+        }
+    });
 </script>
 </body>
 
