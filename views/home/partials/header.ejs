@@ -37,6 +37,7 @@
                         <%= locals.people %>
                     </a>
                     <form class="form-inline">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input class="form-control mr-sm-2 nav-search" type="search" placeholder="<%=locals.search %>"
                             aria-label="Search">
                         <label>
@@ -47,8 +48,10 @@
                         </i>
                     </form>
                     <form class="form-inline">
-                        <button class="btn btn-sm btn-outline-secondary btn-blue"
-                            type="button"><%= locals.uploadphotos %><i class="fas fa-angle-double-up"></i></button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-sm btn-outline-secondary btn-blue" type="button">
+                            <%= locals.uploadphotos %><i class="fas fa-angle-double-up"></i>
+                        </button>
                     </form>
                 </div>
 

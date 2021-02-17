@@ -1,9 +1,11 @@
+require('colors');
 const bodyParser = require('body-parser'),
     express = require("express"),
     passport = require("passport"),
     session = require("express-session"),
     methodOverride = require("method-override"),
     cookieParser = require("cookie-parser"),
+    csrf = require('csurf'),
     Languages = require("../config/languajes"),
     path = require('path'),
     flash = require('connect-flash');
@@ -20,6 +22,7 @@ module.exports = async function ({ app }) {
 
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    app.use(csrf({ cookie: true }));
     app.use(session({ secret: process.env.PASSPORT_SECRET, resave: true, saveUninitialized: true })); // session secret
     app.use(passport.initialize());
     app.use(passport.session());
@@ -29,6 +32,7 @@ module.exports = async function ({ app }) {
         res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
         res.locals.currentUser = req.user;
         res.locals.messages = req.flash();
+        res.locals.csrfToken = req.csrfToken();
         next();
     });
 

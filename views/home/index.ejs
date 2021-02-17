@@ -1,177 +1,190 @@
 <%- include ("partials/header") %>
 
-<head>
-    <title>Tuerti -
-        <%= locals.home %>
-    </title>
-</head>
-<% if(errors.length>0){ %>
-<div class="container main-area" data-function="createevent">
-    <% } else { %>
-    <div class="container main-area">
-        <% } %>
-        <div class="row">
-            <div class="col-md-3 main-sidebar">
-                <div class="row sidebar-area sidebar-area-mini">
-                    <img class="box" src="images/users/avatars/<%= currentUser.avatar %>.png" alt="">
-                    <div class="profile-tab">
-                        <a href="/user/<%= currentUser.id %>">
-                            <p class="profile-name">
-                                <%= currentUser.firstname%>
-                                <%= currentUser.lastname%>
-                            </p>
-                        </a>
-                        <p class="profile-visits">
-                            <i class="far fa-chart-bar"></i>
-                            <span><%= currentUser.visits%>
-                            </span>
-                            <%= locals.visits %>
-                        </p>
-                    </div>
+    <head>
+        <title>Tuerti -
+            <%= locals.home %>
+        </title>
+    </head>
+    <% if(errors.length>0){ %>
+        <div class="container main-area" data-function="createevent">
+            <% } else { %>
+                <div class="container main-area">
+                    <% } %>
+                        <div class="row">
+                            <div class="col-md-3 main-sidebar">
+                                <div class="row sidebar-area sidebar-area-mini">
+                                    <img class="box" src="images/users/avatars/<%= currentUser.avatar %>.png" alt="">
+                                    <div class="profile-tab">
+                                        <a href="/user/<%= currentUser.id %>">
+                                            <p class="profile-name">
+                                                <%= currentUser.firstname%>
+                                                    <%= currentUser.lastname%>
+                                            </p>
+                                        </a>
+                                        <p class="profile-visits">
+                                            <i class="far fa-chart-bar"></i>
+                                            <span>
+                                                <%= currentUser.visits%>
+                                            </span>
+                                            <%= locals.visits %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row sidebar-calendar">
+                                    <div class="sidebar-title">
+                                        <h3>
+                                            <%= locals.calendar %>
+                                        </h3>
+                                        <p class="sidebar-addon" id="create-event"><i class="fas fa-calendar-week"></i>
+                                            <%= locals.createevent %>
+                                        </p>
+                                    </div>
+
+                                    <ul class="calendar-dates">
+                                        <li class="calendar-subtitle">
+                                            <p>
+                                                <%= locals.today %>
+                                            </p>
+                                            <% if(events["todayEvents"].length>0){ events["todayEvents"].forEach(event=>
+                                                { %>
+                                                <ul class="calendar-events">
+                                                    <li class="calendar-event">
+                                                        <% switch(event.type){ case "birthday" : %>
+                                                            <a href="user/" class="event-name"><i
+                                                                    class="fas fa-birthday-cake"></i>
+                                                                <%= event.name %>
+                                                            </a>
+                                                            <% break;default: %>
+                                                                <a href="event/<%= event.id %>" class="event-name"><i
+                                                                        class="fas fa-calendar-week"></i>
+                                                                    <%= event.name %>
+                                                                </a>
+                                                                <% break;}%>
+                                                                    <p class="event-date">
+                                                                        <%= event.target %>
+                                                                    </p>
+                                                    </li>
+                                                </ul>
+                                                <% });}else{ %>
+                                                    <p class="no-events">
+                                                        <%= locals.noevents %>
+                                                    </p>
+                                                    <% } %>
+                                        </li>
+                                        <li class="calendar-subtitle">
+                                            <p>
+                                                <%= locals.tomorrow %>
+                                            </p>
+                                            <% if(events["tomorrowEvents"].length>0){
+                                                events["tomorrowEvents"].forEach(event => { %>
+                                                <ul class="calendar-events">
+                                                    <li class="calendar-event">
+                                                        <% switch(event.type){ case "birthday" : %>
+                                                            <a href="user/" class="event-name"><i
+                                                                    class="fas fa-birthday-cake"></i>
+                                                                <%= event.name %>
+                                                            </a>
+                                                            <% break;default: %>
+                                                                <a href="event/<%= event.id %>" class="event-name"><i
+                                                                        class="fas fa-calendar-week"></i>
+                                                                    <%= event.name %>
+                                                                </a>
+                                                                <% break;}%>
+                                                                    <p class="event-date">
+                                                                        <%= event.target %>
+                                                                    </p>
+                                                    </li>
+                                                </ul>
+                                                <% });}else{ %>
+                                                    <p class="no-events">
+                                                        <%= locals.noevents %>
+                                                    </p>
+                                                    <% } %>
+                                        </li>
+                                        <li class="calendar-subtitle">
+                                            <p>
+                                                <%= locals.sevendays %>
+                                            </p>
+                                            <% if(events["sevenDaysEvents"].length>0){
+                                                events["sevenDaysEvents"].forEach(event => { %>
+                                                <ul class="calendar-events">
+                                                    <li class="calendar-event">
+                                                        <% switch(event.type){ case "birthday" : %>
+                                                            <a href="user/" class="event-name"><i
+                                                                    class="fas fa-birthday-cake"></i>
+                                                                <%= event.name %>
+                                                            </a>
+                                                            <% break;default: %>
+                                                                <a href="event/<%= event.id %>" class="event-name"><i
+                                                                        class="fas fa-calendar-week"></i>
+                                                                    <%= event.name %>
+                                                                </a>
+                                                                <% break;}%>
+                                                                    <p class="event-date">
+                                                                        <%= event.target %>
+                                                                    </p>
+                                                    </li>
+                                                </ul>
+                                                <% });}else{ %>
+                                                    <p class="no-events">
+                                                        <%= locals.noevents %>
+                                                    </p>
+                                                    <% } %>
+                                        </li>
+                                    </ul>
+                                    <a class="all-events" href="">
+                                        <%= locals.seall %>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-9 main-post-area">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div hidden class="blurred"></div>
                 </div>
-                <div class="row sidebar-calendar">
-                    <div class="sidebar-title">
-                        <h3>
-                            <%= locals.calendar %>
-                        </h3>
-                        <p class="sidebar-addon" id="create-event"><i class="fas fa-calendar-week"></i>
-                            <%= locals.createevent %>
-                        </p>
-                    </div>
 
-                    <ul class="calendar-dates">
-                        <li class="calendar-subtitle">
-                            <p>
-                                <%= locals.today %>
-                            </p>
-                            <% if(events["todayEvents"].length>0){ events["todayEvents"].forEach(event => { %>
-                            <ul class="calendar-events">
-                                <li class="calendar-event">
-                                    <% switch(event.type){
-                                            case "birthday": %>
-                                    <a href="user/" class="event-name"><i
-                                            class="fas fa-birthday-cake"></i><%= event.name %> </a>
-                                    <% break;default: %>
-                                    <a href="event/<%= event.id %>" class="event-name"><i
-                                            class="fas fa-calendar-week"></i><%= event.name %> </a>
-                                    <% break;}%>
-                                    <p class="event-date">
-                                        <%= event.target %>
-                                    </p>
-                                </li>
-                            </ul>
-                            <% });}else{ %>
-                            <p class="no-events">
-                                <%= locals.noevents %>
-                            </p>
-                            <% } %>
-                        </li>
-                        <li class="calendar-subtitle">
-                            <p>
-                                <%= locals.tomorrow %>
-                            </p>
-                            <% if(events["tomorrowEvents"].length>0){ events["tomorrowEvents"].forEach(event => { %>
-                            <ul class="calendar-events">
-                                <li class="calendar-event">
-                                    <% switch(event.type){
-                                            case "birthday": %>
-                                    <a href="user/" class="event-name"><i
-                                            class="fas fa-birthday-cake"></i><%= event.name %> </a>
-                                    <% break;default: %>
-                                    <a href="event/<%= event.id %>" class="event-name"><i
-                                            class="fas fa-calendar-week"></i><%= event.name %> </a>
-                                    <% break;}%>
-                                    <p class="event-date">
-                                        <%= event.target %>
-                                    </p>
-                                </li>
-                            </ul>
-                            <% });}else{ %>
-                            <p class="no-events">
-                                <%= locals.noevents %>
-                            </p>
-                            <% } %>
-                        </li>
-                        <li class="calendar-subtitle">
-                            <p>
-                                <%= locals.sevendays %>
-                            </p>
-                            <% if(events["sevenDaysEvents"].length>0){ events["sevenDaysEvents"].forEach(event => { %>
-                            <ul class="calendar-events">
-                                <li class="calendar-event">
-                                    <% switch(event.type){
-                                            case "birthday": %>
-                                    <a href="user/" class="event-name"><i
-                                            class="fas fa-birthday-cake"></i><%= event.name %> </a>
-                                    <% break;default: %>
-                                    <a href="event/<%= event.id %>" class="event-name"><i
-                                            class="fas fa-calendar-week"></i><%= event.name %> </a>
-                                    <% break;}%>
-                                    <p class="event-date">
-                                        <%= event.target %>
-                                    </p>
-                                </li>
-                            </ul>
-                            <% });}else{ %>
-                            <p class="no-events">
-                                <%= locals.noevents %>
-                            </p>
-                            <% } %>
-                        </li>
-                    </ul>
-                    <a class="all-events" href="">
-                        <%= locals.seall %>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-9 main-post-area">
-                <div class="row">
-                    <div class="col-md-9">
-                    </div>
-                    <div class="col-md-3">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div hidden class="blurred"></div>
-    </div>
+                <script>
+                    window.onload = function () {
+                        if ($(".main-area").data("function") == "createevent") {
+                            $("#create-event").click();
+                        }
+                    };
+                    $(document).on("click ", ".close-btn", function (e) {
+                        e.preventDefault();
+                        $(this).parent().css("height", "0%");
+                        $(".blurred").css("opacity", "0");
+                        setTimeout(function () {
+                            $(".edit-window").remove();
+                            $(".blurred").attr("hidden", "hidden");
+                        }, 250);
+                    });
 
-    <script>
-        window.onload = function () {
-            if ($(".main-area").data("function") == "createevent") {
-                $("#create-event").click();
-            }
-        };
-        $(document).on("click ", ".close-btn", function (e) {
-            e.preventDefault();
-            $(this).parent().css("height", "0%");
-            $(".blurred").css("opacity", "0");
-            setTimeout(function () {
-                $(".edit-window").remove();
-                $(".blurred").attr("hidden", "hidden");
-            }, 250);
-        });
+                    $(document).on("change", ".option", function (e) {
+                        e.preventDefault();
+                        var input = $("#date");
+                        var value = input.val();
+                        if (input.attr("type") == "date") {
+                            value = value + "T00:00";
+                            input.attr("type", "datetime-local");
+                            input.val(value);
+                        } else {
+                            value = value.substring(0, 10);
+                            input.attr("type", "date");
+                            input.val(value);
+                        }
+                    });
 
-        $(document).on("change", ".option", function (e) {
-            e.preventDefault();
-            var input = $("#date");
-            var value = input.val();
-            if (input.attr("type") == "date") {
-                value = value + "T00:00";
-                input.attr("type", "datetime-local");
-                input.val(value);
-            } else {
-                value = value.substring(0, 10);
-                input.attr("type", "date");
-                input.val(value);
-            }
-        });
-
-        $("#create-event").click(function (e) {
-            e.preventDefault();
-            var window = document.createElement("div");
-            window.classList.add("edit-window");
-            window.innerHTML = `<div class="close-btn">
+                    $("#create-event").click(function (e) {
+                        e.preventDefault();
+                        var window = document.createElement("div");
+                        window.classList.add("edit-window");
+                        window.innerHTML = `<div class="close-btn">
                     <i class="fas fa-times"></i>
                 </div>
                 <div class="edit-wrapper" style="padding:0;">
@@ -194,6 +207,7 @@
                     </ul>
                     <div class="edit-info">
                         <form action="/event/create" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <p class="edit-info-title">
                                 <%= locals.generalinfo %>
                             </p>
@@ -257,38 +271,38 @@
                         </form>
                     </div>
                 </div>`;
-            $(".main-area").append(window);
-            $(".blurred").removeAttr("hidden");
-            setTimeout(function () {
-                var area = document.querySelector(".edit-window textarea");
-                $("#date").val(convertDate(new Date(), $("#date").attr("type")));
-                $(".edit-window").css("height", "67%");
-                $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
-                $(".blurred").css("opacity", ".5");
-            }, 20);
-        });
+                        $(".main-area").append(window);
+                        $(".blurred").removeAttr("hidden");
+                        setTimeout(function () {
+                            var area = document.querySelector(".edit-window textarea");
+                            $("#date").val(convertDate(new Date(), $("#date").attr("type")));
+                            $(".edit-window").css("height", "67%");
+                            $(".edit-wrapper").css("padding", "5px 15px 15px 15px")
+                            $(".blurred").css("opacity", ".5");
+                        }, 20);
+                    });
 
-        function auto_grow(element) {
-            element.style.height = "10px";
-            element.style.height = (element.scrollHeight) + "px";
-        }
+                    function auto_grow(element) {
+                        element.style.height = "10px";
+                        element.style.height = (element.scrollHeight) + "px";
+                    }
 
-        function convertDate(oldFormat, format) {
-            var options = {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit"
-            };
-            var newFormat = new Date(oldFormat).toLocaleString("es-ES", options).split(/[/ :]/);
-            if (format == "date") {
-                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0]);
-            } else {
-                return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0] + "T" + newFormat[3] + ":" + newFormat[4]);
-            }
-        }
-    </script>
-    </body>
+                    function convertDate(oldFormat, format) {
+                        var options = {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        };
+                        var newFormat = new Date(oldFormat).toLocaleString("es-ES", options).split(/[/ :]/);
+                        if (format == "date") {
+                            return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0]);
+                        } else {
+                            return (newFormat[2] + "-" + newFormat[1] + "-" + newFormat[0] + "T" + newFormat[3] + ":" + newFormat[4]);
+                        }
+                    }
+                </script>
+                </body>
 
-    </html>
+                </html>

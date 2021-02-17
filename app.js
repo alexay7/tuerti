@@ -1,5 +1,6 @@
 const express = require("express"),
-    loaders = require('./loaders/index.js');
+    loaders = require('./loaders/index.js'),
+    logger = require("./loaders/log.js");
 
 async function startServer() {
 
@@ -9,10 +10,10 @@ async function startServer() {
 
     app.listen(process.env.PORT, process.env.URL, function (err) {
         if (err) {
-            console.log(err);
+            logger.error("Something went wrong. Reason: " + err);
             return;
         }
-        console.log("Started Tuerti on - " + process.env.URL + ":" + process.env.PORT);
+        logger.info("Started Tuerti on - " + process.env.URL + ":" + process.env.PORT);
     });
 }
 

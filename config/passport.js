@@ -1,6 +1,7 @@
 //load bcrypt
 var bCrypt = require('bcrypt'),
-    models = require("../models");
+    models = require("../models"),
+    logger = require('../loaders/log');
 
 module.exports = function (passport, user) {
     var User = user;
@@ -142,7 +143,7 @@ module.exports = function (passport, user) {
                 var userinfo = user.get();
                 return done(null, userinfo);
             }).catch(function (err) {
-                console.log("Error:", err);
+                logger.error("Something went wrong. Reason: " + err);
                 return done(null, false, {
                     message: 'Something went wrong with your Signin'
                 });

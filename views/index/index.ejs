@@ -6,25 +6,32 @@
     <div class="login">
         <div id="login" class="body">
             <form action="/login" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-group login-wrapper">
                     <div class="form-item">
-                        <% if (messages.error=="Missing credentials"||messages.error=="mail") { %>
-                            <input tabindex="1" class="form-control textbox error" type="email" id="email" name="email" placeholder="Email">
+                        <% if (messages.error=="Missing credentials" ||messages.error=="mail" ) { %>
+                            <input tabindex="1" class="form-control textbox error" type="email" id="email" name="email"
+                                placeholder="Email">
                             <i class="fas fa-exclamation-triangle login-warning"></i>
                             <% } else { %>
-                                <input tabindex="1" class="form-control textbox" type="email" id="email" name="email" placeholder="Email">
+                                <input tabindex="1" class="form-control textbox" type="email" id="email" name="email"
+                                    placeholder="Email">
                                 <% } %>
                                     <label for="remember" class="remember-me">
-                            <input tabindex="3" type="checkbox" name="remember" id="remember" value="1">
-                            <p><%= locals["rememberme"] %> </p>
-                        </label>
+                                        <input tabindex="3" type="checkbox" name="remember" id="remember" value="1">
+                                        <p>
+                                            <%= locals["rememberme"] %>
+                                        </p>
+                                    </label>
                     </div>
                     <div class="form-item">
-                        <% if (messages.error=="pass") { %>
-                            <input tabindex="2" class="form-control textbox error" type="password" id="password" name="password" placeholder="<%= locals.password %> ">
+                        <% if (messages.error=="pass" ) { %>
+                            <input tabindex="2" class="form-control textbox error" type="password" id="password"
+                                name="password" placeholder="<%= locals.password %> ">
                             <i class="fas fa-exclamation-triangle login-warning"></i>
                             <% } else { %>
-                                <input tabindex="2" class="form-control textbox" type="password" id="password" name="password" placeholder="<%= locals.password %> ">
+                                <input tabindex="2" class="form-control textbox" type="password" id="password"
+                                    name="password" placeholder="<%= locals.password %> ">
                                 <% } %>
                                     <a href="" title="Forgot your password?">
                                         <%= locals["forgotpassword"] %>
@@ -38,7 +45,10 @@
                     <p>
                         <span class="info"></span>
                         <a href="register" title="Get an account">
-                            <%= locals["register1"] %> <strong><%= locals["register2"] %></strong></a>
+                            <%= locals["register1"] %> <strong>
+                                    <%= locals["register2"] %>
+                                </strong>
+                        </a>
                     </p>
                 </div>
             </div>
@@ -117,8 +127,9 @@
                     <ul class="languageSelector">
                         <li class="language">
                             <form id="lang-english" action="/changelang" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <input hidden type="text" value="en" id="lang-en" name="lang">
-                                <% if (locals.help=="Ayuda") { %>
+                                <% if (locals.help=="Ayuda" ) { %>
                                     <input class="lang-sel lang-nonsel" type="submit" value="English">
                                     <% } else{%>
                                         <input class="lang-sel" type="submit" value="English">
@@ -127,8 +138,9 @@
                         </li>
                         <li class="language">
                             <form id="lang-spanish" action="/changelang" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <input hidden type="text" value="es" id="lang-es" name="lang">
-                                <% if (locals.help=="Help") { %>
+                                <% if (locals.help=="Help" ) { %>
                                     <input class="lang-sel lang-nonsel" type="submit" value="Spanish">
                                     <% } else{%>
                                         <input class="lang-sel" type="submit" value="Spanish">
@@ -148,8 +160,8 @@
     </div>
     </body>
     <script type="text/javascript">
-        $(document).ready(function($) {
-            $(".error").click(function(e) {
+        $(document).ready(function ($) {
+            $(".error").click(function (e) {
                 e.preventDefault();
                 $(this).removeClass("error");
                 $(this).parent().find("i").remove();
