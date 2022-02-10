@@ -32,7 +32,9 @@ module.exports = async function ({ app }) {
         res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
         res.locals.currentUser = req.user;
         res.locals.messages = req.flash();
-        res.locals.csrfToken = req.csrfToken();
+        var token = req.csrfToken();
+        res.cookie('XSRF-TOKEN', token);
+        res.locals.csrfToken = token;
         next();
     });
 
